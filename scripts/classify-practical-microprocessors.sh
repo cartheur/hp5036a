@@ -202,6 +202,22 @@ scrub_page_images() {
   rm -f "$figures_dir/page-002.png"
 }
 
+compact_page_sequence() {
+  local figures_dir="$1"
+  local max_page="$2"
+  local page
+  local old
+  local new
+
+  for ((page=3; page<=max_page; page++)); do
+    printf -v old '%s/page-%03d.png' "$figures_dir" "$page"
+    printf -v new '%s/page-%03d.png' "$figures_dir" "$((page - 1))"
+    if [[ -f "$old" ]]; then
+      mv "$old" "$new"
+    fi
+  done
+}
+
 write_text_with_page_markers() {
   local src="$1"
   local out="$2"
@@ -418,6 +434,11 @@ if [[ "$SKIP_IMAGES" == "1" ]]; then
 else
   render_page_images "$SRC" "$FIGURES_DIR" 135
   scrub_page_images "$FIGURES_DIR"
+  if [[ -n "$PAGE_START" && -n "$PAGE_END" ]]; then
+    compact_page_sequence "$FIGURES_DIR" "$PAGE_END"
+  else
+    compact_page_sequence "$FIGURES_DIR" "$TOTAL_PAGES"
+  fi
 fi
 if [[ "$OUTPUT_NAME" == "practical-microprocessors" ]]; then
   write_practical_microprocessors_index_block "$OUT_DIR/index.md"
