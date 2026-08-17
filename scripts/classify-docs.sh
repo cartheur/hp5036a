@@ -8,6 +8,92 @@ TMP_DIR="$(mktemp -d)"
 OCR_JOBS="${OCR_JOBS:-4}"
 trap 'rm -rf "$TMP_DIR"' EXIT
 
+normalize_manual_text() {
+  awk '
+    function trim(s) {
+      sub(/^[[:space:]]+/, "", s)
+      sub(/[[:space:]]+$/, "", s)
+      return s
+    }
+
+    function flush_page() {
+      if (!in_page) {
+        return
+      }
+
+      page_type = ""
+      for (i = 1; i <= line_count; i++) {
+        line = trim(page_lines[i])
+        if (line == "") {
+          continue
+        }
+        if (line ~ /^SECTION [IVX]+$/) {
+          page_type = "section"
+          break
+        }
+        if (line == "TABLE OF CONTENTS") {
+          page_type = "toc"
+        }
+      }
+
+      for (i = 1; i <= line_count; i++) {
+        line = trim(page_lines[i])
+
+        if (line == "") {
+          blank_count++
+          continue
+        }
+
+        blank_count = 0
+
+        if (line ~ /^Scans by Artek[Mm]edia => 2012$/) {
+          continue
+        }
+        if (line == "DIGITALY REMASTERED") {
+          continue
+        }
+        if (line == "Model5036A" || line == "ModelS036A") {
+          continue
+        }
+        if (line == "Table of Contents" && page_type == "toc") {
+          continue
+        }
+        if (line ~ /^[ivxlcdm]+$/) {
+          continue
+        }
+        if (line ~ /^[0-9]+-[0-9]+$/) {
+          continue
+        }
+        if (line == "•") {
+          continue
+        }
+
+        print line
+      }
+
+      print ""
+      line_count = 0
+      blank_count = 0
+    }
+
+    /^## Page [0-9]+$/ {
+      flush_page()
+      in_page = 1
+      print $0
+      print ""
+      next
+    }
+
+    {
+      page_lines[++line_count] = $0
+    }
+
+    END {
+      flush_page()
+    }
+  ' "$1" > "$2"
+}
+
 render_page_images() {
   local src="$1"
   local out_dir="$2"
@@ -27,6 +113,8 @@ render_text_pdf() {
   local notes="$7"
   local pages
   local figures_dir
+  local raw_text="$TMP_DIR/raw-text.txt"
+  local cleaned_text="$TMP_DIR/cleaned-text.txt"
 
   mkdir -p "$(dirname "$out")"
   pages="$(pdfinfo "$src" | awk -F': *' '/^Pages:/ {print $2}')"
@@ -44,6 +132,20 @@ render_text_pdf() {
     printf -- '- Notes: %s\n\n' "$notes"
     printf '## Agent Notes\n\n'
     printf 'Use this Markdown for search, quoting, and service reasoning. Use the rendered page images when the original figure, waveform, or layout matters more than the OCR text.\n\n'
+    printf '## Diagnostic Navigation\n\n'
+    printf -- '- `Section I` (`## Page 9`): identity, safety, specifications, supplied equipment, recommended tools\n'
+    printf -- '- `Section II` (`## Page 16`): installation, line voltage, setup, storage and shipment\n'
+    printf -- '- `Section III` (`## Page 20`): theory of operation, buses, decode logic, RAM/ROM, timing, keyboard/display, peripherals\n'
+    printf -- '- `Section IV` (`## Page 42`): performance tests\n'
+    printf -- '- `Section V` (`## Page 44`): replaceable parts\n'
+    printf -- '- `Section VI` (`## Page 61`): manual changes\n'
+    printf -- '- `Section VII` (`## Page 62`): service, disassembly, troubleshooting flow, test modes, signature analysis, schematic references\n'
+    printf -- '- `Figure 7-2 Troubleshooting Flowchart` (`## Page 66`)\n'
+    printf -- '- `Figure 7-3 Test Switches and Connection Points` (`## Page 68`)\n'
+    printf -- '- `Figure 7-4 Typical Test Setup` (`## Page 69`)\n'
+    printf -- '- `Figure 7-5 5036A Schematic Diagram`: use the sibling figure images when OCR is weak or the schematic text is fragmented\n\n'
+    printf '## Cleanup Notes\n\n'
+    printf 'Repeated scan footers, page headers, and standalone printed page numbers were removed to reduce OCR clutter. Original page boundaries are preserved with `## Page N` markers for citation and image lookup.\n\n'
     printf '## Extracted Text\n\n'
   } > "$out"
 
@@ -72,7 +174,10 @@ render_text_pdf() {
         }
         next_line = 0
       }
-    ' >> "$out"
+    ' > "$raw_text"
+
+  normalize_manual_text "$raw_text" "$cleaned_text"
+  cat "$cleaned_text" >> "$out"
 
   render_page_images "$src" "$figures_dir" 170
 }
@@ -184,7 +289,7 @@ render_text_pdf \
   "microprocessor-lab-service-manual" \
   "February 1979" \
   "Primary source for 5036A fault diagnosis, circuit understanding, performance verification, signature analysis, and service disassembly." \
-  "The PDF already contains OCR text, so `pdftotext` is sufficient for search. Rendered page images should still be used for schematics, tables, jumper layouts, and any suspicious OCR."
+  'The PDF already contains OCR text, so `pdftotext` is sufficient for search. Rendered page images should still be used for schematics, tables, jumper layouts, and any suspicious OCR.'
 
 write_index
 
