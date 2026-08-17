@@ -301,6 +301,9 @@ render_text_pdf() {
     printf 'Use this Markdown for search, quoting, and service reasoning. Use the rendered page images when the original figure, waveform, or layout matters more than the OCR text.\n\n'
     printf '## Trusted Working Notes\n\n'
     printf 'These notes are curated for agent use and should be preferred over raw OCR when they cover the same material.\n\n'
+    printf '### Verified Companion\n\n'
+    printf -- '- Verified backmatter companion: `docs-classified/service/05036-90001-verified-pages-60-73.md`\n'
+    printf -- '- Use that companion first for manual pages `7-14` through `7-27` (`## Page 60` through `## Page 73` here), especially for signature tables and late-service figures.\n\n'
     printf '### Keyboard Controls\n\n'
     printf '| Control | Intended Meaning |\n'
     printf '| --- | --- |\n'
@@ -453,6 +456,7 @@ This folder is organized so an agent can diagnose HP 5036A faults without reopen
   - `Section IV`: performance tests and expected verification flow
   - `Section VII`: disassembly, troubleshooting procedure, test modes, signature tables, abbreviated troubleshooting
 - Figures: `docs-classified/service/05036-90001/figures/`
+- Verified companion: `docs-classified/service/05036-90001-verified-pages-60-73.md`
 
 ## Agent Usage Rules
 
@@ -461,6 +465,7 @@ This folder is organized so an agent can diagnose HP 5036A faults without reopen
 - Use `Section IV` to distinguish an actual failure from an unmet verification precondition.
 - Treat the built-in fault jumpers as a first-class possibility before concluding a device has failed.
 - When OCR text is ambiguous, cite the page number from the Markdown and inspect the matching image in `docs-classified/service/05036-90001/figures/`.
+- For manual pages `7-14` through `7-27`, start with the verified companion before consulting the raw OCR block.
 - For signature-analysis questions, prefer the `Section VII` signature tables and associated test-mode procedures over free-form reasoning.
 EOF
 }
