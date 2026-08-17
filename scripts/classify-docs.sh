@@ -16,17 +16,58 @@ normalize_manual_text() {
       return s
     }
 
+    function rtrim(s) {
+      sub(/[[:space:]]+$/, "", s)
+      return s
+    }
+
+    function is_scan_insert(line) {
+      if (line ~ /^Scans by Artek[Mm]edia => 2012$/) return 1
+      if (line ~ /^Artek ?Media$/) return 1
+      if (line ~ /^ArtekMedia$/) return 1
+      if (line ~ /ArtekMedia/) return 1
+      if (line ~ /^www\.artekmedia\.com$/) return 1
+      if (line ~ /^manuals@/) return 1
+      if (line ~ /manuals@ArtekMedia\.com/) return 1
+      if (line ~ /^Digitally signed by ArtekMedia$/) return 1
+      if (line ~ /^DN: cn=ArtekMedia/) return 1
+      if (line ~ /^Date: 2012\./) return 1
+      if (line ~ /^OUT OF PRINT$/) return 1
+      if (line ~ /^HEWLETT PACKARD MANUAL SCANS$/) return 1
+      if (line ~ /^DIGITALY REMASTERED$/) return 1
+      if (line ~ /^SCANS$/) return 1
+      if (line ~ /^By$/ && last_nonempty == "SCANS") return 1
+      return 0
+    }
+
     function flush_page() {
       if (!in_page) {
         return
       }
 
       page_type = ""
+      scan_insert_lines = 0
+      manual_lines = 0
+      suppress_page = 0
+      last_nonempty = ""
       for (i = 1; i <= line_count; i++) {
-        line = trim(page_lines[i])
+        raw = page_lines[i]
+        line = trim(raw)
         if (line == "") {
           continue
         }
+        if (line == "OUT OF PRINT" ||
+            line == "HEWLETT PACKARD MANUAL SCANS" ||
+            line == "“High resolution scans of obsolete technical manuals”" ||
+            line == "ALL HEWLETT PACKARD MANAULS ARE REPRODUCED BY PERMISSION") {
+          suppress_page = 1
+        }
+        if (is_scan_insert(line)) {
+          scan_insert_lines++
+          continue
+        }
+        manual_lines++
+        last_nonempty = line
         if (line ~ /^SECTION [IVX]+$/) {
           page_type = "section"
           break
@@ -36,11 +77,23 @@ normalize_manual_text() {
         }
       }
 
+      if (suppress_page || (scan_insert_lines > 0 && manual_lines == 0)) {
+        print "[non-manual scan-insert content removed]"
+        print ""
+        line_count = 0
+        blank_count = 0
+        return
+      }
+
       for (i = 1; i <= line_count; i++) {
-        line = trim(page_lines[i])
+        raw = page_lines[i]
+        line = trim(raw)
 
         if (line == "") {
           blank_count++
+          if (blank_count <= 2) {
+            print ""
+          }
           continue
         }
 
@@ -51,6 +104,54 @@ normalize_manual_text() {
         }
         if (line == "DIGITALY REMASTERED") {
           continue
+        }
+        if (line ~ /^OUT OF PRINT$/) {
+          continue
+        }
+        if (line ~ /^HEWLETT PACKARD MANUAL SCANS$/) {
+          continue
+        }
+        if (line ~ /^Artek ?Media$/) {
+          continue
+        }
+        if (line ~ /^ArtekMedia$/) {
+          continue
+        }
+        if (line ~ /ArtekMedia/) {
+          continue
+        }
+        if (line ~ /^www\.artekmedia\.com$/) {
+          continue
+        }
+        if (line ~ /^manuals@/) {
+          continue
+        }
+        if (line ~ /manuals@ArtekMedia\.com/) {
+          continue
+        }
+        if (line ~ /^Digitally signed by ArtekMedia$/) {
+          continue
+        }
+        if (line ~ /^DN: cn=ArtekMedia/) {
+          continue
+        }
+        if (line ~ /^Date: 2012\./) {
+          continue
+        }
+        if (line == "SCANS") {
+          continue
+        }
+        if (line == "By") {
+          next_line = ""
+          for (j = i + 1; j <= line_count; j++) {
+            next_line = trim(page_lines[j])
+            if (next_line != "") {
+              break
+            }
+          }
+          if (next_line ~ /^Artek/) {
+            continue
+          }
         }
         if (line == "Model5036A" || line == "ModelS036A") {
           continue
@@ -67,8 +168,23 @@ normalize_manual_text() {
         if (line == "•") {
           continue
         }
+        if (line ~ /^SECTION [IVX]+$/) {
+          next_title = ""
+          for (j = i + 1; j <= line_count; j++) {
+            next_title = trim(page_lines[j])
+            if (next_title != "") {
+              break
+            }
+          }
+          if (next_title != "") {
+            print "### " line " - " next_title
+            print ""
+            i = j
+            continue
+          }
+        }
 
-        print line
+        print rtrim(raw)
       }
 
       print ""
@@ -149,7 +265,7 @@ render_text_pdf() {
     printf '## Extracted Text\n\n'
   } > "$out"
 
-  pdftotext "$src" - \
+  pdftotext -layout "$src" - \
     | awk '
       BEGIN {
         page = 1
