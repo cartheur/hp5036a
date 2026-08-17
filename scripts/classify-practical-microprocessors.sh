@@ -295,7 +295,7 @@ scrub_page_images() {
         elif [[ "$page" == "484" ]]; then
           magick "$image" \
             -fill white \
-            -draw "rectangle %[fx:w*0.39],%[fx:h-44] %[fx:w*0.61],%[fx:h]" \
+            -draw "rectangle %[fx:w*0.34],%[fx:h-70] %[fx:w*0.66],%[fx:h]" \
             "$image"
         else
           magick "$image" \
