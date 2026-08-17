@@ -4,7 +4,7 @@ This is a structured transcription of `Table 7-4. Freerun ROM Test`, verified ag
 
 ## Trust Notes
 
-- Primary verification source: [page-67.png](/home/cartheur/ame/aiventure/aiventure-github/cartheur/hp5036a/docs-classified/service/05036-90001/figures/page-67.png) and [page-68.png](/home/cartheur/ame/aiventure/aiventure-github/cartheur/hp5036a/docs-classified/service/05036-90001/figures/page-68.png)
+- Primary verification source: [page-66.png](/home/cartheur/ame/aiventure/aiventure-github/cartheur/hp5036a/docs-classified/service/05036-90001/figures/page-66.png) and [page-67.png](/home/cartheur/ame/aiventure/aiventure-github/cartheur/hp5036a/docs-classified/service/05036-90001/figures/page-67.png)
 - Use this file for chip/pin lookup during diagnosis.
 - If a single value becomes decision-critical, re-check the page image before replacing hardware.
 

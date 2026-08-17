@@ -4,7 +4,7 @@ This is a structured transcription of `Table 7-3. Freerun Address Test`, verifie
 
 ## Trust Notes
 
-- Primary verification source: [page-65.png](/home/cartheur/ame/aiventure/aiventure-github/cartheur/hp5036a/docs-classified/service/05036-90001/figures/page-65.png) and [page-66.png](/home/cartheur/ame/aiventure/aiventure-github/cartheur/hp5036a/docs-classified/service/05036-90001/figures/page-66.png)
+- Primary verification source: [page-64.png](/home/cartheur/ame/aiventure/aiventure-github/cartheur/hp5036a/docs-classified/service/05036-90001/figures/page-64.png) and [page-65.png](/home/cartheur/ame/aiventure/aiventure-github/cartheur/hp5036a/docs-classified/service/05036-90001/figures/page-65.png)
 - Use this file for chip/pin lookup during diagnosis.
 - If a single value becomes decision-critical, re-check the page image before replacing hardware.
 

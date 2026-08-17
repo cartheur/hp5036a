@@ -4,7 +4,7 @@ This is a structured transcription of `Table 7-1. S.A. Write Test`, verified aga
 
 ## Trust Notes
 
-- Primary verification source: [page-60.png](/home/cartheur/ame/aiventure/aiventure-github/cartheur/hp5036a/docs-classified/service/05036-90001/figures/page-60.png) and [page-61.png](/home/cartheur/ame/aiventure/aiventure-github/cartheur/hp5036a/docs-classified/service/05036-90001/figures/page-61.png)
+- Primary verification source: [page-59.png](/home/cartheur/ame/aiventure/aiventure-github/cartheur/hp5036a/docs-classified/service/05036-90001/figures/page-59.png) and [page-60.png](/home/cartheur/ame/aiventure/aiventure-github/cartheur/hp5036a/docs-classified/service/05036-90001/figures/page-60.png)
 - Use this file for chip/pin lookup during diagnosis.
 - If a single value becomes decision-critical, re-check the page image before replacing hardware.
 

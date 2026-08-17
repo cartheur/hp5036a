@@ -285,6 +285,21 @@ scrub_service_page_images() {
   rm -f "$figures_dir/page-02.png"
 }
 
+compact_service_page_sequence() {
+  local figures_dir="$1"
+  local page
+  local old
+  local new
+
+  for page in $(seq 3 73); do
+    printf -v old '%s/page-%02d.png' "$figures_dir" "$page"
+    printf -v new '%s/page-%02d.png' "$figures_dir" "$((page - 1))"
+    if [[ -f "$old" ]]; then
+      mv "$old" "$new"
+    fi
+  done
+}
+
 render_text_pdf() {
   local src="$1"
   local out="$2"
@@ -385,6 +400,7 @@ render_text_pdf() {
 
   render_page_images "$src" "$figures_dir" 170
   scrub_service_page_images "$figures_dir"
+  compact_service_page_sequence "$figures_dir"
 }
 
 render_ocr_pdf() {

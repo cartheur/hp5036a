@@ -4,7 +4,7 @@ This is a structured transcription of `Table 7-2. S.A. Read Test`, verified agai
 
 ## Trust Notes
 
-- Primary verification source: [page-62.png](/home/cartheur/ame/aiventure/aiventure-github/cartheur/hp5036a/docs-classified/service/05036-90001/figures/page-62.png), [page-63.png](/home/cartheur/ame/aiventure/aiventure-github/cartheur/hp5036a/docs-classified/service/05036-90001/figures/page-63.png), and [page-64.png](/home/cartheur/ame/aiventure/aiventure-github/cartheur/hp5036a/docs-classified/service/05036-90001/figures/page-64.png)
+- Primary verification source: [page-61.png](/home/cartheur/ame/aiventure/aiventure-github/cartheur/hp5036a/docs-classified/service/05036-90001/figures/page-61.png), [page-62.png](/home/cartheur/ame/aiventure/aiventure-github/cartheur/hp5036a/docs-classified/service/05036-90001/figures/page-62.png), and [page-63.png](/home/cartheur/ame/aiventure/aiventure-github/cartheur/hp5036a/docs-classified/service/05036-90001/figures/page-63.png)
 - Use this file for chip/pin lookup during diagnosis.
 - If a single value becomes decision-critical, re-check the page image before replacing hardware.
 
