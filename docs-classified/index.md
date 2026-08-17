@@ -24,9 +24,29 @@ This folder is organized so an agent can diagnose HP 5036A faults without reopen
 - Figures: `docs-classified/service/05036-90001/figures/`
 - Verified companion: `docs-classified/service/05036-90001-verified-pages-60-73.md`
 - Agent quality note: `docs-classified/service/05036-90001-agent-quality-note.md`
+### Practical Microprocessors
+
+- File: `docs-classified/reference/practical-microprocessors.md`
+- Source PDF: `docs/Practical Microprocessors.pdf`
+- Category: `microprocessor-lab-handbook`
+- Best for: conceptual grounding, 8085 programming, experiment walkthroughs, hardware theory, memory and I/O design, timing interpretation, and troubleshooting technique training
+- Fault domains:
+  - understanding why a bus, decoder, RAM, ROM, or peripheral fault would produce a symptom
+  - explaining monitor behavior, control flow, or timing during diagnosis
+  - training an agent to reason about probe, pulser, current tracer, and signature-analyzer workflows
+  - mapping a user symptom to likely subsystems before using the service manual for final isolation
+- High-value sections:
+  - `Section III`: system hardware, buses, addressing, memories, peripherals
+  - `Section IV`: interfaces, timing, demultiplexing, interrupts, single-step, buffering
+  - `Section V`: programming patterns used on the lab
+  - `Section VI`: troubleshooting techniques, logic probe/pulser/current tracer, signature analysis
+- Figures: `docs-classified/reference/practical-microprocessors/figures/`
 
 ## Agent Usage Rules
 
+- Use `Practical Microprocessors` first when the user needs explanation, lab pedagogy, or subsystem reasoning rather than immediate repair steps.
+- Use `Practical Microprocessors` `Section VI` to interpret logic-probe, pulser, current-tracer, and signature-analysis techniques before applying them to the service manual.
+- Use the handbook for rationale and the service manual for authoritative `5036A` switch settings, signatures, and part-level service flow.
 - Start with `Section VII` when the user is diagnosing an existing hardware fault.
 - Switch to `Section III` when the symptom needs architectural interpretation: address decode, control flow, RAM/ROM access, interrupts, reset, or display/keyboard logic.
 - Use `Section IV` to distinguish an actual failure from an unmet verification precondition.

@@ -270,6 +270,21 @@ render_page_images() {
   pdftoppm -r "$dpi" -png "$src" "$out_dir/page" >/dev/null 2>&1
 }
 
+scrub_service_page_images() {
+  local figures_dir="$1"
+  local image
+
+  find "$figures_dir" -maxdepth 1 -type f -name 'page-*.png' ! -name 'page-02.png' | while read -r image; do
+    magick "$image" \
+      -fill white \
+      -draw "rectangle %[fx:w*0.28],0 %[fx:w*0.72],90" \
+      -draw "rectangle %[fx:w*0.28],%[fx:h-120] %[fx:w*0.72],%[fx:h]" \
+      "$image"
+  done
+
+  rm -f "$figures_dir/page-02.png"
+}
+
 render_text_pdf() {
   local src="$1"
   local out="$2"
@@ -369,6 +384,7 @@ render_text_pdf() {
   cat "$cleaned_text" >> "$out"
 
   render_page_images "$src" "$figures_dir" 170
+  scrub_service_page_images "$figures_dir"
 }
 
 render_ocr_pdf() {
@@ -457,6 +473,7 @@ This folder is organized so an agent can diagnose HP 5036A faults without reopen
   - `Section VII`: disassembly, troubleshooting procedure, test modes, signature tables, abbreviated troubleshooting
 - Figures: `docs-classified/service/05036-90001/figures/`
 - Verified companion: `docs-classified/service/05036-90001-verified-pages-60-73.md`
+- Agent quality note: `docs-classified/service/05036-90001-agent-quality-note.md`
 
 ## Agent Usage Rules
 
