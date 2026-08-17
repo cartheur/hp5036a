@@ -16,6 +16,11 @@ normalize_manual_text() {
       return s
     }
 
+    function ltrim(s) {
+      sub(/^[[:space:]]+/, "", s)
+      return s
+    }
+
     function rtrim(s) {
       sub(/[[:space:]]+$/, "", s)
       return s
@@ -38,6 +43,41 @@ normalize_manual_text() {
       if (line ~ /^SCANS$/) return 1
       if (line ~ /^By$/ && last_nonempty == "SCANS") return 1
       return 0
+    }
+
+    function detect_page_kind() {
+      page_kind = "plain"
+      for (k = 1; k <= line_count; k++) {
+        probe = trim(page_lines[k])
+        if (probe ~ /^Table 7-[1-4]\./) {
+          page_kind = "signature-table"
+          return
+        }
+        if (probe ~ /^3-89\./ || probe == "5036A KEYBOARD") {
+          page_kind = "keyboard-map"
+        } else if (probe ~ /^3-91\./ || probe == "LOGIC SYMBOLS") {
+          page_kind = "logic-symbols"
+        } else if (probe ~ /^Figure 7-3\./ || probe ~ /^Figure 7-5\./) {
+          page_kind = "figure-heavy"
+        }
+      }
+    }
+
+    function emit_page_notes() {
+      if (page_kind == "signature-table") {
+        print "> [!warning]"
+        print "> OCR confidence is low on this signature table. Do not treat the values below as canonical without checking the matching page image in `figures/`."
+        print "> Safe use: use this block to locate chip designators and workflow structure, then verify actual signatures visually."
+        print ""
+      } else if (page_kind == "keyboard-map") {
+        print "> [!note]"
+        print "> This page preserves layout because control names matter. OCR is medium confidence: use the curated keyboard legend above first, and verify exact legends against the page image before quoting them."
+        print ""
+      } else if (page_kind == "logic-symbols" || page_kind == "figure-heavy") {
+        print "> [!note]"
+        print "> This is structured scan content. Layout is preserved, but symbol pinouts and figure labels should be verified against the page image when used for diagnostics."
+        print ""
+      }
     }
 
     function flush_page() {
@@ -85,6 +125,13 @@ normalize_manual_text() {
         return
       }
 
+      detect_page_kind()
+      emit_page_notes()
+
+      if (page_kind != "plain") {
+        print "```text"
+      }
+
       for (i = 1; i <= line_count; i++) {
         raw = page_lines[i]
         line = trim(raw)
@@ -114,10 +161,10 @@ normalize_manual_text() {
         if (line ~ /^Artek ?Media$/) {
           continue
         }
-        if (line ~ /^ArtekMedia$/) {
+        if (line ~ /^Artek[Mm]edia$/) {
           continue
         }
-        if (line ~ /ArtekMedia/) {
+        if (line ~ /Artek[Mm]edia/) {
           continue
         }
         if (line ~ /^www\.artekmedia\.com$/) {
@@ -126,13 +173,13 @@ normalize_manual_text() {
         if (line ~ /^manuals@/) {
           continue
         }
-        if (line ~ /manuals@ArtekMedia\.com/) {
+        if (line ~ /manuals@Artek[Mm]edia\.com/) {
           continue
         }
-        if (line ~ /^Digitally signed by ArtekMedia$/) {
+        if (line ~ /^Digitally signed by Artek[Mm]edia$/) {
           continue
         }
-        if (line ~ /^DN: cn=ArtekMedia/) {
+        if (line ~ /^DN: cn=Artek[Mm]edia/) {
           continue
         }
         if (line ~ /^Date: 2012\./) {
@@ -185,6 +232,10 @@ normalize_manual_text() {
         }
 
         print rtrim(raw)
+      }
+
+      if (page_kind != "plain") {
+        print "```"
       }
 
       print ""
@@ -248,6 +299,25 @@ render_text_pdf() {
     printf -- '- Notes: %s\n\n' "$notes"
     printf '## Agent Notes\n\n'
     printf 'Use this Markdown for search, quoting, and service reasoning. Use the rendered page images when the original figure, waveform, or layout matters more than the OCR text.\n\n'
+    printf '## Trusted Working Notes\n\n'
+    printf 'These notes are curated for agent use and should be preferred over raw OCR when they cover the same material.\n\n'
+    printf '### Keyboard Controls\n\n'
+    printf '| Control | Intended Meaning |\n'
+    printf '| --- | --- |\n'
+    printf '| `RUN` | Initiates a program. |\n'
+    printf '| `STEP` | Hardware step; advances one machine cycle at a time. |\n'
+    printf '| `INSTR STEP` | Advances one full instruction at a time. |\n'
+    printf '| `RESET` | Resets the lab or stops a running program. |\n'
+    printf '| `INTRPT` | Triggers a user-defined hardware interrupt. |\n'
+    printf '| `STORE/INCR` | Stores data and advances the address or register selection. |\n'
+    printf '| `DECREMENT` | Decrements the current address. |\n'
+    printf '| `FETCH ADRS` | Fetches an address and displays its contents. |\n'
+    printf '| `FETCH REG` | Displays register contents; repeated store/increment cycles through 8085 registers. |\n'
+    printf '| `FETCH PC` | Displays the program counter. |\n\n'
+    printf '### Signature Table Policy\n\n'
+    printf -- '- `Tables 7-1` through `7-4` are diagnostically important but OCR-fragile.\n'
+    printf -- '- Use the Markdown text for table discovery, chip grouping, and workflow context.\n'
+    printf -- '- Use the matching page image as the source of truth for actual signature values before diagnosing a fault or sharing a signature reference.\n\n'
     printf '## Diagnostic Navigation\n\n'
     printf -- '- `Section I` (`## Page 9`): identity, safety, specifications, supplied equipment, recommended tools\n'
     printf -- '- `Section II` (`## Page 16`): installation, line voltage, setup, storage and shipment\n'
