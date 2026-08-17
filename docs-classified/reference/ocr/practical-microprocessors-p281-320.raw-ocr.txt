@@ -1,0 +1,2640 @@
+## Page 281
+
+                                             Scans by Artekmedia => 2012
+
+
+
+
+_ _ _ _ _ _ _ _ _ EXPERIMENT 16-2
+                                                                                     The Logic Pulser
+
+
+
+    CONCEPT
+    In th is experiment you use the logic pulser to inject signals into the J,LLab. The HP 546A Logic Pulser is
+    an in- circu it stimulus device. It automatically outputs pulses of the required logic polarity, amplitude,
+    curre nt, and width to drive high nodes low and low nodes high . It also has several pulse burst and
+    stream modes available.
+
+    PROCEDURE
+    I.   Using the Logic Pulser
+
+         A ) Conn ect the power leads of the logic pulser to the power slots of the J,LLab. (Leave the power to
+             the logic probe connected) .
+         B ) To generate a single pulse, press and release the button on the pulser. Observe that the light at
+             the tip blinks once.
+         C) Press and hold the button on the pulser. Verify that the light at the tip blinks once and then ,
+            about a second later, begins flashing rapidly. The pulser is now "programmed " into the 100 Hz
+            pulse rate and can output brief high-energy pulses at a 100 Hz rate. Figure 16-7 illustrates this
+            low duty-cycle pulse waveform. A low duty-cycle keeps the average energy delivered to an IC
+            at a safe level to prevent potential damage.
+
+                                I     r-1 0~S
+                      5V
+
+
+
+
+                      OV---....I    ~                   ~.,
+                                    r--      10ms
+
+
+
+                Figure 16-7.   546A Logic Pu/ser Output Waveform for Normally Low Logic Node
+
+         D ) Slide the switch button forward to lock it. Notice that the pulser light continues to flash al-
+             though your finger is not on the switch .
+         E) Read the label on the pulser. Other outputs can be programmed by pressing the button in rapid
+            succession two, three , four or five times and then holding it down. Try these other output modes.
+            Note that the 10 and 100 burst modes send out a burst of pulses and then pause before sending out
+            another burst. Any of these modes can be locked on by sliding the switch button forward.
+
+
+
+
+                                        Programming Codes for Logic Pu/ser
+
+
+
+
+Lesson 16
+Pract ic al Microprocessors                                                                                       255
+EXPERIMENT 16-2 _ _ _ _ _ _ _ __
+
+## Page 282
+
+(Continued)
+
+
+
+      II.    Pulsing a Node
+
+            A) Touch the pulser tip to IC18-9 (the output of the speaker buffer) and program it for the 100 Hz
+               mode (see Figure 16-8). Listen carefully to hear a 100 Hz "crackle." The pulser is overdriving
+               (forcing into the opposite logic state) the output of pin 9 and injecting a pulse stream into the
+               speaker.
+
+
+
+
+                             8            9
+
+                                                                       100
+
+
+                                     Figure 16-8.    Speaker Drive Circuit for J.LLab
+
+
+
+            B) Touch the logic probe to this same point and verify that this output pin is indeed being
+               overdriven by the pulser.
+
+            C) Try pulsing a Vee or ground trace. Observe with the logic probe that the pulser cannot overdrive
+               them. This is true because the power supply has a much lower output impedance than the logic
+               devices that the pulser is designed to overdrive.
+
+            D) Now move the pulser tip to the right lead of the 100 ohm resistor located just below and to the
+               right of 1C18. This connection goes directly to the speaker and therefore increases the sound
+               level. Now program the pulser for other output modes and listen to the difference.
+
+      III. Enabling a Device
+
+            A) If the display does not show         u L Rb      UP press [RESET) to ensure that the monitor pro-
+               gram is running.
+
+            B) Probe the clock input to the output port latch (1C15-11) with the logic probe (see Figure 16-9).
+               No activity is occurring there at this time, indicating that the monitor program is not addressing
+               the output port.
+
+            C) Now pulse this pin once with the pulser. Observe the ~Lab's output LEDs. Try it a few more
+               times. Try it using other pulser output modes.
+
+
+
+
+                                                    Scans by ArtekMedia => 2012                         Lesson 16
+256                                                                                     Practical Microprocessors
+                                                                                                           Scans by Artekmedia => 2012
+
+## Page 283
+
+
+
+
+
+ _ _ _ _ _ _ _ _ _ EXPERIMENT 16-2
+                                                                                                                                                                                                                                          ( Continued)
+
+
+
+                                                                                                                                                                                         +51~6
+                                                                                                                                                                 ~~~~ )~ F- C74LS273
+                                                                                                                                                                 +5V(2}~ R
+
+                                                                                                                                                                  De       3
+                                                                                                                                                                           •
+                                                                                                                                                                                             UI5
+
+                                                                                                                                                                                    Df REG QRJ
+                                                                                                                                                                                    01               QI~
+                                                                                                                                                                                                              2       e          1
+                                                                                                                                                                                                                                OUTPUl
+                                                                                                                                                                                                                                 PORT
+                                                                                                                                                                                                     Q2~
+                                                                                                                                                                            7
+                                                                                                                                                                                    02
+                                                                                                                                                                            8
+                                                                                                                                                                                    03               Q3   t:::lI:::'
+                                                                                                                                                                           13
+                                                                                                                                                                                                          t±[)
+                                                                                                                                                                                                                                     j
+                                                                                                                                                                                    04               Q4
+                                                                                                                                                                                                     Q5~
+                                                                                                                                                                           I.
+                                                                                                                                                                                    05
+                                                                                                                                                                                                     Q6~
+                                                                                                                                                                           17
+                                                                                                                                                                  07       18       06
+                                                                                                                                                                                    07               Q7 19
+                                                                                                                                                                                             <;]'0
+                                                                           OUTPUT BUS
+                                                                           SE:GMENT BUS
+
+
+               ;( ~({{~~('
+               1Yo       '.:::   -       It)   <D       (J)   -:       -
+
+
+
+                                                                                      ,. i~{~(~{~f'
+                                                                                    :-;( ~ ~ ~ :     ·~C
+                                                                                                       .
+                                                                                          , , , , ~• =,0510                                 ." =, ~, ~(~(
+                                                                                                                                             '"
+                                                                                                                                                 7
+
+
+                                                                                                                                                      . ~{~fo'
+                                                                                                                                                             ~~~:~=DSII
+
+
+
+
+          I!:):"Xi
+                             •   I\i ,                    •   0        -
+                                                                                                                                                         ~
+
+
+
+
+                                                                                   10' 10'                                                  10' ,/': :1·1
+                                                                                   '-' l . 1--
+                                                                                  1--       '-' l .                                           , I'. 4 /'.1
+                                                                                                                                            ;'-
+                                                                                                                                            --
+           ~             L                                    R                            L                     R                                   L
+
+                         ~\                                   ~\                            \"\                  ~32     DIGIT BUS                   \"'1                           ~3B
+
+
+                                                                                                                         ~;o
+                                                                                                                             I     I'   +SVI2}                                                                            R8
+                                                                                                                                                                                                                                     I +5V(21
+                                                                                                                                                                                                                                     INPUT SWITCH
+                     I           A
+
+                                 2
+                                               8
+
+                                               3
+                                                              C
+
+                                                              4
+                                                                            0
+
+                                                                            S
+                                                                                               E
+
+                                                                                               6
+                                                                                                       F
+
+                                                                                                       7
+                                                                                                             G
+
+                                                                                                             8
+                                                                                                                     H
+
+                                                                                                                     9
+                                                                                                                                                             A     8   C        0        E     F          G       H       10K            53
+                                                                                                                                                                                                                                     (SEE NOTE 4)
+                                                                                                                                                     ,       2     3   • S               6     7          8       9              , r--          '6
+                         (~;,~ ~;,F ~;,~ ~~                                                ~~;,~ ~1~, ~;,S ~~                                                                                                                    2
+                                                                                                                                                                                                                                                ,.
+                                                                                                                                                                                                                                                'S
+
+                     7               6
+                                          OS 15
+                                                    6              4                   3           2    ,            05 19                                                                                                       3
+                                                                                                                                                                                                                                 4
+                                                                                                                                                                                                                                 S
+                                                                                                                                                                                                                                                13
+                                                                                                                                                                                                                                                12
+                                                                                                                                                                                                                                 6              11
+                     ~---- OUTPUT LEO ' 5                                                                                      /
+                                                                                                                                                                                                                                 7              10
+                                                                                                                                                     7                                                                           8              9
+                                                                                                                                                                                                                                     '---
+                                                                           INPUT BUS
+
+
+
+                                                                                           Figure 16-9.              Output Port Latch Circuit
+
+   CHECKPOINT
+   Why did the LEOs behave so randomly? What have you shown?
+       • From the schematic, observe that the inputs of output latch IC15 are all connected to the data
+         bus. The outputs go to the LEOs.
+       • Since the monitor program is running, there is activity on the data bus. Random bit patterns
+         appear on the data bus at the moment when it is asynchronously sampled by the signal from the
+         pulser.
+       • The pulser causes the latch to store data from the data bus with no regard to what that data is.
+         It ignores the address bus and the control signals.
+       • This data storage tells you that IC15 can latch data when clocked. Therefore, its clock input (pin
+         11) is functional.
+       • You can also check the ability of all eight of the latch's bits to store and output both logic states.
+         Pulse pin 11 a number of times and watch each of the LEOs change state. Had the output LEOs
+         not been available to observe, a logic probe could have been used in their place.
+       • You have verified, to a fairly high level of confidence, that IC15 is good. Had it not performed in
+         the manner that it did (given the activity present on the data bus lines and lack of it on pin 11 ),
+         you could be fairly certain that something was faulty.
+
+
+
+
+Lesson 16
+Practical Microprocessors                                                                                                                                                                                                                            257
+EXPERIMENT 16-2 _ _ _ _ _ _ _ __
+
+## Page 284
+
+(Continued)
+
+
+
+      SUMMARY
+
+      The logic pulser forces overriding pulses into logic nodes. It can be programmed to output single
+      pulses, pulse streams, or bursts. The pulser can be used to force chips to be enabled or clocked.
+      Logic circuit inputs can be pulsed while observing the effects of their outputs on the circuit under
+      test. In this experiment you used the J.LLab's speaker to examine the various output modes of the
+      logic pulser. Then the pulser was used to clock random data from the J.LLab's data bus into the out-
+      put port latch. The output port LEOs verified that the latch was operating properly.
+
+
+
+
+                                                                                                  Lesson 16
+                                               Scans by ArtekMedia => 2012
+258                                                                               Practical Microprocessors
+                                              Scans by Artekmedia => 2012
+
+## Page 285
+
+
+
+
+
+_ _ _ _ _ _ _ _ _ EXPERIMENT 16-3
+                                                               Stimulus-Response Testing
+                                                         Using the Probe and the Pulser
+
+
+   CONCEPT
+
+   This experiment demonstrates how the pulser can stimulate circuits in the ~Lab and how it can be com-
+   bined with the logic probe to perform stimulus-response testing. The logic pulser injects a stimulus
+   signal into a node, and the logic probe monitors the response of other circuit nodes in the signal
+   propagation path .
+
+
+
+
+                                               HP 546A Logic Pulser
+
+   PROCEDURE
+   I.   Tracing Logic Flow
+
+
+        A) Clear the ~Lab memory by turning the power off and then on . Fetch the first RAM address
+            (0800) by pressing (F~Tf)   . Press (~) to enter the hardware single-step mode at address 0800.
+            Verify that the bus LEOs are reading RAM data 00 at address 0800. The display is blank since
+            the system has stopped .
+
+        B) Using the logic probe, verify logic 0 levels on the DO data bus line and the RAM enable line
+           (IC5-8) . This tells you that the RAM is enabled and that the data present on its DO output is O.
+           Now insert the probe into the DO test hole (see Figure 16-10) and leave it there.
+
+
+
+
+                             Figure 16-10.    Logic Probe Inserted into O(i) Test Hole
+
+
+
+
+Lesson 16
+Practical Microprocessors                                                                                      259
+EXPERIMENT 16-3 _ _ _ _ _ _ _ __
+
+## Page 286
+
+( Continued)
+
+
+
+        C) Pulse DO once with the pulser. Observe that the probe flashes once, indicating that the pulser
+           has overdriven the data bus line and injected a logic 1 pulse. This demonstrates how simple it is
+           to inject a pulse into a node.
+
+        D) Pulse the RAM enable (IC5-8) and observe the probe. It flashes on because the RAM chip is
+           momentarily disabled by the logic 1 pulse supplied by the pulser. The RAM outputs turn off, and
+           the data bus is pulled to a logic 1 level by the 10K pull-up resistors (just above the data bus
+           switch) . You have demonstrated that the RAM enable pin can cause the DO output to disable.
+
+         E) Observe from Figure 16-11 that the RAM signal at IC5-8 comes from IC11-3 (the output of an OR
+            gate) . Use the logic probe to verify that this gate's inputs (IC11-1 and 2) , as well as its output
+                (IC11-3), are all low (logic 0) .
+
+
+
+                                     +5V( I)                                         +5V( Il
+
+                                      18                                                 18
+                                2114140,,5                                     2 1 14 / 4045
+
+                               ••
+                               AI
+                                                                              Io,g
+                                                                              AI
+                               A2
+                               A3
+                               ••
+                               A5
+                                                                              .
+                                                                              A2
+                                                                              A3
+
+                                                                              A5
+                                                                              A.
+                                                                                                                                         ADDRESS BUS
+
+                               A"
+                               AT
+                               A8
+                                                                              AT
+                                                                              A8                                  ~ ~~~~j ~ ~~~5~ ~~~~3~
+                               A9
+                                                                              ••                                           (ill)                      mID                     m:ID             m:TID
+  FROM UI8(3)   N=
+                 ' R~--.::I°'<1 'R                            NWR
+                                                         FROM UI8(3}
+
+
+                                                              NRAM
+                                                                         10
+
+
+
+
+                                                                         8
+                                                                              WR
+
+
+
+
+                                                                              cs R~~
+                                                                                                              FROM
+                                                                                                            UI8(;3)
+                                                                                                                       NWR
+                                                                                                                           ;=sus
+                                                                                                                              4    U9B
+                                                                                                                                          ,r •
+                                                                                                                                                 YA
+
+                                                                                                                                                      "    ENI
+                                                                                                                                                                +Sit :~
+                                                                                                                                                            74LS 138
+                                                                                                                                                                     0
+                                                                                                                                                                     I
+                                                                                                                                                                              .
+                                                                                                                                                                              15
+                                                                                                                                                                                     ~   :3
+                                                                                                                                                                                                NR""
+                                                                                                                                                                                                NRA. ...
+                                                                                                           .,5                                                                      ~IA NCTl
+                                                                                                           Ai '
+                                                         FRO'" UII {3}                                                                                     EN'
+                                                                                                                                                                              13
+                                                                                                                                         ·---4
+                                         1101    14 00                                   1101    11 0 4
+                                                                                                           All                                         I
+                                                                                                                                                           EN3
+
+                                                                                                                                                           A
+                                                                                                                                                                     2
+                                                                                                                                                                     3
+                                                                                                                                                                              12
+                                                                                                                                                                                     •
+                                                                                                                                                                                    ~8NKYRO
+                                                                                                           AI2                                                    ur                     lie     NIN
+                                         1102    13 01                                   1/02
+                                                                                                 13 05
+                                                                                                           AI3
+                                                                                                                                                       2
+                                                                                                                                                       3
+                                                                                                                                                           8
+                                                                                                                                                           C
+                                                                                                                                                                          4
+                                                                                                                                                                          5
+                                                                                                                                                                              "
+                                                                                                                                                                              10               NSC AN
+                                                                                                                                                                                                NOUT
+                                          1/03   12 02                                   1/03    12 06                                                         DECODER 6
+                                                                                                                                                                       1
+                                                                                                                                                                              >i-        ~
+                                         1104    II 03                                   1/0 4   ! I 07
+                                                                                                             FROM    NRD
+                                                                                                                                                                  'V 8
+                                                                                                          U1 8 {5l
+                                                                      DHA 8US
+                                                                                                                              I
+
+                                                                     Figure 16- 11 .                 RAM Decoder Circuit
+
+
+        F) With the probe placed on the output of the gate (IC11-3), individually pulse its inputs (pins 1 and
+           2) to verify the correct logical operation of the gate. With either input pin pulsed (logic 1), a
+           pulse appears at the output.
+
+        G) Move the probe back to data bus test point DO and observe that pulses on the gate's inputs
+                (IC11-1 and 2) propagate through the gate to pin 3. The pulse then continues to the RAM enable
+                pin (IC5-8) , through RAM IC5, and finally to the RAM output on the DO line (IC5-14) .
+
+
+
+
+                                                                                                                                                                                 Lesson 16
+260                                                                                       Scans by ArtekMedia => 2012                                            Practical Microprocessors
+                                                                    Scans by Artekmedia => 2012
+
+## Page 287
+
+
+
+
+
+_ _ _ _ _ _ _ _ _ EXPERIMENT 16-3
+                                                                                                                                     ( Continued)
+
+
+
+       H) Back-trace the signal from IC11-2 to the address decoder (IC7) inputs. Pulse these inputs, one
+          at a time, and observe that input pins 2,3,4, 5, and 6 all cause DO to pulse. Note however, that
+          IC7-1 (which connects to A 11) does not affect it. All of these inputs cause either another
+          decoder output to be true (the select inputs, pins 1, 2, and 3) or all outputs to disable (the
+          enable inputs, pins 4, 5, and 6) . The reason that a pulse on IC7-1 doesn't cause a change of
+          state on the DO bus line is that the ROM is enabled when the A11 line goes low, and the DO
+          ROM data for this particular address (0000) is also a O.
+
+
+   II. Pulse Burst Demonstration
+
+   The logic pulser can generate pulse bursts of 10 or 100 pulses. This is useful when a precise number of
+   clock pulses are needed to preset a counter, shift register, or other sequential circu it.
+
+
+       A) Turn the j..lLab's power off and then on to clear the memory. Press (F~T~H) to set the address to 0800
+           (the first address of RAM ). Press (~~::) . to stop the system. Observe that the address bus LEDs
+           indicate address 0800.
+
+       B) Locate the clock input on the singlE7step flip-flop (IC10-3). Figure 16-12 shows that this pin is
+           connected to a debounce circuit that goes to the (~~::) key. Press the (~~::) key a few times and
+           observe that the address bus LED's increment.
+
+
+
+
+                                                                                                               1/ 2 T4 LST4
+                                                                                                            D                  Q
+
+           FROM UIS{SJ    ~:~                                             r---"'W--~-"'--q,q>-,-"----~~ c              uI OA
+                                                                                                 , - - -;<:IR           FF
+           FROM UI8(3} -:7.
+                          NR""O.'---.....J                                                                  5
+           FROM U7( 15} -:7.NR~A."------'
+           FROM U I 1<3,) " " N 1 " " N ' - - - - - - - - - '
+
+           ~:~~ ~;:;~ .!-"NO""UT'----_ _ _ _ _ _ _ _- - - '
+
+                   ,~---- STATUS LED 'S ---~
+
+
+
+                                                                                                                                         STEP    TO
+                                                                                                      +5V(2)
+                                                                                                                                                PIOO
+                                                                                                                                       R5B
+                                                                                                                                        10K
+                                            S9                     S 15     520                                F'RoM                I
+                                         []Q[J                    o::J     CD                                  UIS(9)              +5V( I)
+
+
+
+
+                                      Figure 16-12.             Pulser Used to Increment Single-Step Circuit
+
+
+
+
+Lesson 16
+Practical Microprocessors                                                                                                                              261
+                             1I (/) .. j'7 ____,
+
+## Page 288
+
+
+( Continued)
+
+
+
+      C) Pulse the clock input (IC10-3) with the pulser and observe that these LEOs again increment.
+
+      D) Program the pulser to the 10 Hz and 1 Hz modes and repeat step C. The address bus LEOs
+         increment at the pulse output rate.
+
+      E) Program the pulser to the 100 Hz mode and repeat step C. Observe that as the address incre-
+         ments from 0800 to OAEE, the data bus LEOs are ott. During this sequence the MLab performs
+         NOP instructions (00) that are stored below address OAEE in the RAM by the power-up
+         program. After the MLab reaches address OAEE, it begins to execute a program and the bus
+         LEOs go wild with activity. This activity results because each time a single-step cycle occurs, an
+         instruction (or part of one) is executed. During the time that the nearly 1000 NOPs are exe-
+         cuted, no address jumps or data transfers occur. But above address OAEE, there are stored pro-
+         grams and data instead of zeros.
+
+      F) Press [RESET] to return to the monitor. Fetch address 0800. Press [~~~:] to return to the first NOP
+          instruction in RAM.
+
+      G) Place the pulser on IC10-3. Program two 100-pulse bursts. Program five10-pulse bursts. Output
+         six single pulses. You will have output a total of 256 pulses, and the address bus LEOs should
+         indicate address 0900 (0900 hex minus 0800 hex = 256 decimal).
+
+      H) Program a few other pulse counts (511 and 361 are interesting). Repeat step F when the RAM
+         address goes beyond OAEE. Remember that there are less than 1024 RAM locations that are
+         empty (00), so don't try to burst 1024 successive pulse steps and expect to see something
+         predictable.
+
+
+  SUMMARY
+
+  Logic circuit inputs were pulsed with the logic pulser while their outputs were monitored with the
+  logic probe. Signal propagation through the logiC elements was then examined using the logic
+  probe. In the hardware single-step mode, pulse bursts were injected while their response on the
+  address bus LEOs was observed.
+
+
+
+
+                                                                                                  Lesson 16
+262                                          Scans by ArtekMedia => 2012          Practical Microprocessors
+                                            Scans by Artekmedia => 2012
+
+## Page 289
+
+
+
+
+
+_ _ _ _ _ _ _ _ _ EXPERIMENT 16-4
+                                                                                 The Current Tracer
+
+
+
+   CONCEPT
+   This experiment demonstrates how the logic pulser can be used with the current tracer. The HP 547 A
+   Current Tracer detects current activity on logic nodes by means of an inductive pick-up at its tip. By
+   adjusting its sensitivity control and observing the internal lamp's intensity when placed on a pulsing
+   logic signal line, you can identify current paths and relative magnitudes and locate a bad device on a
+   node. I n this experiment, you use the current tracer both alone and with the logic pulser to observe
+   current activity in the j.LLab.
+
+   The troubleshooting attributes of the current tracer are less obvious than those of the probe or the
+   pulser. This is true because the current tracer deals with cu rrents rather than the voltages you have
+   become used to. However, there is a great advantage once you gain confidence with it (and it really isn 't
+   that difficult). Frustrating troubleshooting experiences with problems such as stuck nodes and shorted
+   power supply lines can be dealt with directly. Previously, these types of problems may have led you to
+   find the fault by cutting traces, snipping pins, or worse.
+
+
+
+
+                                            HP 547A Current Tracer
+   PROCEDURE
+   I.   Using the Current Tracer
+
+        A) With the logic probe and pulser power leads still connected, connect the power leads of the
+           current tracer to the j.LLab's power slots.
+
+        B) Press (~) if the display doesn't already show u L R b           UP.
+
+        C) For proper current tracer operation, the tip must be correctly positioned on the circuit trace
+           being checked . The tracer tip should always be perpendicular to the board and have the small
+           holes on the sides of the tip aligned with (facing up and down) the current path (see Figure
+           16-13).
+
+
+
+
+                  Figure 16-13.    Proper Orientation of 547A Current Tracer on Circuit Trace
+
+
+
+
+Lesson 16
+Practical Microprocessors                                                                                       263
+EXPERI,V\ENT 16-4 _ _ _ _ __
+
+## Page 290
+
+( Continued)
+
+
+
+      D) Place the tip of the current tracer directly on any of the address bus lines on the top portion of
+         the board. Since its tip is insulated, you can make direct contact with electrical conductors. Be
+         sure the tip is correctly oriented.
+
+      E) Adjust the sensitivity knob and observe that the lamp near the tip of the tracer changes in
+         intensity.
+
+      F) While still in contact with an address bus line, set this adjustment to about half of the maximum
+         lamp brilliance.
+
+      G) Now, without changing the sensitivity, probe the other address lines and verify that they all
+         produce about the same intensity. The current tracer is responding primarily to the current
+         going from address bus drivers IC1 and IC2 to the address bus LEDs.
+
+      H) Rotate the tip of the tracer over an address line and observe that the lamp gets dimmer. It dims
+         because the current does not travel across the traces but along them. This shows the
+         importance of maintaining the correct orientation of the probe tip when tracing current along a
+         trace.
+
+       I) Referring to Figure 16-14, probe other traces on the board. Notice that the power supply and
+          display traces (which carry the large switching currents generated by many of the ICs)
+          produce the brightest lamp readings. The lines with no activity produce no lamp indication.
+
+      J) The sensitivity adjustment allows the current tracer to detect currents from below 1 mA to more
+         than 1 Amp. Readjust this control to compare the current levels on various lines of the board
+         and, referring to the schematic, see if they agree with what you expect. Hint: It is easier to
+         detect small differences in currents if the sensitivity is set to produce a very dim lamp
+         indication.
+
+
+  II. Current Pulse Detection
+
+      A) Turn the }.LLab off and then on to clear the memory.
+
+      B) Adjust the current tracer to give a bright lamp indication when placed on an address line (high
+         sensitivity) .
+
+      C) Press r~TgH) (~~~:) . Observe that the current activity (changing current magnitudes) on the
+         address lines and all the other logic lines has stopped. Activity is still present on the clock lines,
+         the microprocessor power pins, and some of the power traces. This activity indicates that the
+         microprocessor is still running internally, waiting for its ready line to be released by the hard-
+         ware single-step circuit.
+
+      D) While looking for current on address line AD, between the address bus probe hole and the
+
+
+
+
+                                                                                                     Lesson 16
+                                               Scans by ArtekMedia => 2012
+264                                                                                  Practical Microprocessors
+                                             Scans by Artekmedia => 2012
+
+## Page 291
+
+
+
+
+
+_ _ _ _ _ _ _ _ _ EXPERIMENT 16-4
+                                                                                               ( Continued)
+
+
+
+          address bus LED, repeatedly press (~~~:) . Verify that the tracer lamp flashes each time the key is
+          pressed.
+
+       E) Move to the A1 line and watch it flash with alternate presses of the (~~~:) button (coincident with
+          the change in state of the A1 LED). The flashes illustrate two characteristics of the current
+          tracer:
+               • It responds only to a change of current (not DC current) .
+               • It has a current pulse "stretching" capability similar to that of the logic probe.
+
+                        LOW CURRENT      MODERATE CURRENT    MODERATE CURRENT    LOW CURRENT
+                        ADDRESS LINES    TO 10K PULL-UPS     TO LEOs             KEY INPUTS
+
+
+
+
+                          HIGH CURRENT
+                          POWER BUS
+
+
+
+                         Figure 16-14.   Current Activity for Various Circuits on J.LLab
+
+
+
+
+Lesson 16
+Practical Microprocessors                                                                                       265
+EXPERIMENT 16-4 _ _ _ _ _ _ _ __
+
+## Page 292
+
+(Continued)
+
+
+
+  III. Stimulus-Response Testing Using the Pulser and the Tracer
+
+  The logic pulser can be used to provide pulse activity on an inactive node. The current tracer can then
+  be used to follow the current flowing from that node.
+
+      A) Observe that all of the data bus lines are logic 0 (the data bus LEDs are all off) . You can
+         conclude that at least one bus device is enabled . When no bus devices are enabled, the bus
+         lines are pulled high by the 10K pull-up resistors on the data bus. (Solder bridges or other
+         shorts to ground on bus lines could also cause this condition.)
+
+          Since the microprocessor is stopped (in the hardware step mode), only steady-state DC
+          currents are present on the data bus lines. The current tracer does not respond to DC. However,
+          if the logic pulser is used to inject current pulses into a node, then the current tracer can see
+          where it goes. This will be done with a data bus line.
+
+      B) Place the logic pulser tip into the DO test hole on the data bus. Program and lock it in the100 Hz
+         mode (press and slide the switch). The node is now being pulsed with as much current as it
+         takes to overdrive (change the logic state of) the circuits on the DO line. Use the logic probe to
+         verify that the pulser is doing this.
+
+      C) Place the tip of the current tracer in line with the tip of the pulser so that the current going into
+         the node can be determined (see Figure 16-15) .
+
+
+
+
+                     Figure 16-15.   Measuring Pu/ser Node Current with Current Tracer
+
+
+
+
+                                                                                                    Lesson 16
+266                                          Scans by ArtekMedia => 2012            Practical Microprocessors
+                                           Scans by Artekmedia => 2012
+
+## Page 293
+
+
+
+
+
+_ _ _ _ _ _ _ _ _ EXPERIMENT 16-4
+                                                                                             (Continued )
+
+
+
+       D) Adjust the sensitivity to produce a dim indication on the tracer lamp. Be sure to keep the
+          current tracer tip in line with the pulser tip. Observe that the knob is roughly midway in its
+          rotation. This position means that the current is probably between 10-100 mA, more current
+          than 10K pull-ups or logic inputs will absorb. It is also much less than a hard short to ground
+          since the pulser can output more than 1 Amp into a ground or Vee short. It falls rough ly into the
+          range of an MOS or TTL output overdrive current. Comparisons with known circu it currents
+          and experience with the current tracer will allow you to make educated guesses such as these.
+       E) Now, without further adjustment of the sensitivity, follow this current onto the board. Check
+          each side (left and right) of trace DO to see in which direction the current goes. Notice that it
+          doesn't seem to go either way. Since the current doesn't just disappear, it must be going to the
+          other side of the board . Pull firmly on the black knob at the middle of the right edge of the
+          board to un lock it. Then tilt the board up on its hinges and check the current on the bottom side
+          of the board near the DO test point hole (see Figure 16-16). You should now be able to follow
+          the current along the trace to IC5-14. You can actually follow the current right up this pin of the
+          IC.
+
+
+
+
+                 Figure 16-16.   Following Current on Rear Side of Board with Current Tracer
+
+          This current path should come as no surprise to you since you can see from the status
+          indicators that the }..I.Lab is performing a READ from the RAM. Had the RAM not been enabled,
+          this particular current path would have indicated a faulty RAM output. With five other devices
+          connected to this node, you are able to determine which one of the six is on. Had this RAM pin
+          been stuck on, the current tracer would have led you to it. With voltage-based instruments it is
+          difficult to isolate bus devices such as this.
+
+
+
+
+Lesson 16
+Practical Microprocessors                                                                                       267
+EXPERIMENT 16-4 _ _ _ _ _ _ _ __
+
+## Page 294
+
+( Continued)
+
+
+
+          F) Turn off the pulser by sliding the switch back. Press     (0::) to return to the monitor. Press
+              ':;~~   GGGG.               Press   §.
+          G) Set the pulser to the 100 Hz mode and trace the current path on the DO line. (Refer to steps B
+             through D if you have forgotten the procedure.) You should end up at the ROM, IC4-9 (because
+             the ROM is now enabled). Try tracing current down other data lines.
+
+          H) Now place the pulser on a Vee or ground trace and follow the current. The first difference you
+             will notice is the magnitude of current put out by the pulser. You can get full tracer lamp
+             intenSity even with minimum sensitivity (1 Amp). The second difference is that the current path
+             always leads back to the ground cable of the pulser since the pulser output current flows
+             through this lead. When power bus shorts occur, the pulser and tracer can be useful for
+             locating time.
+
+
+      SUMMARY
+
+      The current tracer is used to track down the cause of stuck nodes. It can tell you approximately how
+      much pulse current is present and what path it takes. When a logic pulser is used to inject current into a
+      node without pulse activity, its impedance and the general nature of the problem (e.g., gate output, hard
+      short) can be estimated. Then, the actual low impedance point can be found by tracing the path of the
+      current from the logic pulser to that point on the node. The current either goes someplace it should not
+      (a shorted line). or it enters a component that is stuck. shorted. or turned on.
+
+
+
+
+                                                                                                        Lesson 16
+                                                  Scans by ArtekMedia => 2012
+268                                                                                     Practical Microprocessors
+                                            Scans by Artekmedia => 2012
+
+## Page 295
+
+
+
+
+
+                                                                                         Lesson 16
+
+
+
+The logic probe, logic pulser, and current tracer are convenient, handheld trouble-
+shooting tools that are used individually and in combination to troubleshoot
+digital circuits. All three can be powered from the product under test.
+
+The logic probe indicates the logic state of a node ("0", "1", or bad level) and
+shows you when a node has activity on it. It is particularly useful at spotting stuck
+nodes and single-event occurrences.
+
+The logic pulser injects pulses into a node, forcing responses in the circuit. These
+pulses can then be monitored with the logic probe, the current tracer, or the
+response of the product.
+
+The current tracer monitors current activity on signal lines (circuit traces,
+component leads, and wires). The path of current in a stuck node can be traced
+to the fault.
+
+Used together, these tools can help you decide which Ie to replace on a faulty node.
+If the logic probe indicates an "open" or "high" logic condition, the Ie driving the
+node is probably faulty. If the probe indicates a low, check the current on the node
+with a current tracer. If no current is present on the faulty node, the driver Ie is
+defective. If an excessive amount of current is present, the current tracer can locate
+the shorted trace or Ie input. Additional techniques for locating the faulty circuit
+node are discussed in Lesson 17.
+
+
+
+
+Lesson 16
+Practical Microprocessors                                                                       269
+Lesson 16
+
+## Page 296
+
+
+
+
+            1. A rapidly flashing logic probe tip tells you that the logic node being probed:
+              a. is at an illegal logic level.
+              b. has rapidly changing logic activity.
+              c. has unstable logic activity.
+              d. is a stuck node.
+
+
+            2. The response of the lamp near the tip of the logic probe to a single one-
+               microsecond logic 1 pulse is:
+               a. to flash on too briefly to see.
+               b. to flash off too briefly to see.
+               c. to flash on long enough to see.
+               d. to go on and stay on.
+
+
+            3. The output pulses of the logic pulser:
+               a. are too narrow for the logic probe to respond to.
+               b. can damage logic circuits.
+               c. can only force high nodes low.
+               d. can be used to overdrive logic nodes high or low.
+
+
+            4. The amount of current output by the logic pulser:
+               a. is always at least 1 Amp.
+               b. depends on whether the logic probe or current tracer is being used.
+               c. depends on which pulse output mode it is in.
+               d. varies with the impedance of the node it is driving.
+
+
+            5. The logic pulser should be used with the current tracer when:
+               a. there is no current activity on the test node.
+               b. there is no current on the test node.
+               c. the stuck node has not yet been found.
+               d. the node is not stuck.
+
+
+            6. When tracing current with the current tracer, the sensitivity control should
+               usually be set so that the lamp:
+               a. is slightly less than maximum intensity (bright).
+               b. is slightly more than minimum intensity (dim).
+               c. just goes out.
+               d. begins to flash.
+
+
+
+
+                                                                                   Lesson 16
+270                            Scans by ArtekMedia => 2012
+                                                                   Practical Microprocessors
+                                           Scans by Artekmedia => 2012
+
+## Page 297
+
+
+
+
+
+                                         Signature and Logic Analyzers
+
+
+
+
+Signature Analyzers and Logic Analyzers are two specialized classes of test in-
+struments used in product development, production, and field service. They can
+also be very effective in troubleshooting microprocessor systems. This lesson
+describes these instruments and demonstrates how they can be used to trouble-
+shoot microprocessor-based products.
+
+Signature Analysis (SA) is an easy-to-use and highly accurate technique for iden-
+tifying faulty logic nodes. The signature analyzer can convert the long, complex
+serial data streams present on microprocessor system logic nodes into four-digit
+"signatures." These signatures tell whether or not the node is acting properly.
+
+The character set used for signature analysis contains sixteen characters (O-9,A,
+C,F,H,P,U). By using this character set, the confusion resulting from the seven-
+segment representation of the hex characters band f, is eliminated. All of the
+characters are also readily distinguished from one another.
+
+In general, points in the suspected area of the fault are probed by a signature
+analyzer (see Figure 17-1) until a signature is found which does not agree with
+the one documented in the service manual. The signal path is then traced back
+until a correct signature is found, localizing the fault. Once the faulty node is
+found, the bad component on that node becomes apparent or can be located
+using the current tracer or other techniques. Signatures on digital nodes are used
+in much the same manner as the voltage and waveform information found on
+analog circuit service schematics.
+
+Node signatures are meaningful because they are generated by a test stimulus
+program, provided by either the product under test or an external adapter. This
+stimulus program exercises specific portions of the circuit in a controlled, re-
+peatable manner.
+
+You may wonder how proper signatures are determined by the manufacturer. The
+normal procedure is to take a known good product and gather signatures from it,
+node by node. This approach is taken because it is very difficult to predict the
+tremendous amount of complex information contained in each signature. Signa-
+ture gathering is a time-consuming process, and errors can and do occur (check
+for product errata sheets). If even a single word of ROM is changed because of a
+
+
+Lesson 17
+Practical Microprocessors                                                            271
+                                       Figure 17- 1.   5004A Sign atur e An aly zer
+
+## Page 298
+
+
+                  product revision , most or even all of the signatures may need to be respecified in
+                  the documentation. Be sure , therefore, that the product series number corres-
+                  ponds to the documentation you are using .
+
+                  There is no such thing as a signature being "almost" right: it is either right or
+                  wrong. Because of the algorithm used by the signature analyzer, the signature
+                  5H22 is no more related to 5H23 than to C7FP.
+
+                  The signals required by the signature analyzer to generate a signature are DATA,
+                  START, STOP, and CLOCK. The DATA input receives the data from the node
+                  under test. The START signal , provided by the product under test, tells the signa-
+                  ture analyzer when to begin looking at the data, and the STOP signal tells it when
+                  to stop. Between the START and STOP signals, data is processed every time a
+                  new CLOCK input occurs . The connection points for these inputs must be spec-
+                  ified in the service documentation for the product under test.
+
+                  In the following experiments, you will take signatures on nodes of the ,uLab in
+                  several signature analysis test modes. The relationship of the signatures to por-
+                  tions of the circuit will then be discussed .
+
+      SIGNATURE   The signature tables for the ,uLab list every IC pin plus the address and data bus
+ TABLES FOR THE   lines. These tables can be found in appendix C. In most cases , a signature will be
+                  listed for each pin , but there are a number of ways in which the signature may be
+MICROPROCESSOR
+                  represented . If the pin is tied directly to ground or +5V, the table entry will simply
+            LAB   indicate GND or Vcc rather than giving the signature. The Vcc signature is listed
+
+
+                                                                                             Lesson 17
+ 272                                Scans by ArtekMedia => 2012              Practical Microprocessors
+                                               Scans by Artekmedia => 2012
+
+## Page 299
+
+
+
+
+at the beginning of the table, and the GND signature is always 0000. The table
+may also show a 1 or a signature, which means the same thing as Vcc or GND
+except that the signal is a gate output, not tied directly to Vcc or GN D. Finally, the
+table may show a Vcc or GND signature with a B after it, which means the same
+thing as a 1 or a except that the light on the signature analyzer's probe tip should
+be blinking. The B means that although the signal is always at the same logic
+level when the clock edge arrives, at other times it is at a different level.
+
+
+
+
+Lesson 17
+Practical Microprocessors                                                                 273
+EXPERIMENT 17-1 _ _ _ _ _ _ _ __
+
+## Page 300
+
+Free-Running the Microprocessor Lab
+
+
+
+      CONCEPT
+
+      Free-running involves letting a minimum portion of a circuit (in this case, the microprocessor) exercise
+      as much of the rest of the circuitry as possible. ROMs, RAMs, and I/O devices need not be working for
+      this to occur. Any feedback path (such as the data bus) to the microprocessor must also be broken so
+      that its operation will not be influenced by any erroneous or unpredictable signals. This technique
+      provides a test stimulus for generating signatures. The advantage of using signature analysis in this
+      mode is that it requires only a very small portion of the circuit to function correctly.
+
+
+
+      PROCEDURE
+
+      I.   Setting Up the Free-Run Mode
+
+           A) Slide all eight of the data bus switches up (see Figure 17-2). The data bus signal path between
+              the microprocessor and the rest of the system has now been opened. There is no feedback
+              path from the memory to the microprocessor and, therefore, no instructions are sent to it. It is
+              free to run "open-loop."
+
+           8) Slide the free-run switch (FR) up. It is located to the lower left of the data bus switches. This
+              switch hardwires the MOV A, A instruction (code 7F) to the microprocessor whenever a read
+              operation is performed (see Figure 17-3). The MOV A, A instruction is a "do nothing," or Nap,
+              instruction. The microprocessor will read this instruction and then increment the address to
+              read the next instruction. Since the data bus is disconnected, this instruction appears at every
+              address, which causes the microprocessor to execute this instruction (and only this instruc-
+              tion) repeatedly. Therefore, it continuously increments the address bus lines through all 216
+              possible addresses.
+
+
+
+
+                         Slide This                                                 Slide These
+                         Switch Up                                                  Switches Up
+
+
+
+
+                                   Figure 17-2.   Location of Test Switches on J.LLab
+
+
+
+
+                                                                                                        Lesson 17
+274                                               Scans by ArtekMedia => 2012           Practical Microprocessors
+                                                                Scans by Artekmedia => 2012
+
+## Page 301
+
+
+
+
+
+_ _ _ _ _ _ _ _ _ EXPERIMENT 17-1
+                                                                                                                                                     ( Continued)
+
+
+
+          Besides the microprocessor, only a few other circuits in the J-LLab could prevent the free-run
+          mode from operating. They are the power supply, the crystal, the test switches, and the circuits
+          connected directly to the microprocessor control pins. These circuits, often referred to as the
+          kernel, can be a fundamental partitioning point for fault isolation in a microprocessor-based
+          system. If the system does not free-run, the problem is narrowed down to this small number of
+          components.
+
+       C) Observe the address bus LED ind icators. The visibly flashing A15 and A14 LEOs and the dim
+          A13 to AO LEOs (flashing too fast to see) indicate that the J-LLab is continuously cycling through
+          the full address field . Note that the "READ" status LED is bright. This brightness is consistent
+          with the fact that the microprocessor is repeatedly reading the MOV A, A instruction being pro-
+          vided by the 10K pull-up resistors and diode 01 . The status LEOs marked ROM, RAM, INPUT,
+          and OUTPUT, which appear to be flashing together, are actually flashing in quick succession
+          as the high order address lines increment through the address space assigned to each device.
+                                                                                                                                              2..J
+                                                                                                                      ~
+                                         ~                                                                                01             01
+
+                                                                                                                                              B
+                            OUTI
+                            OUT2         -;--~                                                                            02             02
+                                         ~
+                                                                                                                      ~
+                                                                                                                          03             03
+                                                                                                                                              ~
+                            OUT3
+                                         ~                                                                                04             O.
+                            OUT<
+                                                                                                                                              '"-~
+                                                                                                                      ~                       ~
+                                                                                                                          05             05
+                            OUTS ~~
+
+                        ?   OUT6 ~.!l./,
+
+                               10
+                                               A I5
+                                                                                                                      ~ or
+                                                                                                                        "
+                                                                                                                      A07
+                                                                                                                          06
+
+
+                                                                                                                                 ~'O
+                                                                                                                                         Q6
+                                                                                                                                         07   ~7
+
+                                                                                                          +l>~(I' )
+                                                                                                                       r- DATA BUS SWITCH
+                                                                                                    RI                           51
+                                                        B   C    0    E      F     G      H    I                            (SEE NOTE 6)
+                        5V ( :)
+                            40                    I                                                 10K
+                                                                                                            Aoe
+                                                                                                                                              ::~D
+                                          12     ADe    3   4    5    6      7     8      9    10                       I
+                                                                                                                                    ~
+                                AD'       13                                                                            2
+                                AOI                                                                                     3
+                                                                                                                                    ~
+                                                                                                                                              ,.~
+                                AD2
+                                AD3
+                                          "
+                                          15
+                                          16
+                                                                                                                        •
+                                                                                                                        5
+                                                                                                                                    ~
+
+
+                                                                                                                                    ~
+                                                                                                                                              13~
+                                                                                                                                              12~
+                                AD.
+                                AD5
+                                          Ir
+                                          18
+                                                                                                                        6
+                                                                                                                        r                     "
+                                                                                                                                              10
+                                AD6
+                                ADr
+                                          I.      AD7
+                                                                          FREE RUN ~
+                                                                                                            AD          8
+                                                                                                                                              •or
+
+                                                        FROW
+                                                        UI8(!5)~
+                                                                NRD                      f'
+                                     ~~
+                                                                                         CRI
+                                    A8
+                          U3        i-#J:
+                                    A9
+                                                                                  NOR"                                         +5V!(~~
+                                     ~
+                                                                          S2-2A
+                                AiD
+
+                                '" ~
+                                                                                               FRO,"" U t 8(5} '~!Ui-<: EN I 8 1LS95
+                                "2   ~                                                         FROM U;T(: I) .t:lJ.~~ EN2 iJI 3
+                                A 13 ~
+                                         ~~~
+                                                                                                                              3-ST ,H E
+                                A 14                                                                                           BUFFER
+                                A 15     ~
+
+                  Figure 17-3.                 Circuit Used to Open Data Bus and Cause J.l.Lab to Free-Run
+
+  II, Taking Signatures
+
+      A) Connect the signature analyzer GNO lead to the J-LLab's ground ( ¢ ) slot, the START and
+         STOP leads to the A15 slot, and the CLOCK lead to the READ slot (see Figure 17-4).
+
+      B) Set the START, STOP, and CLOCK switches on the signature analyzer to the riSing edge posi-
+         tion (push-buttons out). The GATE indicator flashes to indicate that a signature-gathering
+         "window" is occurring. The window is from one rising edge of the A15 address bit to the next
+
+
+
+
+Lesson 17
+Practical Microprocessors                                                                                                                                     275
+EXPERIMENT 17-1 _ _ _ _ _ _ _ __
+
+## Page 302
+
+( Continued)
+
+
+
+
+          Figure 17-4.   Sign ature An alyzer Conn ec tio ns to p. Lab fo r Free-Run Address Test Mode
+
+
+
+
+          rising edge (the full 64K address field). Signal data is input to the signature analyzer at every
+          rising edge of the READ line, 64K times during each measurement window (see Figure 17-5).
+
+
+      C) The signature analyzer can now be used to verify a correct set-up for the free-run address
+         mode. Touch the data probe (which also acts as a logic probe) to ground . Observe that the
+         signature is 0000. This is the characteristic logic a signature for all test set-ups.
+
+
+      D) Touch the data probe to a Vcc line to take the Vcc signature. Observe the signature 0001 . This is
+         the characteristic logic 1 signature for only this set-up of the signature analyzer and the j..ILab .
+         You can verify that this is true by changing the trigger edge switch on the signature analyzer
+         START or STOP inputs and observing that the signature changes. The a a a 1 display thus indi-
+         cates that the test set-up is correct and that the kernel is free-running as expected . Had this not
+         been the case, it could be assumed that the set-up was incorrect or that there was a fault in the
+         kernel. This greatly reduces the number of circuits in the product that must be considered as
+         possible fault sources.
+
+
+
+
+                                                                                                     Lesson 17
+276                                           Scans by ArtekMedia => 2012            Practical Microprocessors
+                                            Scans by Artekmedia => 2012
+
+## Page 303
+
+
+
+
+
+ _ _ _ _ _ _ _ _ _ EXPERIMENT 17-1
+                                                                                                    ( Continued)
+
+
+
+                READ     JUlf1JUUL _____ -.nJlJlJlJl ~ _____ JlJLfUUL
+            Data Input               tt                 t t ttt                       ttt
+                   AD    JLS1.JL _____ JLJUL _____ ~
+                                                                                      0     W     LL.   0   ...
+                                                                                      LL.   LL.   LL.   0   0
+                                                                                                            0
+              Address                                                                 ,... ,... ,... co co
+                                                                                      LL.   LL.   LL.   0
+
+
+
+
+                  A15------"------                     ~------                                          I
+                                 i
+                                Start
+                                                                                                    i
+                                                                                                  Stop
+
+
+                                  I.                          MK----~
+                                                                     ·1
+            Figure 17-5.   Free-Run Address Test Set-Up Samples Data at Each of the 64K Addresses of
+                           Measurement Window
+
+
+        E) Referring to Figure 17-6 and Table C-1 in Appendix C, take signatures on address bus lines AO
+           to A15 and verify that they agree with the entries in the table. This tells you that the micro-
+           processor, the address buffer (IC1), and the address latch (IC2) are operating properly.
+
+        F) Referring to Figure 17-7, take signatures on the output pins of the address decoder (IC7 pins
+           7,9, 10, 11, 12, 13, 14, 15) and compare them with the entries in the table. These signatures ver-
+           ify that the address decoder is operating properly.
+
+       G) All of the signatures in Table C-1 tell you something useful. The reason that a number of the
+          devices have missing signature entries for this test set-up is that they are not "exercised" in the
+          free-run mode. There is either no activity on their outputs (they need a write signal), or the data
+          on them is not predictable (such as the RAM outputs).The signatures on these pins are there-
+          fore not useful. Observe these situations as you perform the next three steps.
+
+       H) Probe any data bus line and note its signature. This signature is the combined product of all
+          the devices of the ,uLab that are output to the data bus during the 64K-bit address window.
+
+       I)     Turn the ,uLab power switch off and then on. Observe that the signature on this data bus lines
+              has probably changed. It changes because the RAM now has new (random) data stored in it as
+              a result of the power-off cycle. (Since the data bus switches are open, the power-up program
+              that normally fills the memory with zeros cannot run.) Try it again. The signature will probably
+              change again.
+
+
+
+
+Lesson 17
+Practical Microprocessors                                                                                         277
+EXPERIMENT 17-1 _ _ _ _ _ _ _ __
+
+## Page 304
+
+( Continued)
+
+
+
+
+                    AOORfSS BUS
+
+
+                                                          _SS
+                                                                                                                                                                            _$I
+                                         ;-                BUS                                                                                                  ;-               BUS
+                                                          BUFFER
+                                                                    -----                                                                                                BUFFER/LATCH
+                                                                                                                                                                                          -----
+                                                          +6VI(~                                                                                                               -I(~
+                     FROlif
+                   113(381
+                                  r
+                               HLOA      I~          ENI ilLS"
+                                                     EM2 UI
+                                                       3- STATE
+                                                                                                                                          FROIIf
+                                                                                                                                        UI2(4,
+                                                                                                                                          FROIIf
+                                                                                                                                        U3(381
+                                                                                                                                                        MALE
+
+                                                                                                                                                        HLOl
+                                                                                                                                                                 II
+
+                                                                                                                                                                 I
+                                                                                                                                                                           C T4LRT4
+
+                                                                                                                                                                         EN3 _SU:ATE
+                                                                                                                                                                                               .~
+                                      A I:F~.~      ~
+                                                                                A.                                                                          AOIA          01
+                                                                                                                                                                               LATCH
+                                                                                                                                                                                         III
+
+                                      v-t
+                                 l . v - t 1NI
+                                           1M2
+                                      V:::!I        ~
+                                             1~ oun ~
+                                                              OUT I
+                                                              0UT2                                                                                           P-           OI
+                                                                                                                                                                          02
+                                                                                                                                                                                         QI
+                                                                                                                                                                                         Q2    ~
+                                                                                                                                                                                               ~
+                                                                                                                                                             ~
+                                                                                                                                                                          03             Q3
+                                      V:tt          ~1N4      OUT4
+                                                                                                                                                             ~
+                                                                                                                                                                          04             Q4
+                                                                                                                                                                                               ~
+                                     o~= ~~~
+                                                                                                                                                                         05              QS
+
+                                                                                                                                                             /-1i-       De              Q8    ~
+                                                     1NT     OUTT        ~15                                                                                     II
+                                                                                                                                                                         DT              QT    IV    AT
+                                        AI5                -&10                                                                                                lOT               ~IO
+                                                                                                                                                 +6:«( )
+                                                                                                                                                                ~        DATA BUS SWITCH -~
+                                                                                                                                         RI                                  SI
+                                                                                        B       c     0   E     F     G         H   1                                    (SEE NOTE 5)
+
+                          r~~                             ~VI(!~
+                                                                                                                                         I Ole
+
+
+
+                                              ~
+                                               j     XI
+                                                     X2      ADI
+                                                                 AOf      12
+                                                                          13
+                                                                                AOI     3       4     5   &     T     8         •   10
+                                                                                                                                                      AOI
+                                                                                                                                                                     I
+                                                                                                                                                                     2
+                                                                                                                                                                                   -u-
+                                                                                                                                                                                   -u-
+                                                                                                                                                                                                :~"- Of
+                                SO            .04    RST OUT A02
+                                                                          14
+                                                                          15
+                                                                                                                                                                     3
+                                                                                                                                                                     1
+                                                                                                                                                                                   -u-          14"-
+                                                                                                                                                                                                13"-
+                          --~ 500                                A03      1&                                                                                         5
+                                                                                                                                                                                   -u-
+                                                                                                                                                                                               12"-
+                               TR,l.P         0
+                                              7
+                                                     SID
+                                                     TRAP     ADS
+                                                                 A()o1
+                                                                          IT
+                                                                          18
+                                                                                                                                                                     •
+                                                                                                                                                                     7
+                                                                                                                                                                                               II
+                                                                                                                                                                                               10
+                                                                                                                                                                                                                  -
+                                                     RSH.5 AOI
+                              INTRPT          8                           10    lOT                                                                   .0             8                         0
+                                                     RST6.5 AnT
+                                                                                                              FR EE RUN    r. .                                                                 Dr
+                                          10
+                                              •         8085.1.
+                                                     RSHL5
+                                                                                        FROII       NRO                    J:
+                                                     INTR                                       --~
+                                                                   .1 ~
+                                          II                                          uI8!!))                              CRt
+                                                     INT"
+                                                                     ~                                                                                                         +5VI(~~
+                                          2'                                                                        NORM
+                                                     Sf U3 ••
+                                                                     ~
+                                          30                                                              52-2.1.
+                                                     ALE   AIO
+                                          31
+                                                     WR    All       ~                                                              FROM Ula{s) ~
+                                                                                                                                                                          ~~~ SlLS9S
+                                                                 412 ~                                                              FROM UI7{!I)~
+                                          32
+                                                     RO
+
+                                                                         ~                                                                                                                                 1
+                                          33                                                                                                                                      Ul3
+                                                     51          AI3
+                                          3.                                                                                                                                3-STATE
+                                                     lO/U        AI4
+                                          35
+                                                     REAOY       AIlS    p!:/                                                                    •                   2    IN:UFF~~TIf ~
+                          r      _~ RESET IN                                                                                                                                                              INPUT
+
+
+
+                          Illiji                                                                                                                                                 OUTI ~
+                                                                                                                                                                     4
+                                                                                                                                                                          I N!                            PORT
+                                                     elK OUT
+                                                     HLDA
+                                                                                                                                                                     S
+                                                                                                                                                                     •    I N2
+                                                                                                                                                                          IN~
+                                                                                                                                                                                   OUT2
+                                                                                                                                                                                   OUT3 ~
+                                                                                                                                                                                               I=P
+                                                     HOLD                                                                                                        12
+                                                                                                                                                                          IN~      OUT4 ~
+                                                                                                                                                                 14
+                                                           ~20                                                                                                   I.       IN~      OUT5 ~
+                                                                                                                                                                         INS       OUTO        QI:/
+                                                                     @(SEE NOTE 3)                                                                7              I.
+                                                                                                                                                                         IN?       OUH
+                                                                                                                                                                                 ~'O
+                                                                                                                                                                                         or                J
+                                                    Figure 17-6.                Address Demultiplexing and Drive Circuit
+
+
+
+
+      J) With the probe still on the data bus line, slide the input port switch (not the data bus switch) cor-
+         responding to that bus line to its opposite position. The input switch is located below and to the
+         right of the display and is connected to input port IC13. Observe that the signature changes de-
+         pending on the poSition of this switch. Try it on other bus lines as well. It is important to note that
+         some circuit activity can be verified at this input port, though it is not necessarily the correct
+         activity. Later, other test set-ups will provide more information.
+
+
+
+
+                                                                                                                                                                                                         Lesson 17
+278                                                                                         Scans by ArtekMedia => 2012                                                                  Practical Microprocessors
+                                                        Scans by Artekmedia => 2012
+
+## Page 305
+
+
+
+
+
+_ _ _ _ _ _ _ _ _ EXPERIMENT 17-1
+                                                                                                                             ( Continued)
+
+
+
+
+                                                               ADDRESS BUS
+
+
+                                     I    Al5
+                                                         ~~~) ~ ~~~5~ ~~:3~
+                                                (ill)                       (]!!!!)                (g)              ~
+
+
+                                  fROII
+                                UI8(3)
+                                              NWR   4
+                                                    ~6
+                                                         U99    ,r     VA
+
+                                                                             6   ENI
+                                                                                     +5Vi :~
+                                                                                     14LSI38
+                                                                                               0
+                                                                                               I
+                                                                                                   15
+                                                                                                   14      2    3
+                                                                                                                     NROII
+                                                                                                                     NRAM
+
+                                                                                                           ~IANCTL
+                               .,4                                           4
+                                                                                 EN2
+                               Al5                                           5                     13
+                                                                                 EN3           2
+                                                                                                   12      9
+                                                                                                           ~8 NKYRO
+                               ."                                            I
+                                                                             2
+                                                                                 A
+                                                                                       U7
+                                                                                               3
+                                                                                                             lie NIN
+                               Al2
+                               Al3                                           3
+                                                                                 B
+                                                                                 C
+                                                                                               4
+                                                                                               5
+                                                                                                   "
+                                                                                                   10
+                                                                                                   9
+                                                                                                                    NSCAN
+                                                                                                                     NOUT
+                                                                                  DECODER 6
+                                                                                                   7                 NOSP
+                                                                                               7
+
+
+                                FROII    NRO
+                                                                                       'il 8
+                              UI8(S)
+
+
+                                         /                      RAW PROTECT                            ,
+
+                               A8       13 U90        ~8   U9C~
+                                                            15 6 I 2
+                               A9       12J    ,<>1 1 10
+
+
+
+
+                                             Figure 17-7.            Address Decoder Circuit
+
+   SUMMARY
+   You placed the J.LLab in a free-run test mode in which the microprocessor scanned continuously
+   through the entire 64K memory address field. The signature analyzer set-up was verified by the proper
+   Vcc signature. The address buffers and decoders were checked by taking the signatures on their
+   outputs.
+
+   In the free-run test mode, the path between the data bus and the microprocessor was broken. This
+   isolation allowed all of the devices that talk to the microprocessor (ROM, RAM, and input ports) to be
+   read, while the address bus was incrementing, without affecting the operation of the microprocessor.
+   In this manner, the effects of some of these devices could be seen on the data bus signatures.
+
+
+
+
+Lesson 17
+Practical Microprocessors                                                                                                              279
+EXPERIMENT 17-2 _ _ _ _ _ _ _ __
+
+## Page 306
+
+Checking the ROM While Free-Running
+
+
+
+      CONCEPT
+
+      In the free-run mode, the microprocesor reads every possible address (all 64K). When the signature
+      analyzer is gated to look at data on the data bus only while the ROM is addressed (address 0000 to
+      07FF), signatures are generated that depend only on the data in the ROM. The 2K words of the ROM
+      are verified by checking the signature on each of the eight data bus lines.
+
+
+
+      PROCEDURE
+
+       A) Verify that the ,uLab is still in the free-run mode (refer to Experiment 17-1). Connect the signature
+          analyzer's START and STOP connectors to the slot marked ROM. Set the START input to the fail-
+          ing edge position (button in) and leave the STOP edge rising (button out).The measurement
+          window now begins the first time the ROM is read (when the ROM enable line goes low at address
+          0000) and ends just after the last ROM address is read (when the ROM enable goes high at ad-
+          dress 0800). Although this measurement window is only 2K addresses long, the microprocessor
+          still runs in the 64K long free-run loop. The signature analyzer, however, is now looking at data for
+          only the 2K cycles of the loop during which the ROM is enabled (see Figure 17-8).
+
+
+             READ     ~----_J1IlfL ____________ .J1ILJL
+         Data Input        Itt t t t l                                                            Itt
+                           I                            I                                         I
+                AO~---JUL_-----------JUL
+                  U.IOT"('oIM u.loT" u.loT"
+                       u.lgggg                       U.I~~                                      u.gg
+           Address     It 0 0 0 0                    l:; I 0   0                                It I0 0
+
+
+                 -,
+                 ROM·
+                           I
+                           I
+                                         ------'
+                                                        I
+                                                        ,--------------,
+                                                                                                  I
+                                                                                                  I
+                                                                                                  .....-   __
+
+
+                       i i i
+                                         2.--1
+                       Start                         Stop                                       Start
+
+
+                           14----
+
+
+
+                           ~---64K--------------------------------------~
+
+
+
+            Figure 17-8.        Free-Run ROM Test Set-Up Samples Data Only During 2K Addresses that ROM
+                               is Being Read
+
+
+
+
+                                                                                                      Lesson 17
+                                                    Scans by ArtekMedia => 2012
+280                                                                                   Practical Microprocessors
+                                            Scans by Artekmedia => 2012
+
+## Page 307
+
+
+
+
+
+_ _ _ _ _ _ _ _ _ EXPERIMENT 17-2
+                                                                                              ( Continued)
+
+
+
+
+     8} Touch the data probe to Vcc and verify from Table C-2 that the proper signature (7A70) is present
+         for the free-run ROM test mode.
+
+     C} Verify that signatures on each of the eight data bus lines agree with the ones in the table. This
+        test verifies all 16K (2K x 8) bits of the ROM.
+
+     O} Try changing the input switches and turning the power off and then on to scramble the RAM data.
+        The data bus Signatures do not change. The other devices talking to the data bus are still talking,
+        but they are now outside the measurement window (as defined by START and STOP). This is in
+        contrast with the previous experiment in which the measurement window included all addresses
+        and therefore all devices.
+
+   SUMMARY
+
+   This test provides a great deal of information. You have verified the ROM and can assume it is good to
+   a very high level of confidence. It is also fairly certain that no bus conflicts (two or more devices talking
+   to the bus at the same time) occurred while the ROM was accessed (wrong signatures would have
+   resulted). The data bus is not stuck or shorted and has no serious defects (solder or gold bridges, de-
+   vice outputs stuck on, etc.).
+
+   All of the diagnostic information observed thus far was obtained by free-running the system. No ROM
+   code was executed (i.e., no program was run). The ~Lab used only a small portion of its circuits (the
+   kernel) running open-loop to provide the test stimulus (incrementing address lines and the pulsing
+   read line) for many other devices. This information (in the form of correct Signatures) allows you to
+   continue to the next stage of testing with confidence in these circuits.
+
+
+
+
+Lesson 17
+Practical Microprocessors                                                                                          281
+EXPEf~IfVlENT                     l7-3 _ _ _ _ _ _ _ _ _ __
+
+## Page 308
+
+The SA Test Loop
+
+
+
+  CONCEPT
+      The SA test loop is a program permanently stored in the MLab's ROM for the sole purpose of providing
+      a controlled stimulus for signature analysis. The signature analysis switch (SA) is connected to an
+      interrupt line on the microprocessor. The interrupt service routine is the SA test loop. The SA switch,
+      therefore, puts the MLab into this exercise mode, and the RESET key returns it to normal operation.
+      This test mode also turns on all display segments and output port LEOsso that they can be visually
+      tested. They can also be used to indicate that the MLab is running the SA test loop program.
+
+      This loop provides stimulus signals to devices that the microprocessor talks to (the output port, the
+      scan and display ports, the speaker, and the control logic.) The loop also reads the devices that can talk
+      to the microprocessor (the input port switches and the keyboard). Circuit responses to the stimulus
+      program (a repeating sequence of simple programs in the ROM to exercise the individual devices) is
+      monitored by the signature analyzer.
+
+
+  A simple program will serve to illustrate the nature of this SA test loop stimulus. The following is the
+  sequence of events performed during the output port test:
+                     1. Turn on all LEOs but ~O.
+                     2. Turn on all LEOs but 01.
+                                    •
+                                    •
+                                    •
+                    8. Turn on all LEOs but 07.
+                    9. Turn on all LEOs.
+                   10. Continue with the next stimulus program in the SA test loop.
+
+  As you can see from this simple program (which is typical of most of the stimulus routines), it merely
+  exercises one device at a time (in this case, the output port IC15).
+
+
+
+
+  PROCEDURE
+
+  I.     Setting Up the SA Test Loop
+
+         A) Slide the free-run switch (FR) down to its normal position to remove the forced free-run in-
+            struction from the microprocessor.
+
+          B) Slide all eight data bus switches down to reconnect the microprocessor data bus to the rest of
+             the system (closed-loop). The MLab has now been restored to its normal operating configu-
+             ration.
+
+
+
+
+                                                                                                       Lesson 17
+                                                   Scans by ArtekMedia => 2012
+282                                                                                    Practical Microprocessors
+                                          Scans by Artekmedia => 2012
+
+## Page 309
+
+
+
+
+
+_ _ _ _ _ _ _ _ _ EXPERIMENT 17-3
+                                                                                         ( Continued)
+
+
+
+       C) Press RESET twice. The display shows u L R b UP . The system is now running. The
+          output LEOs are in unpredictable logic states at this point because of the opening and closing
+          of the data bus.
+
+       0) Slide the SA switch (located to the left of the FR switch) up and then down. Before doing so,
+          be sure that the display shows u L R b U P to insure that the SA switch interrupt line is
+          enabled by the microprocessor. A beep sounds as you move it to the up position. Observe that
+          the display segments and output LEOs are lit and a faint crackle can be heard coming from
+          the speaker. The J.!Lab is now in the SA test loop.
+
+   II. Taking Signatures In the SA Write Test Mode
+
+       A) Touch the signature analyzer's data probe to anyone of the output LEO signal lines (see Figure
+          17-9). The blinking tip shows pulse activity even though the LEOs appear to be fully on. The
+          reason for this activity is that the SA test routine is driving the LEOs on most of the time and
+          off occasionally. This routine allows both output logic states of IC15 to be checked with the
+          signature analyzer.
+
+
+
+
+                                           __           L   •
+                                                ~
+                                                    .
+                         Figure 17-9.   Output LEOs Exercised During SA Test Loop
+
+
+       B) Connect both the START and STOP leads of the signature analyzer to the A15 test slot. Con-
+          nect the CLOCK lead to the WRITE test slot. Be sure that the GNO lead is still connected to
+          ground.
+
+
+       C) Set the START, STOP, and CLOCK inputs on the signature analyzer to rising edges (button
+          out) . The A15 bit is controlled by the SA test loop program and pulses high once during each
+          loop cycle. The program generates this pulse by writing to address 8000 once at the beginning
+          of this test loop. The signature analyzer is clocked off the J.!Lab WRITE line and thus looks at
+          data every time a write operation occurs.
+
+       0) Verify the SA write test set-up by checking the Vcc signature (refer to Table C-3) .
+
+
+
+
+Lesson 17
+Practical Microprocessors                                                                                    283
+EXPERIMENT 17-3 _ _ _ _ _ _ _ __
+
+## Page 310
+
+( Continued)
+
+
+
+
+         E) Using Table C-3, check signatures on any nodes of interest. Notice that input devices
+            (which are enabled by the READ signal) are not checked in this test mode.
+
+         F) While probing the various data bus lines, slide any of the input port switches and press any of
+            the keyboard switches (except RESET). Verify that they have no effect on the signature. These
+            switches have no effect because they are enabled by the READ signal, but the signature ana-
+            lyzer is clocked by the WRITE signal.
+
+
+      III. The SA Read Test Mode
+
+  The SA test loop provides two types of stimuli. In the previous part of this experiment, the test loop was
+  used to write data from the microprocessor to the memory and I/O devices. The SA test loop also reads
+  data from these devices into the microprocessor. The signature analyzer's CLOCK input connection
+  determines whether the signatures taken are dependent on read or write data. The READ and the
+  WRITE test slots are used for this purpose.
+
+         A) Move the signature analyzer's CLOCK lead from the WRITE slot to the READ slot on the /-tLab.
+            Verify that the START, STOP, and CLOCK inputs on the signature analyzer are still set to rising
+            edges and that the START and STOP leads are still connected to the A15 test slot. Now you
+            can take signatures on the devices that the microprocessor reads.
+
+         8) Touch the data probe tip to Vcc and check the Vcc signature in Table C-4. This set-up may
+            seem familiar to you because it has the same set of connections and edge settings as the free-
+            run address mode. The Vcc signatures are different in this mode because there is a difference
+            in the program cycle length. In the free-run case, A 15 defined a cycle length of64K successive
+            addresses. In the SA test loop, the SA stimulus program controls the A15 line for use as a
+            START and STOP control. The window length in this case is much less than 64K cycles be-
+            cause the test loop is much shorter.
+
+         C) Slide a" of the input switches down so that logic D's are input to all data bus lines when the
+            input port is read. Check the signatures on the data bus lines against the entries in Table C-4.
+
+         D) Slide all of the input switches back up. The signatures on each data bus line wi" change as the
+            corresponding input switch is changed. These signatures will agree with those in the table for
+            this set-up and verify that the input switches are being read correctly onto the data bus.
+
+         E) Refer to Figure 17-10 and Table C-4. Verify that the keyboard switches in the table work (avoid
+            the RESET key) by pressing them and observing the signatures on the corresponding data line
+            inputs on IC18 and the data bus lines.
+
+         F) Press INTRPT and verify that the speaker beeps repeatedly. The SA stimulus program pro-
+            vides this audible test function.
+
+
+
+
+                                                                                                    Lesson 17
+284                                             Scans by ArtekMedia => 2012
+                                                                                    Practical Microprocessors
+                                                                                  Scans by Artekmedia => 2012
+
+## Page 311
+
+
+
+
+
+_ _ _ _ _ _ _ _ _ EXPERIMENT 17-3
+                                                                                                                                                                        ( Continued)
+
+
+
+
+                                                                                              +5V ( 2 )
+                                                      ~ BUF FER~                                          DS78        OS 7A 058
+                +5V< I)                      FROII
+                     I                       UII (8)
+
+                                             NK~                                                               q6~ q6~          q~ q~~ ~ ~c rJ
+                                                            112 81l$G7
+            R.                                  Ii                                                                                                               R~
+
+
+
+
+                                                                                                                                                                        +± E::
+            10K
+                     I    H    G   F
+                                                            EN U I 88                                                                                            loan      13          12
+                                                                                          FRC».I UI8lSJ ~
+                                                               3 - STATE
+                                                               BUfFERED                                                                                                    V"
+                                                                                                                                                                           C I2
+            •        I.   i    8   T
+                                               •      12
+                                                            I Nt    OUTI ...!.UV
+                                                                                          FRON U I 8(3) NROM
+                                                                                          FROM U7< 15) NRAt.I
+                                                                                          FROW UII ( 3) NIN
+                                                                                                                                                                        ~ 3 . 3Uf
+                                                                                                                                                                                UI29
+                                               I      14                     ...!.LQ.!/                                                                       FRO"'~
+                                                                                           ~:: ~; ~ ; ~ NOUT
+                                                            INI     OUT I                                                                                  U3(30)
+                                                                    OUT2 ~
+                                               2      1&
+                                                            IN2
+                                               3      18    IN3     OUT3     ~                      '"                 STArus LEO' S                   /
+
+
+
+
+                                                                                                                  ~~
+                                                                                                           54                                    51&       520           S:IS
+
+                                                                                                         ~;I                                    [I]
+                                                                                                                                             f---<?Q.      ~          ~
+                                                                                                                                                                         [D
+
+
+
+                                                                             -
+                                                                     -+5V( 1/                                                                                                     T
+                                                                        I                     I~           55           SID                     51.        521           52e
+                                                                                                         ~
+                                                                                                                                             ~~ ~ ~ •
+                              r-- CONTROL SUF FER ~                                                                 IlNfTR STEP I                          lIJ
+                                         +5VI(~~                        ,'~~      ~ ~~
+                                                                                  h70       uw:w
+                                                                         ~O U318~ L:::Q29s.
+                                                                            &             INTRI'T                                               SIT        522           S2T
+
+                                                                                                                                             ~Q. ~ ~ •
+                                       !l2 8ilS97
+                                                                                                                          -YSII
+
+                  ~:~B l ~ EN 3~~~:TE                                                                     .T              .,2                   .11        .23           .21
+                                                                                                 I FETCH APR! I I F~TS;!! lSi I                                       - UJ
+                                                                                                                                             ~   ~
+                                             BuFFER
+
+                  ~~~!)~ I "                    OUTS       ~                                    I ---<Y""o     ~o                                                     ---70       4
+                                                                                                                       $13                   .11
+                  ~~~2 ) ~ INI
+                                                                                                           58                          514
+                                                           ~
+                                                                                                                                                           52.
+
+                                                                                                                                                                        lQ
+                              r
+                                                OUTt
+                                                                                                         ~I                         tIl         OJ
+                                                                                                                                                           ~
+                                                                                                                  I STORE'lNC!! I
+                  F~~4 )~ IN2                   OUT2       .I.......~                          2                  >---0-"'""0     ' ...70    ---7'2.                              3
+
+                                       1"3      OUT3       L      ~R                                                                L-
+                                             'iI 'C
+                                                                           SCAN 8U8
+
+                                                                                               ,'-_ _ _ _ _ _ _ _ _ KEYBOARD -                    _ _ _ _ _ _ _ _ _- J/
+
+
+
+
+                                                                        Figure 17-10.                     Keyboard Input Circuit
+
+
+
+   IV. Finding a Simple Fault
+
+      A) Locate fault jumper 10 (marked W10) near the center ofthe ~Labboard (see Figure 17-11). Remove
+         the jumper and observe that output LED 4 goes out.
+         •
+      B) ~eferri ng to Figure 17-12 and signature Table G-3, check the signature on LED 4. (Be sure to
+         change the test set-up as specified in Table C-3.) The bad signature at this point means that
+         the LED itself is probably not at fault but that it is simply not receiving the correct signal.
+     ~ C)   Trace the signal on the schematic back to output port IC15-12. Observe that this output pin
+            also has the same bad signature. You have not yet found the fault.
+
+
+
+
+Lesson 17
+Practical Microprocessors                                                                                                                                                                   285
+EXPERIMENT 17-3 _ _ _ _ _ _ _ __
+
+## Page 312
+
+( Continued)
+
+
+
+
+                                                         ..._- 1".'."'''
+
+
+
+
+                               Figure 17- 11 .   Location of Fault Jumper W10
+
+
+
+
+      0) Probe the 04 input to the output port (IC15-13 ). This signature is also bad.
+
+      E) Now probe the bus buffer output for D4 (IC14-11) . This signature is good . Therefore the fault
+         must lie between this output and IC15-3. You have now isolated the fault to one PC trace.
+
+      F) Probe the signal along the trace going from IC15-13 toward IC14-11 . You have now found the
+         fault.
+
+      G) Restore fault jumper 10 between the right two holes of fault location W10.
+
+
+
+
+                                                                                                Lesson 17
+286                                          Scans by ArtekMedia => 2012        Practical Microprocessors
+                                                                       Scans by Artekmedia => 2012
+
+## Page 313
+
+
+
+
+
+_ _ _ _ _ _ _ _ _ EXPERIMENT 17-3
+                                                                                                                                                                                       ( Continued)
+
+
+
+                                                                                                                                                             +5Vt';~
+                                                                                                                                    ~~~)~I                 C
+                                                                                                                                                            HLS213
+                                                                                                                                    +5V(2)~
+
+                                                                                                                                        0,       3
+                                                                                                                                                 •
+                                                                                                                                                          R
+
+
+                                                                                                                                                          OJ
+                                                                                                                                                             UI5
+                                                                                                                                                             REG
+                                                                                                                                                                  ra
+                                                                                                                                                                           ~
+                                                                                                                                                                                            1
+                                                                                                                                                                                           OUTPUl
+                                                                                                                                                                                            PORT
+                                                                                                                                                                           ~
+                                                                                                                                                          01      QI
+                                                                                                                                                  7
+                                                                                                                                                          02      Q2
+                                                                                                                                                  8
+
+                                                                                                                                                                           t±B
+                                                                                                                                                          03      Q3
+                                                                                                                                                 13
+                                                                                                                                                          D4      Q4
+                                                                                                                                                 14                        15
+
+
+                                                                                                                                                                           ~
+                                                                                                                                                          05      Q5
+                                                                                                                                                 17
+                                                                                                                                                          06      Q6
+
+
+                                              OUTP UT BUS
+                                                                                                                                        07       18
+                                                                                                                                                          07      Q7
+                                                                                                                                                                 ~,o
+                                                                                                                                                                           19
+                                                                                                                                                                                                J
+                                              SEGMENT BUS
+
+
+                 :( :~{{~(  ~( , :{ 3~{~{{:~(;C,o
+                                                                                                                        . 31;{{~
+                                                                                                                           , . , :~(;C,'
+                                                                                                                        7
+
+
+                     , . , , ..
+                    :~~::~=DS9
+                                     , .• , • ,
+                                                                                                                    '"+                                  _
+                                                                                                                                                 ,           ,
+                  "             f
+                                                           "
+                                                                           f                                                        f
+
+
+
+
+                  I~- I\! If: I_ I\!                                                                                If: I_ I\!
+                --I'. 1'-'
+                1'-'              --l .
+                            --I'. 1'-'
+                      --I'. I"                                                                                     I·.     --I'.
+                                                                                                                   --l . 1--,
+                      L
+
+                          ~\
+                                        R
+                                        ~3.
+                                                               L
+
+                                                                ~\
+                                                                                       "~32     OIGIT BUS
+                                                                                                                            L
+
+                                                                                                                            ~41
+                                                                                                                                                      R
+                                                                                                                                                         \3,
+                                                                                                          I'   +5V(21
+                                                                                                                                                                                                I +()V(2 l
+
+
+                  I         A       e   c
+                                        •
+                                               0
+
+                                               a
+                                                                   E           f   G
+
+                                                                                   e
+                                                                                            H
+                                                                                                R7
+                                                                                                470                             A        e   c       0       E    f    G        H
+                                                                                                                                                                                     "8
+                                                                                                                                                                                     'OK
+                                                                                                                                                                                                INPUT SWlT
+                                                                                                                                                                                                    53
+                            2       3                              6           7            9
+                                                                                                                                         3   •       5       6    7    8        (I          ,-  (SEE NOTE
+
+
+
+                          Q~:'~ ~:,~ ~:,p ~!5                          , ~:,~ ~!
+                                                               Q~:'~ ~:,~
+                                                                                                                            '   2
+                                                                                                                                                                                            ~
+                                                                              0519                                                                                                          3
+                      7
+                                • • •                      3           2               f,
+                                                                                                                                                                                           •5
+                                                                                                                                                                                                      ~
+
+
+
+
+                      "                        OUTPUT LED ' 5                                         /
+                                                                                                                                                                                           •7
+                                                                                                                                                                                                      ~
+
+
+                                                                                                                                                                                                      ~
+
+
+                                                                                                                                                                                                      ~
+                                                                                                                            7                                                               8
+
+                                              INPUT \JUS
+                                                                                                                                                                                                 --=::..
+
+                                                       Figure 17-12.                        Output Port Circuit
+
+
+
+   SUMMARY
+
+   In this experiment you learned how to use the signature analyzer to verify microprocessor system per-
+   formance. Fault isolation techniques incorporating a free-run test mode and a special SA test loop
+   program were discussed. With these techniques, only a small portion of the overall circuit (the kernel)
+   is required to function in order to test some of the other key system circuits (including the ROM). Once
+   the kernel was verified, the SA test loop program was used to exercise devices not tested by free-
+   running. You saw how the signature analyzer, combined with a general understanding of the operation
+   of the J,LLab's devices (and some troubleshooting common sense), could lead you to a faulty node with
+   a minimum of hardware manipulation and no software manipulation whatsoever.
+
+
+
+
+Lesson 17
+Practical Microprocessors                                                                                                                                                                                    287
+          LOGIC   Logic analyzers are specialied instruments used for examining a number of logic
+
+## Page 314
+
+      ANALYZERS   signals (usually 16 or 32 ) during very specific portions of the long, complex data
+                  sequences present in microprocessor systems. This section covers, in general
+                  terms, what logic analyzers are and how they are used . Although they are pri-
+                  marily considered to be microprocessor system development and system-level
+                  troubleshooting instruments, applications do exist in product service situations.
+
+
+
+
+                  Figure 17-13a shows a logic analyzer display that represents address (column
+                  A) and data (column B) information in a tabular form. It allows you to follow the
+                  sequence of events beginning with the instruction at address 06A2. Use the fol-
+                  lowing table to follow the program flow of this sequence:
+                      Line
+                      Number                       Operation                       Comments
+                      000 ,1            MVI M,OO             Instruction
+                      002               M-OO                 Execution         M = location OBFO
+                      003               INR L                Instruction       point to next M
+                      004 ,5,6          JMP 069B             Instruction
+                      007               INR M                Instruction
+                      008               ~P-M                 Execution         M = location OBF1
+                      009               M-M+1                Execution
+                      010               MOV A,M              Instruction
+                      011               A-M                  Execution         M = location OBF1
+                      012, 13           CPIOA                Instruction
+                      014               JNZ                  Instruction
+                  These 16 lines on the display represent a small portion of a long program se-
+                  quence. The logic analyzer "captures" this sequence, stores it in its internal
+                  memory, and can display it indefinitely. The logic analyzer also allows you to look
+                  at activity before or after the operations shown.
+                  A logic analyzer is similar to an oscilloscope in many ways: it has signal inputs,
+                  a trigger, timing circuitry, and a CRT (cathode ray tube) display. Its signal inputs
+                  differ from those of an oscilloscope in that it has 16 to 32 logic threshold-sensitive
+                  inputs that detect logic levels (1's and O's) .
+
+                  The triggering circuit is much more sophisticated than that of an oscilloscope.
+                  Analyzers can trigger on a particular address, on the Nth occurrence of that ad-
+                  dress (for software loops ), after N clock cycles past that address (for delay) , or
+
+
+                                                                                           Lesson 17
+288                                Scans by ArtekMedia => 2012             Practical Microprocessors
+                                                  Scans by Artekmedia => 2012
+
+## Page 315
+
+
+
+
+
+after a specified sequence of trigger addresses (to detect a particular program
+path). The trigger words need not be addresses. They can be data, control, or
+any combination of logic signals.
+
+
+
+
+                                .. - •
+                                  LItE
+                                   NO .
+
+                                  001
+                                  002
+                                  003
+                                  004
+                                            A
+                                           tEX
+
+                                          06A3
+                                          9I8F9
+                                          96A4
+                                          ~
+                                                      B
+                                                     I£X
+
+                                                     ee
+                                                     ee
+                                                     2C
+                                                     C3
+                                  995     96A6       98
+                                  ee6     9EiA7      96
+                                  007     9698       34
+                                  eee     9I8F1      93
+                                  009     9I8F1      94
+                                  010     96SIC      7E
+                                  011     98Fl       94
+                                  012     9690       FE
+                                  EH3     969E       SA
+                                  01 ..   969F       C2
+
+
+
+Figure 17-13a.   Logic Analyzer Used to Display Hex Address and Data in Tabular Form
+                 So That Execution of Program Sequence Can Be Followed
+Like oscilloscopes, logic analyzers can display the data that occurs immediately
+after the trigger event. Unlike most scopes, logic analyzers can also display data
+prior to the trigger event. This capability, called negative time recording, can be
+used for troubleshooting by choosing a faulty system operation to be the trigger
+event and then observing the events that led up to it.
+For timing, logic state analyzers use the clock of the circuit they are connected
+to. A new line of display information is generated for each clock input. While
+oscilloscopes are referred to as "time domain" instruments, logic analyzers are
+often called "data domain" instruments.
+In an oscilloscope, time advances from left to right across the display, using an
+internal time base. In a logic analyzer, time advances from top to bottom, one
+line per clock input. The display of the logic analyzer is a tabular listing of digital
+data. In Figure 17-13a it is formatted in hex numerals, but it can also be displayed
+in binary, octal, or decimal. Figure 17-13b shows how the program sequence of
+
+
+
+
+                 Figure 17-13b.      Figure 17-13a Formatted in Binary
+
+
+Lesson 17
+Practical Microprocessors                                                                 289
+      Figure 17-13a looks in binary. No analog voltage waveforms or values are dis-
+
+## Page 316
+
+      played.
+
+      Some logic analyzers have a feature called timing analysis. With the use of an
+      internal time base, timing diagrams of the logic signal inputs can be displayed on
+      the CRT in a manner similar to an oscilloscope (see Figure 17-14). The difference
+      is that the display is "digitized" (or rounded-off) to discrete time and voltage limits
+      to give a clear graphic display without specific waveshape information. Also,
+      glitches (narrow pulses) can be detected by means of internal detection and
+      stretching circuits. Many inputs can be observed at once. By taking full advantage
+      of the triggering features, you can observe the timing of a small, specific portion
+      of a long program sequence. The elaborate triggering is made possible by the
+      fact that the waveforms are stored in digital form in an internal RAM.
+
+
+
+
+            Figure 17-14.   Eight Data Bus Lines Displayed in Timing Analysis Mode
+
+
+      Another feature of many logic analyzers is the map mode, a useful feature for
+      product troubleshooting. In this mode, the CRT is used as an x-v grid of up to
+      256 x 256 (65,536 or 216 ) points. One point can be used to represent each address
+      in a 64K memory space. When a microprocessor system is running a program,
+      one of the 64K points on the CRT is lit each time the microprocessor specifies an
+      address. The more often it points to that address, the brighter the point becomes.
+      As the program executes sequential instructions, successive points are illumi-
+      nated. When jumps occur in the program, they can be observed on the CRT as a
+      jump from one cluster of points to another. To improve resolution, the display can
+      be expanded to magnify a region of interest. Figure 17-15 shows an 8085 program
+      loop displayed in the expanded mode. It begins at address 0800. When it gets to
+      address 0808, it stores a byte of data at address 3000. At address 0810 it jumps to
+      address OF20 to continue the program. Address OF20 contains an instruction
+      that causes a byte of data to be stored at address 3838. Finally, a jump instruction
+      at OF24 causes the program to go back to address 0800 and repeat the loop.
+
+
+      The map display shows where the system is spending its time (i.e., which sub-
+      routine and peripheral addresses it is using). There are several variations and
+      enhancements to this basic map mode that can be found on specific logic ana-
+      lyzers.
+
+
+                                                                               Lesson 17
+290                     Scans by ArtekMedia => 2012            Practical Microprocessors
+                                           Scans by Artekmedia => 2012
+
+## Page 317
+
+
+
+
+
+Contrast Figure 17-15 with Figure 17-16 (free-running). In this free-running mode,
+the microprocessor spends equal time at all addressses and eventually causes
+all address points on the CRT to light. Figure 17-15 shows clear program flow,
+whereas Figure 17-16 shows none. The map is useful for checking a micro-
+processor system that shows bus activity but is not functioning correctly. The
+map of a good product can also be compared with that of a bad one as an aid in
+identifying possible problem areas.
+
+                                                                 ADDRESS
+                                                                003F
+
+
+
+
+                                                                0F20
+
+
+                 3000
+
+                                                                3838
+          ADDRESS
+                                                                ADDRESS
+                 3F00                                           3F3F
+
+
+
+  Figure 17-15.    Logic Analyzer in Expanded Map Mode Used to Indicate Address
+                   Activity
+
+
+
+
+                                                                ADDRESS
+                                                                00FF
+
+
+
+
+                                                                 ADDRESS
+                                                                FFFF
+
+
+
+
+ Figure 17-16.    Map Display for Free-Run Mode Showing Equal Activity at All 64K
+                  Addresses
+
+Logic analyzers are useful for system software development because of their
+ability to trigger on and then follow specific program and timing sequences in an
+operating breadboard. They can provide a map of where the microprocessor
+system spends its time. These same capabilities can be used to analyze existing
+products in production . When properly set up, program sequences can be ob-
+served in the product being tested. Good service documentation is generally
+required to describe proper set-ups, display outputs, and courses of action to be
+taken when incorrect program flow activity is observed.
+
+
+Lesson 17
+Practical Microprocessors                                                            291
+Lesson 17
+
+## Page 318
+
+
+
+
+            The constant flow of signals over the buses of a microprocessor system gener-
+            ates a tremendous amount of information. This information must either be re-
+            duced or compressed (e.g., signature analysis) or broken up into smaller portions
+            (e.g., logic analysis) if it is to make sense.
+
+            Signature analyzers reduce the complex bit streams present in microprocessor
+            systems into an easy-to-read "signature." These signatures then tell you whether
+            or not the node examined is operating as it should. Once a bad node is found,
+            back-tracing the circuits leads to the fault source. Signature analysis uses the
+            product under test to provide its own test stimulus. For this reason, the signature
+            analyzer can best be used on products that have this test feature designed in
+            (or added on). It is very important to realize that signature analysis cannot be
+            used with all microprocessor systems.
+
+            Logic analyzers can be thought of as very specialized digital oscilloscopes. They
+            allow you to examine specific portions of the hardware and software sequences
+            that occur in microprocessor systems. They can be especially useful as design
+            aids for troubleshooting new product designs. The map mode feature lends itself
+            well to troubleshooting existing products. Logic analyzers require a greater
+            understanding of hardware and software program flow than do signature ana-
+            lyzers. Unlike signature analyzers, however, they do not need to be designed into
+            a product to be useful, and they provide much more detailed information about
+            the system.
+
+
+
+
+                                                                                   Lesson 17
+                              Scans by ArtekMedia => 2012
+292                                                                Practical Microprocessors
+                                             Scans by Artekmedia => 2012
+
+## Page 319
+
+
+
+
+
+                                                                                Lesson 17
+
+
+
+1. In the free-run test mode, circuit stimulus patterns are generated by:
+   a. a program stored in the ROM.
+   b. a program stored in the RAM.
+   c. random action of the circuits.
+   d. sequential cycling of the microprocessor.
+2. Signatures can:
+   a. provide information about the nature of the fault.
+   b. tell whether a node is operating correctly or not.
+   c. verify the test set-up.
+   d. do all of the above.
+3. A correct Vcc signature tells you that:
+   a. the signature analyzer test set-up is probably correct.
+   b. the test loop is running correctly.
+   c. there is a logic "1" level on the Vcc line.
+   d. all of the above are true.
+
+4. Data is processed by the signature analyzer:
+   a. at every microprocessor clock cycle.
+   b. at every signature analyzer input clock cycle.
+   c. only between START and STOP inputs.
+   d. at all of the above times.
+
+5. A bad signature on a logic node always means that a fault is:
+   a. on that node.
+   b. on that node or before it.
+   c. on that node or after it.
+   d. a stuck node.
+6. In a product that has SA designed in, test modes can be selected by:
+   a. switches and jumpers
+   b. signature analyzer input corrections.
+   c. signature analyzer switch settings.
+   d. all of the above.
+7. The reason that logic analyzers can capture and display selected program
+   sequences better than oscilloscopes is that they have internal memory and:
+   a. multiline sequential trigger circuits.
+   b. fast internal clocks.
+   c. high resolution CRTs.
+   d. all of the above.
+8. The map mode lets you see:
+   a. physical component location.
+   b. at what addresses the system spends its time.
+   c. what data is located at a particular address.
+   d. a partial listing of the program.
+
+
+Lesson 17
+Practical Microprocessors                                                              293
+    THIS
+
+## Page 320
+
+    PAGE
+    LEFT
+   BLANK
+
+  SCANS
+    By
+ArtekMedia
+
+
+
+
+Scans by ArtekMedia => 2012
+
+## Page 321
+

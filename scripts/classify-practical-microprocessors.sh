@@ -281,10 +281,28 @@ scrub_page_images() {
           "$image"
         ;;
       scrub-bottom)
-        magick "$image" \
-          -fill white \
-          -draw "rectangle %[fx:w*0.34],%[fx:h-82] %[fx:w*0.66],%[fx:h]" \
-          "$image"
+        if [[ "$page" == "482" ]]; then
+          magick "$image" \
+            -fill white \
+            -draw "rectangle %[fx:w*0.29],%[fx:h-118] %[fx:w*0.70],%[fx:h-26]" \
+            -fill black \
+            -font Helvetica \
+            -pointsize 15 \
+            -draw "text %[fx:w*0.30],%[fx:h-82] 'Note: If the decimal point is lit, the uLab is in data'" \
+            -draw "text %[fx:w*0.30],%[fx:h-64] 'entering mode and RUN, INSTR STEP, and'" \
+            -draw "text %[fx:w*0.30],%[fx:h-46] 'HDWR STEP are disabled (see page 57).'" \
+            "$image"
+        elif [[ "$page" == "484" ]]; then
+          magick "$image" \
+            -fill white \
+            -draw "rectangle %[fx:w*0.39],%[fx:h-44] %[fx:w*0.61],%[fx:h]" \
+            "$image"
+        else
+          magick "$image" \
+            -fill white \
+            -draw "rectangle %[fx:w*0.40],%[fx:h-34] %[fx:w*0.60],%[fx:h]" \
+            "$image"
+        fi
         ;;
     esac
   done < "$plan_file"

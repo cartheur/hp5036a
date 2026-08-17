@@ -1,0 +1,2596 @@
+## Page 401
+
+
+
+
+       This group of instructions performs arith-
+  metic operations on data in registers and mem-
+  ory.                                                          ADD M           (Add memory)
+        Unless indicated otherwise, all instructions
+   in this group affect the Zero, Parity, Carry, and
+                                                                     (A) -   (A)   + ((H)(L))
+   Auxiliary Carry flags according to the standard                   The content of the memory location whose
+   rules.                                                            address is contained in the Hand L reg-
+                                                                     isters is added to the content of the ac-
+        All subtraction operations are performed                     cumulator. The result is placed in the
+   via two's complement arithmetic and set the                       accumulator.
+   carry flag to one to indicate a borrow and clear it
+   to indicate no borrow.
+
+
+                                                                     Hexadecimal Format
+                                                                       ADD        M      86
+                                                                           Cycles:        2
+                                                                           States:        7
+                                                                       Addressing:        register indirect
+                                                                            Flags:        Z, S, P, CY, AC
+    ADD r        (Add Register)
+         (A) -   (A)    + (r)
+        The content of register r is added to the
+        content of the accumulator. The result is
+        placed in the accumulator.
+
+                 I                    I
+                     1 I DI OI DIO S I S I S      I
+                                                                ADI byte          (Add immediate)
+
+         Hexadecimal Format                                          (A) -   (A) + (byte 2)
+            ADD       A     87                                       The content of the second byte of the
+            ADD       B     80                                       instruction is added to the content of the
+            ADD       C     81                                       accumulator. The result is placed in the
+            ADD       D     82                                       accumulator.
+            ADD
+            ADD
+            ADD
+                      E
+                      H
+                      L
+                            83
+                            84
+                            85
+                                                                             I  1 I 1 I 0 I 0 I 0 I 1
+
+                                                                                              data
+                Cycles:         1
+                States:         4
+                                                                     Hexadecimal Format
+            Addressing:         register
+                 Flags:         Z, S, P, CY, AC                        ADI       byte     C6
+                                                                           Cycles:        2
+                                                                           States:        7
+                                                                       Addressing:        immediate
+                                                                            Flags:        Z, S, p, CY, AC
+
+
+All mnemonics copyright ® Intel Corporation 1976
+
+Appendix B
+Practical Microprocessors                                                                                         375
+      ADC r      (Add Register with carry)
+
+
+## Page 402
+
+
+         (A) -   (A)   + (r) + (CY)                                    ACI byte          (Add immediate with carry)
+         The content of register r and the content of                       (A) -    (A) + (byte 2)          + (CY)
+         the carry bit are added to the content of the
+         accumulator. The result is placed in the                           The content of the second byte of the
+         accumulator.                                                       instruction and the content of the CY flag
+                                                                            are added to the contents of the accumu-
+                 I1 0 0 0 1 I S S S I
+                   I    I   I    I       I     I
+                                                                            lator. The result is placed in the accumu-
+                                                                            lator.
+
+         Hexadecimal Format                                                                      001
+           AOC     A        8F                                                                        data
+           AOC     B        88
+           AOC     C        89
+           AOC     0        8A                                              Hexadecimal Format
+           AOC     E        8B                                                 ACI    byte           CE
+           AOC     H        8C
+                                                                                   Cycles:       2
+           AOC     L        80
+                                                                                   States:       7
+               Cycles:      1                                                  Addressing:       immediate
+               States:      4                                                       Flags:       Z. S. p. CY, AC
+           Addressing:      register
+                Flags:      Z, S, P. CY, AC
+
+
+                                                                       SUB r         (Subtract Register)
+                                                                            (A) -    (A) - (r)
+      ADC M       (Add memory with carry)
+                                                                            The content of register r is subtracted from
+         (A) -   (A) + «H)(L)) + (CY)                                       the content of the accumulator. The result
+         The content of the memory location whose                           is placed in the accumulator.
+         address is contained in the Hand L reg-
+         isters and the content of the CY flag are                                  I1 0 0 1 0 I S S S I
+                                                                                         I   I   I      I       I     I
+         added to the accumulator. The result is
+         placed in the accumulator.
+                                                                            Hexadecimal Format
+                   I    I   I
+                 I1 0 0 0 1 1    I   I   I 1
+                                                   o   I                       SUB
+                                                                               SUB
+                                                                                         A
+                                                                                         B
+                                                                                                 97
+                                                                                                 90
+                                                                               SUB       C       91
+         Hexadecimal Format                                                    SUB       0       92
+           AOC     M        BE                                                 SUB       E       93
+               Cycles:      2                                                  SUB       H       94
+               States:      7                                                  SUB       L       95
+           Addressing:      register indirect                                      Cycles:       1
+                Flags:      Z, S, P. CY, AC                                        States:       4
+                                                                               Addressing:       register
+                                                                                    Flags:       Z, S, P, CY. AC
+
+
+                                                                     All mnemonics copyright ® Intel Corporation 1976
+
+                                                                                                                     Appendix B
+
+
+## Page 403
+
+
+
+                                                           SSB r         (Subtract Register with borrow)
+                                                                (A) -    (A) - (r) - (CY)
+   SUB M           (Subtract memory)                            The content of register r and the content of
+       (A) -   (A) - «H)(L»                                     the CY flag are both subtracted from the
+                                                                accumulator. The result is placed in the
+       The content of the memory location whose
+                                                                accumulator.
+       address is contained in the Hand L reg-
+       isters is subtracted from the content of the
+       accumulator. The result is placed in the
+                                                                         I ' ,
+                                                                         1    0   0 I 1
+       accumulator.
+                                                                Hexadecimal Format
+                I I I I
+               I
+               100 1 o             1                               SBB
+                                                                   SBB
+                                                                             A
+                                                                             B
+                                                                                  9F
+                                                                                  98
+       Hexadecimal Format                                          SBB       C    99
+                                                                   SBB       D    9A
+         SUB        M     96
+                                                                   SBB       E    9B
+             Cycles:      2                                        SBB       H    9C
+             States:      7                                        SBB       L    9D
+         Addressing:      register indirect
+                                                                       Cycles:      1
+              Flags:      Z, S, P, CY, AC
+                                                                       States:      4
+                                                                   Addressing:      register
+                                                                        Flags:      Z, S, P, CY, AC
+
+
+   SUI byte         (Subtract immediate)                    SSB M           (Subtract memory with borrow)
+       (A) -   (A) - (byte 2)                                    (A) -   (A) - ((H)(L)) - (CY)
+       The content of the second byte of the                    The content of the memory location whose
+       instruction is subtracted from the content               address is contained in the Hand L reg-
+       of the accumulator. The result is placed in              isters and the content of the CY flag are
+       the accumulator.                                         both subtracted from the accumulator. The
+                                                                result is placed in the accumulator.
+
+
+       Hexadecimal Format                                        Hexadecimal Format
+
+         SUI       byte    D6                                      SBB       M     9E
+             Cycles:       2                                           Cycles:      2
+             States:       7                                           States:      7
+         Addressing:       immediate                               Addressing:      register indirect
+              Flags:       Z, S, P, CY, AC                              Flags:      Z, S, P, CY, AC
+
+
+All mnemonics copyright ® Intel Corporation 1976
+
+Appendix B
+Practical Microprocessors                                                                                      377
+      S81 byte            (Subtract immediate with borrow)
+
+
+## Page 404
+
+
+                                                               INR M         (Increment memory)
+          (A) -      (A) - (byte 2) - (CY)
+                                                                    «H)(L» -       «H)(L»   +1
+          The contents of the second byte of the
+                                                                    The content of the memory location whose
+          instruction and the contents of the CY flag
+                                                                    address is contained in the Hand L reg-
+          are both subtracted from the accumulator.
+                                                                    isters is incremented by one. Note: All
+          The result is placed in the accumulator.
+                                                                    condition flags except CY are affected.
+
+                    I1 I 1 I0 I 1 I 1
+                                                                          I I I I I I 10 I 0 I
+                                                                             001101                        .
+                                      data
+
+                                                                    Hexadecimal Format
+          Hexadecimal Format                                           INR    M      34
+              S81         byte    DE
+                                                                           Cycles:     3
+                  Cycles:         2                                        States:     10
+                  States:         7                                    Addressing:     register indirect
+              Addressing:         immediate                                 Flags:     Z. S, P, AC
+                   Flags:         Z, S, P, CY, AC
+
+
+      INR r       (Increment Register)                         OCR r         (Decrement Register)
+         (r) -      (r)   +1                                        (r)- (r) -1
+         The content of register r is incremented by               The content of register r is decremented by
+         one. Note: All condition flags except CY are              one. Note: All condition flags except CY are
+         affected.                                                 affected.
+
+
+         Hexadecimal Format                                         Hexadecimal Format
+              INR       A        3C                                    DCR     A      3D
+              INR       B        04                                    DCR     B      05
+              INR       C        OC                                    DCR     C      OD
+              INR       D        14                                    DCR     D      15
+              INR       E        1C                                    DCR     E      1D
+              INR       H        24                                    DCR     H      25
+              INR       L        2C                                    DCR     L      2D
+                  Cycles:         1                                        Cycles:     1
+                  States:         4                                        States:     4
+              Addressing:         register                             Addressing:     register
+                   Flags:         Z, S, P, AC                               Flags:     Z. S, P, AC
+
+
+                                                             All mnemonics copyright ® Intel Corporation 1976
+
+                                                                                                          Appendix B
+
+
+## Page 405
+
+
+
+                                                                           DCX rp            (Decrement register pair)
+    OCR M           (Decrement memory)
+                                                                                (rh)(rl) -      (rh)(rl) -1
+        «H)(L)) -         ((H)(L)) -1
+                                                                                The content of the register pair rp is
+        The content of the memory location whose                                decremented by one. Note: No condition
+        address is contained in the Hand L reg-                                 flags are affected.
+        isters is decremented by one. Note: All
+        condition flags except CY are affected.
+
+                                                     I
+                                                 o       1
+                                                                                Hexadecimal Format
+                                                                                  DCX B                DB         (register pair B/C)
+       Hexadecimal Format
+                                                                                  DCX.        D        :8         (register pair DIE)
+            OCR      M       35                                                   D(:~'(      H        2r.:.      (register pair H/L)
+                Cycles:       3                                                   DCX         ~~t-'    jt)        (stack pointer)
+                States:       10                                                      Cycles:          1
+            Addressing:       register indirect                                       States:          6
+                 Flags:       Z, S, P, AC                                         Addressing:          register
+                                                                                       Flags:          none
+
+
+                                                                           DAD rp            (Add register pair to Hand L)
+   INX rp      (Increment register pair)                                        (H)(L) -      (H)(L)   + (rh)(rl)
+       (rh)(rl) -     (rh)(rl) + 1                                             The content of the register pair rp is added
+       The content of the reigster pair rp is                                  to the content of the register pair Hand L.
+       incremented by one. Note: No condition                                  The result is placed in the register pair H
+       flags are affected.                                                     and L. Note: Only the CY flag is affected. It
+                                                                               is set if there is a carry out of the double
+               Io I  I0    R I P   I   0 I 0 I
+                                                                               precision add; otherwise it is reset.
+
+                                                                                                                   I I
+                                                                                                                  001
+       Hexadecimal Format
+         INX        B        03         (register pair B/C)
+         INX        0        13         (register pair DIE)
+         INX        H        23         (register pair H/L)                                                    (register pair B/C)
+         INX        SP      33          (stack pointer)                                                        (register pair DIE)
+                                                                                  _.,.'\!J   :-1               (register pair H/L)
+             Cycles:         1                                                    ~)AD       :3P               (stack painter)
+             States:         6
+         Addressing:         register                                                 Cycles:          3
+              Flags:         none                                                     States:          10
+                                                                                  Addressing:          register
+                                                                                       Flags:          CY
+
+
+All mnemonics copyright ® Intel Corporation 1976
+
+Appendix B
+Practical Microprocessors                                                                                                               379
+      OAA    (Decimal Adjust Accumulator)
+
+
+## Page 406
+
+
+        The eight-bit number in the accumulator is
+        adjusted to form two four-bit Binary-Coded-
+        Decimal digits by the following process:
+        1. If the value of the least significant 4 bits
+           of the accumulator is greater than 9 or if
+           the AC flag is set, 6 is added to the
+           accumulator.
+        2. If the value of the most significant 4 bits
+           of the accumulator is now greater than 9.
+           or if the CY flag is set, 6 is added to the
+           most significant 4 bits of the accumu-
+           lator.
+        Note: All flags are affected.
+
+              Io    I 0 I 1 I 0 I 0
+
+
+        Hexadecimal Format
+            DAA             27
+                  Cycles:   1
+                  States:   4
+                   Flags:   Z, S, P, CY, AC
+
+
+                                                          All mnemonics copyright ® Intel Corporation 1976
+
+380                                                                              Practical Microprocessors
+
+
+## Page 407
+
+
+
+   L.ogical Group:
+       This group of instructions performs logical
+   (Boolean) operations on data in registers and                ANA M            (AND memory)
+   memory and on condition flags.
+                                                                     (A) -   (A) /\ ((H)(L))
+       Unless indicated otherwise, all instructions
+                                                                    The content of the memory location whose
+   in this group affect the Zero, Sign, Parity,
+                                                                    address is contained in the Hand L reg-
+   Auxiliary Carry, and Carry flags according to the
+                                                                    isters is logically anded with the content of
+   standard rules.
+                                                                    the accumulator. The result is placed in the
+                                                                    accumulator. The CY flag is cleared and AC
+                                                                    is set.
+
+
+                                                                    Hexadecimal Format
+                                                                       ANA        M     A6
+                                                                           Cycles:      2
+                                                                           States:      7
+    ANA r        (AND Register)                                        Addressing:      register indirect
+         (A) -   (A) /\ (r)                                                 Flags:      Z, S, P, CY, AC
+        The content of register r is logically anded
+        with the content of the accumulator. The
+        result is placed in the accumulator. The CY
+        flag is cleared and AC is set.
+
+                 I
+                 1I 0I1 I0 0
+                           I      I   S I S , S   I
+                                                               ANI byte          (AND immediate)
+        Hexadecimal Format                                          (A) _ (A) /\ (byte 2)
+           ANA       A   A7                                         The content of the second byte of the
+           ANA       B   AO                                         instruction is logically anded with the con-
+           ANA       C   A1                                         tents of the accumulator. The result is
+           ANA       D   A2                                         placed in the accumulator. The CY flag Is
+           ANA       E   A3                                         cleared and AC is set.
+           ANA       H   A4
+           ANA       L
+               Cycles:
+                         AS
+                          1
+                                                                             I
+                                                                             1 I 1 I 1 I0 I 0 I 1
+
+               States:    4                                                                  data
+
+           Addressing:    register
+                Flags:    Z, S, P, CY, AC                           Hexadecimal Format
+                                                                       AN!       byte    E6
+                                                                           Cycles:      2
+                                                                           States:      7
+                                                                       Addressing:      immediate
+                                                                            Flags:      Z, S, P, CY, AC
+
+
+All mnemonics copyright ® Intel Corporation 1976
+
+Appendix B
+Practical Microprocessors                                                                                          381
+      XRA r         (Exclusive OR Register)
+
+
+## Page 408
+
+
+         (A) + - (A) -V- (r)                                                 XRI byte         (Exclusive OR immediate)
+         The content of register r is exclusive-OR'd                             (A) -    (A) -V- (byte 2)
+         with the content of the accumulator. The
+         result is placed in the accumulator. The CY                             The content of the second byte of the
+         and AC flags are cleared.                                               instruction is exclusive-OR'd with the con-
+                                                                                 tent of the accumulator. The result is placed
+                 I '~       0 I 1 I 0 I 1    I   S I S I S   I                   in the accumulator. The CY and AC flags
+                                                                                 are cleared.
+
+         Hexadecimal Format
+              XRA       A       AF
+                                                                                          I
+                                                                                          1 I1 I 1 I 0 I 1
+
+                                                                                                          data
+              XRA       B       A8
+              XRA       C       A9
+              XRA       D       AA                                               Hexadecimal Format
+              XRA       E       AB                                                  XRI       byte   EE
+              XRA       H       AC
+                                                                                        Cycles:      2
+              XRA       L       AD
+                                                                                        States:      7
+                  Cycles:         1                                                 Addressing:      immediate
+                  States:         4                                                      Flags:      Z. S, P, CY, AC
+              Addressing:         register
+                   Flags:         Z, S, P, CY, AC
+
+
+                                                                             ORA r        (OR Register)
+                                                                                  (A) +- (A) V (r)
+      XRA M         (Exclusive OR Memory)
+                                                                                 The content of register r is inclusive-OR'd
+         (A) -      (A) -V- «H)(L»                                               with the content of the accumulator. The
+         The content of the memory location whose                                result is placed in the accumulator. The CY
+         address is contained in the Hand L reg-                                 and AC flags are cleared.
+         isters is exclusive-OR'd with the content of
+         the accumulator. The result is placed in the
+                                                                                          I
+                                                                                          1I0 1
+                                                                                              I I 1 I 0          I           I
+                                                                                                                     S I SI S _
+         accumulator. The CY and AC flags are
+         cleared.
+                                  ,o ,   1             10    I
+                                                                                  Hexadecimal Format
+                                                                                     ORA A           B7
+                                                                                     ORA B           BO
+                                                                                     ORA C           B1
+         Hexadecimal Format                                                          ORA D           82
+              XRA       M       AE                                                   ORA E           B3
+                                                                                     ORA H           B4
+                  Cycles:        2
+                                                                                     ORA L           B5
+                  States:        7
+              Addressing:        register indirect                                       Cycles:     1
+                   Flags:        Z, S, p. CY, AC                                         States:     4
+                                                                                     Addressing:     register
+                                                                                          Flags:     Z, S, P, CY, AC
+
+
+                                                                           All mnemonics copyright ® Intel Corporation 1976
+                                                                                                                         Appendix B
+382
+
+
+## Page 409
+
+
+
+                                                                 CMP r        (Compare Register)
+                                                                      (A) - (r)
+
+    ORA M       (OR memory)                                           The content of register r is subtracted from
+                                                                      the accumulator. The accumulator remains
+        (A) -   (A) V «H)(L»                                          unchanged. The condition flags are set as a
+        The content of the memory location whose                      result of the subtraction. The Z flag is set
+        address is contained in the Hand L reg-                       to 1 if (A) = (r). The CY flag is set to 1 If
+        isters is inclusive-OR'd with the content of                  (A)< (r).
+        the accumulator. The result is placed in the
+        accumulator. The CY and AC flags are
+        cleared.
+
+                                                                      Hexadecimal Format
+                                                                         CMP         A               BF
+                                                                         CMP         B               B8
+        Hexadecimal Format                                               CMP         C               B9
+          ORA        M         B6                                        CMP         0               BA
+              Cycles:          2                                         CMP         E               BB
+              States:          7                                         CMP         H               BC
+          Addressing:          register indirect                         CMP         L               BO
+               Flags:          Z, S, P, CY, AC                               Cycles:                 1
+                                                                             States:                 4
+                                                                         Addressing:                 register
+                                                                              Flags:                 Z. S. P, CY. AC
+
+
+                                                                 CMP M            (Compare memory)
+   ORI byte         (OR immediate)
+                                                                      (A) - «H)(L»
+        (A) -   (A) V (byte 2)
+                                                                      The content of the memory location whose
+       The content of the second byte of the                          address is contained in the Hand L reg-
+       instruction is inclusive-OR'd with the con-                    isters is subtracted from the accumulator.
+       tent of the accumulator. The result is placed                  The accumulator remains unchanged. The
+       in the accumulator. The CY and AC flags                        condition flags are set as a result of the
+       are cleared.                                                   subtraction. The Z flag Is set to 1 if (A) =
+                                                                      «H)(L». The CY flag Is set to 1 if
+
+
+                I"
+                               I        I
+                1     1    1       1        0   1                     (A) < «H)(L».
+                                   data                                      I   1
+                                                                                     I
+                                                                                         0
+                                                                                             I
+                                                                                                 1
+                                                                                                     I
+                                                                                                         1
+                                                                                                             I
+                                                                                                                 1
+                                                                                                                     I
+                                                                                                                         1   I 0   I
+       Hexadecimal Format
+                                                                      Hexadecimal Format
+          ORI       byte           F6
+                                                                         CMP         M               BE
+              Cycles:          2
+              States:          7                                             Cycles:                 2
+          Addressing:          immediate                                     States:                 7
+               Flags:          Z, S, p. CY. AC                           Addressing:                 register indirect
+                                                                              Rags:                  Z, S. P, CY, AC
+
+
+All mnemonics copyright ® Intel Corporation 1976
+
+Appendix B
+Practical Microprocessors                                                                                                              383
+      CPI byte        (Compare immediate)
+
+
+## Page 410
+
+
+            (A) - (byte 2)                                          RRC       (Rotate right)
+            The content of the second byte of the                         (An) -    (An+1); (A7) -            (Ao)
+            instruction is subtracted from the accumu-                    (CY) -    (Ao)
+            lator. The condition flags are set by the                     The content of the accumulator is rotated
+            result of the subtraction. The Z flag is set to               right one position. The high order bit and
+            1 if (A) = (byte 2). The CY flag is set to 1 if               the CY flag are both set to the value shifted
+            (A) < (byte 2).                                               out of the low order bit position. Only the
+
+                  I 1I 1I 1I 1I 1I 1
+                                                                          CY flag is affected.
+
+
+                                     data
+
+
+            Hexadecimal Format                                            Hexadecimal Format
+              CPI     byte           FE                                     RRC                  OF
+                  Cycles:        2                                                 Cycles:   1
+                  States:        7                                                 States:   4
+              Addressing:        immediate                                          Flags:   CY
+                   Flags:        Z. S. p. CY. AC
+
+
+      RLC       (Rotate left)                                       RAL       (Rotate left through carry)
+
+            (An +1) - (An); (Ao) -                (A7)                    (An+1) -(An); (CY) -                (Al)
+            (CY) - (A7)                                                   (Ao) - (CY)
+         The content of the accumulator is rotated                       The content of the accumulator is rotated
+         left one position. The low order bit and the                    left one position through the CY flag. The
+         CY flag are both set to the value shifted out                   low order bit is set equal to the CY flag and
+         of the high order bit position. Only the CY                     the CY flag is set to the value shifted out of
+         flag is affected.                                               the high order bit. Only the CY flag Is
+                                                                         affected.
+                 Io 0 0 0 0 1
+                      I      I   I        I   I
+                                                                                I0 0 0 1 0 1 1 1 I
+                                                                                     I   I   I        I   I     I    I
+
+
+         Hexadecimal Format
+                                                                          Hexadecimal Format
+              RLC                07
+                                                                            RAL              17
+                    Cycles:      1
+                    States:      4                                                 Cycles:   1
+                     Flags:      CY                                                States:   4
+                                                                                    Flags:   CY
+
+
+                                                                  All mnemonics copyright ® Intel Corporation 1976
+
+384                                                                                                   Practical Microprocessors
+
+
+## Page 411
+
+
+
+    RAR        (Rotate right through carry)
+          (An) -    (An +1); (CY) -   (Ao)
+          (A7) -    (CY)                                    CMC       (Complement carry)
+        The content of the accumulator is rotated                (CY) -     (CY)
+        right one position through the CY flag.
+        The high order bit is set to the CY flag and             The CY flag is complemented. No other
+        the CY flag is set to the value shifted out of           flags are affected.
+        the low order bit. Only the CY flag is
+        affected.                                                      I  0 '0 I '1 I 1 f 1 I 1
+
+
+                   Io   I0 I0 I 1                                Hexadecimal Format
+                                                                   CMC                  3F
+        Hexadecimal Format                                                Cycles:   1
+            RAR                1F                                         States:   4
+                   Cycles:    1                                            Flags:   CY
+                   States:    4
+                    Flags:    CY
+
+
+   CMA        (Complement accumulator)                     STC       (Set carry)
+       (A) -(A)
+                                                                 (CY) -1
+       The contents of the accumulator are com-                 The CY flag is set to 1. No other flags are
+       plemented (zero bits become 1, one bits                  affected.
+       become 0). No flags are affected.
+
+               I    I I
+                   00101
+                        I I
+
+
+                                                                 Hexadecimal Format
+       Hexadecimal Format
+                                                                   STC              37
+           CMA                 2F
+                                                                          Cycles:   1
+                   Cycles:    1                                           States:   4
+                   States:    4                                            Flags:   CY
+                    Flags:    none
+
+
+All mnemonics copyright ® Intel Corporation 1976
+
+Appendix B
+Practical Microprocessors                                                                                     385
+  Branch Group:
+
+
+## Page 412
+
+
+      This group of instructions alter normal
+  sequential program flow.
+       Condition flags are not affected by any
+  instruction in this group.
+       The two types of branch instructions are
+  unconditional and conditional. Unconditional
+  transfers simply perform the specified operation
+  on register PC (the program counter). Condi-
+  tional transfers examine the status of one of the
+  four processor flags to determine if the speci-            Jconditlon addr          (Conditional jump)
+  fied branch is to be executed. The conditions                   If (CCC),
+  that may be specified are as follows:                              (PC) - (byte 3)(byte 2)
+                                                                  If the specified condition is true, control is
+        CONDITION                              CCC
+                                                                  transferred to the instruction whose ad-
+        NZ -      not zero (Z = 0)             000                dress is specified in byte 3 and byte 2 of the
+         Z -      zero (Z = 1)                 001                current instruction; otherwise, control con-
+        NC -      no carry (CY = 0)            010                tinues sequentially.
+         C -      carry (CY = 1)               011
+        PO -      parity odd (P = 0)           100
+        PE -      parity even (P = 1)          101
+                                                                           1   'llc'c'clo'1'O
+         P -      plus (8 = 0)                 110                               low-order addr
+         M -      minus (8 = 1)                111
+                                                                                 high-order addr
+
+
+                                                                  Hexadecimal Format
+                                                                    JNZ addr          C2       (jump on no zero)
+                                                                     JZ addr          CA       (jump on zero)
+      JMP addr      (Jump)                                          JNC addr          02       (jump on no carry)
+                                                                     JC addr          OA       (jump on carry)
+         (PC) -    (byte 3)(byte 2)                                 JPO addr          E2       (jump on parity
+         Control is transferred to the instruction                                              odd)
+         whose address is specified in byte 3 and                    JPE       addr   EA       (jump on parity
+         byte 2 of the current instruction.                                                     even)
+                                                                      JP       addr   F2       (jump on positive)
+                                   1                                  JM       addr   FA       (jump on minus)
+                  1'1'0'0'0            0'1'1
+                                                                        Cycles:       2/3
+                      low-order addr
+                                                                        States:       7/10
+                      high-order addr                               Addressing:       immediate
+                                                                         Flags:       none
+         Hexadecimal Format
+           JMP     addr       C3
+               Cycles:    3
+               States:    10
+           Addressing:     immediate
+                Flags:     none
+
+
+                                                           All mnemonics copyright ® I ntel Corporation 1976
+
+386                                                                                         Practical Microprocessors
+
+
+## Page 413
+
+
+
+    CALL addr       (Call)                                 Ccondition addr           (Condition call)
+        (SP) -1) - (PCH)                                       If (CCC),
+        (SP) - 2) - (PCl)                                         (SP)-1) - (PCH)
+        (SP) - (SP) - 2                                           ((SP) - 2) - (PCl)
+        (PC) - (byte 3)(byte 2)                                   (SP) - (SP) - 2
+        The high-order eight bits of the next in-                 (PC) - (byte 3)(byte 2)
+        struction address are moved to the memory              If the specified condition is true, the actions
+        location whose address is one less than the            specified in the CAll instruction (see
+        content of register SP. The low-order eight            above) are performed; otherwise, control
+        bits of the next instruction address are               continues sequentially.
+        moved to the memory location whose ad-
+        dress is two less than the content of register                   1
+                                                                             1
+                                                                                 1Ic'c'cJ1'0'0
+        SP. The content of register SP is decre-
+        mented by 2. Control is transferred to the                               low-order addr
+        instruction whose address is specified in                                high-order addr
+        byte 3 and byte 2 of the current instruction.
+
+                                                               Hexadecimal Format
+                1'1'0'0'1'1'0'1
+                                                                  CNZ        addr     C4      (call on no zero)
+                    low-order addr                                 CZ        addr     CC      (call on zero)
+                    high-order addr                               CNC        addr     04      (call on no carry)
+                                                                   CC        addr     DC      (call on carry)
+                                                                  CPO        addr     E4      (call on parity
+        Hexadecimal Format                                                                     odd)
+          CAll    addr       CD                                    CPE       addr     EC      (call on parity
+              Cycles:    5                                                                     even)
+              States;    18                                        CP addr            F4      (caU on positive)
+          Addressing:    immediate/reg. indirect                   CM addr            FC      (call on minus)
+               Flags:    none                                         Cycles:        2/5
+                                                                      States:        9/18
+                                                                  Addressing:        immediate/reg. indirect
+                                                                       Flags:        none
+
+
+All mnemonics copyright ® Intel Corporation 1976
+
+Appendix B
+Practical Microprocessors                                                                                          387
+      RET       (Return)                                                    Rconditlon         (Conditional return)
+
+
+## Page 414
+
+
+            (PCl) - «SP»;                                                        If (CCC).
+            (PCH) - «SP) + 1);                                                      (PCl) _ «SP»
+            (SP) - (SP) + 2                                                         (PCH) - «SP)    1)   +
+            The content of the memory location whose                                (SP) - (SP) + 2
+            address is specified in register SP is moved                         If the specified condition is true, the actions
+            to the low-order eight bits of register PC.                          specified in the RET instruction (see above)
+            The content of the memory location whose                             are performed; otherwise, control continues
+            address is one more than the content of                              sequentially.
+            register SP is moved to the high-order eight
+            bits of register PC. The content of register
+            SP is incremented by 2.
+                                                                                        I       I
+                                                                                            1 I 1 C I C I COO
+                                                                                                            III 0       I
+                 I   1
+                         I
+                             1
+                                 I
+                                     0
+                                         I
+                                             0
+                                                 I
+                                                     1
+                                                         I
+                                                         001
+                                                             I                   Hexadecimal Format
+                                                                                    RNZ             CO       (return on no zero)
+                                                                                     RZ             C8       (return on zero)
+            Hexadecimal Format                                                      RNC             DO       (return on no carry)
+              RET                        C9                                          RC             D8       (return on carry)
+                  Cycles:                3                                          RPO             EO       (return on parity
+                  States:                10                                                                   odd)
+              Addressing:                register indirect                           RPE            E8       (return on parity
+                   Flags:                none                                                                 even)
+                                                                                      RP            FO       (return on positive)
+                                                                                      RM            F8       (return on minus)
+                                                                                        Cycles:     1/3
+                                                                                        States:     6112
+                                                                                    Addressing:     register indirect
+                                                                                         Flags:     none
+
+
+                                                                           All mnemonics copyright ® Intel Corporation 1976
+
+                                                                                                                        Appendix B
+388                                                                                                       Practical Microprocessors
+
+
+## Page 415
+
+
+
+    RST n      (Restart)                                                    PCHL       (Jump Hand L indirect
+        «SP) -1) - (PCH)                                                                -move Hand L to PC)
+        «SP) -2) - (PCL)                                                         (PCH) - (H)
+        (SP) - (SP) - 2                                                          (PCL) - (L)
+        (PC) - 8 * (NNN)                                                         The content of register H is moved to the
+       The high-order eight bits of the next in-                                 high-order eight bits of register PC. The
+       struction address are moved to the memory                                 content of register L is moved to the low-
+       location whose address is one less than the                               order eight bits of register PC.
+       content of register SP. The low-order eight
+       bits of the next instruction address are
+       moved to the memory location whose ad-
+       dress is two less than the content of register
+       SP. The content of register SP is decre-                             Hexadecimal Format
+       mented by two. Control is transferred to the
+       instruction whose address is eight times the                           PCHL         E9
+       content of NNN.
+                                                                                         Cycles:   1
+             I   1 I 1   IN N NI
+                           I       I           1 I
+                                                                                         States:
+                                                                                     Addressing:
+                                                                                                   6
+                                                                                                   register
+                                                                                          Flags:   none
+       Hexadecimal Format
+         RST   0    C7
+         RST   1    CF
+         RST   2    07
+         RST   3    OF
+         RST   4    E7
+         RST   5    EF
+         RST   6    F7
+         RST   7    FF
+             Cycles: 3
+             States: 12
+         Addressing: register indirect
+              Flags: none
+
+    15 14 13 12 11 10 9        8       7   6    5    4   3   2   1   0
+
+   10101010101010101010 INININlo 10 10 I
+               Program Counter After Restart'
+
+
+All mnemonics copyright ® Intel Corporation 1976
+Appendix B
+Practical Microprocessors                                                                                                 389
+      SWC:f'\, I/O, and Mac~~,;?:e ContrOl Group:
+
+
+## Page 416
+
+
+           This group of instructions performs I/O,
+      manipulates the Stack, and alters internal con-
+      trol flags.
+      Unless otherwise specified, condition flags
+  are not affected by any instructions in this
+  group.
+
+                          FLAG WORD
+
+                 07 06 05 04 03 02 01 Do
+
+                 I s Iz IX lAC I X I p I x ICy I
+                          X: undefined                             PUSH PSW              (Push processor status word)
+                                                                        «SP) - 1) - (A)
+                                                                        «SP)-.2)0 - (CY), «SP) - 2)1 - X
+                                                                        «SP) - 2)2 - (P), «SP) - 2)3 - X
+                                                                        «SP) - 2)4 - (AC), «SP) - 2)5 - X
+                                                                        «SP)- 2)6 - (Z), «SP) - 2)7 - (S)
+       PUSH rp       (Push)
+                                                                        (SP) - (SP) - 2       X: Undefined
+           «SP) - 1) - (rh)                                             The content of register A is moved to the
+           «SP) - 2) - (rl)
+                                                                        memory location whose address is one less
+           (SP) - (SP) - 2
+                                                                        than register SP. The contents of the condi-
+           The content of the high-order register of                    tion flags are assembled into a processor
+           register pair rp is moved to the memory                      status word and the word is moved to the
+           location whose address is one less than                      memory location whose address is two less
+           the content of register SP. The content of                   than the content of register SP. The content
+           the low-order register of register pair rp is                of register SP is decremented by two.
+           moved to the memory location whose ad-
+           dress is two less than the content of                                     I    I    I   I    I
+           register SP. The content of register SP is                         I1 1 1 1 0 1 0
+           decremented by 2. Note: Register pair
+           rp = SP may not be specified.                                Hexadecimal Format
+                                                                          PUSH           PSW       F5
+                 I        I
+                   1 I 1R I P      I   0 I 1 I 0 I 1                          Cycles:          3
+                                                                              States:          12
+           Hexadecimal Format                                             Addressing:          register indirect
+                                                                               Flags:          none
+             PUSH     B       C5         (push register pair
+                                          B and C)
+             PUSH     0       05         (push register pair
+                                          o and E)
+             PUSH     H       E5         (push register pair
+                                          Hand L)
+                 Cycles:      3
+                 States:      12
+             Addressing:      register indirect
+                  Flags:      none
+
+
+                                                                 All mnemonics copyright ® Intel Corporation 1976
+
+                                                                                                                 Appendix B
+390                                                                                                Practical Microprocessors
+
+
+## Page 417
+
+
+
+    pop rp        (Pop)                                        pop PSW         (Pop processor status word)
+        (rl) -«SP»                                                  (CY) - «SP»o
+        (rh) -((SP) + 1)                                            (P) -«SP»2
+        (SP) - (SP) + 2                                             (AC) - «SP»4
+        The content of the memory location whose                    (Z) - «SP»6
+        address is specified by the content of                      (S) -«SP»7
+        register SP is moved to the low-order reg-                  (A) -«SP) + 1)
+        ister of register pair rp. The content of the               (SP) - (SP) + 2
+        memory location whose address is one                        The content of the memory location whose
+        more than the content of register SP is                     address is specified by the content of
+        moved to the high-order register of regis-                  register SP is used to restore the condition
+        ter pair rp. The content of register SP is                  flags. The content of the memory location
+        incremented by 2. Note: Register pair                       whose address is one more than the con-
+        rp = SP may not be specified.                               tent of register SP is moved to register A.
+                                                                    The content of register SP is incremented
+              I    I I I
+                       I I
+                  11RPOOO~ I    I               I                   by 2.
+
+                                                                                              I I
+        Hexadecimal Format
+                                                                           11 I 1           000   1
+
+          POP      B       C1       (pop register pair
+                                     B and C)                       Hexadecimal Format
+          POP      0       01       (pop register pair                 POP     PSW     F1
+                                     o and E)                              Cycles:   3
+          POP      H       E1       (pop register pair                     States:   10
+                                     Hand L)                           Addressing:   register indirect
+              Cycles:       3                                               Flags:   Z, S, P, CY, AC
+              States:       10
+          Addressing:       register indirect
+               Flags:       none
+
+
+All mnemonics copyright ® Intel Corporation 1976
+
+Appendix B
+Practical Microprocessors                                                                                          391
+      XTHL       (Exchange stack top with Hand L)
+
+
+## Page 418
+
+
+         (L) -    ((SP))
+                                                           IN port        (Input)
+         (H) -    ((SP) + 1)
+         The content of the L register is exchanged             (A) -   (data)
+         with the content of the memory location                The data placed on the eight bit bi-direc-
+         whose address is specified by the content              tiona I data bus by the specified port is
+         of register SP. The content of the H register          moved to register A.
+         is exchanged with the content of the mem-
+         ory location whose address is one more
+         than the content of register SP.                               I" "
+                                                                          :     1    0     1
+                                                                                           port
+                                                                                                 1
+                                                                                                     o   1
+
+
+                                                               He:rndecimal Format
+                                                                 ;~.; po;!   DB
+                                                                      Cycles:            3
+                                                                      States:            10
+                 Cycles:   5                                      Addressing:            direct
+                 States:   16
+                                                                       Flags:            none
+             Addressing:   register indirect
+                  Flags:   none
+
+
+                                                          OUT port            (Output)
+      SPHL     (Move HL to SP)                                 (data) -       (A)
+         (SP) _ (H)(L)                                         The content of register A is placed on the
+        The contents of registers Hand L (16 bits)             eight bit bi-directional data bus for trans-
+        are moved to register SP.                              mission to the specified port.
+
+
+        Hexader.!lIi<'>i fermat
+                                                               Hexadecimal Format
+                 Cycles:   1                                     OUT          port        D3
+                 States:   6                                          Cycles:            3
+             Addressing:   register                                   States:            10
+                  Flags:   none                                   Addressing:            direct
+                                                                       Flags:            none
+
+
+                                                         All mnemonics copyright ® Intel Corporation 1976
+
+                                                                                                             Appendix B
+
+
+## Page 419
+
+
+
+    EI     (Enable interrupts)
+         The interrupt system is enabled following       HLT      (Halt)
+         the execution of the next Instruction.
+                                                               The processor is stopped. The registers
+                                                               and flags are unaffected.
+
+                                                                    10 '11111'011'1101
+         Hexadecimal Format
+           EI             FB                                   Hexadecimal Format
+                Cycles:    1                                    HLT          76
+                States:    4
+                                                                      Cycles: 1
+                 Flags:    none
+                                                                      States: 5
+         Note: Interrupts are not recognized during                    Flags: none
+         the EI instruction.
+
+
+   01      (Disable interrupts)
+         The interrupt system is disabled Immedi-        NOP       (No op)
+         ately following the execution 01 the 01
+                                                               No operation is performed. The registers
+         instruction.                                          and flags are unaffected.
+
+                                                                    10101010101010'01
+
+         Hexadecimal Format
+                                                               Hexadecimal Format
+           01             F3                                     NOP          00
+                Cycles:    1
+                                                                      Cycles: 1
+                States:    4                                          States: 4
+                 Flags:    none                                        Flags: none
+         Note: Interrupts are not recognized during
+         the 01 instruction.
+
+
+All mnemonics copyright ® Intel Corporation 1976
+
+Appendix B
+Practical Microprocessors                                                                                 393
+                                                                                                 SIM       (Set Interrupt Masks)
+
+
+## Page 420
+
+
+      RIM                (Read Interrupt Mask)
+                                                                                                       During execution of the SIM instruction,
+            After the execution of the RIM instruction,                                                the contents of the accumulator will be
+            the accumulator is loaded with the restart                                                 used in programming the restart interrupt
+            interrupt masks, the Interrupt Enable Flag,                                                masks. Bits 0-2 will set/reset the mask bit
+            any pending interrupts, and the contents of                                                for RST 5.5, 6.5, 7.5 of the interrupt mask
+            the serial input data line (SID).                                                          register, if bit 3 is 1 (Uset"). Bit 3 is a uMask
+            When the first RIM instruction is executed                                                 Set Enable" control.
+            following a TRAP interrupt, the IE bit in the                                              Setting the mask (i.e., mask bit = 1) disables
+            accumulator reflects the previous interrupt                                                the corresponding interrupt.
+            enable status before the TRAP occurred.
+            The first RIM after a TRAP also has the                                                                               Set          Reset
+            action of releasing the IE status bit such
+            that all subsequent RIM's provide current                                                   RST 5.5 MASK          if bit 0 = 1   if bit 0 = 0
+            interrupt enable status.                                                                    RST 6.5 MASK             bit 1 = 1      bit 1 = 0
+                                                                                                        RST 7.5 MASK             bit 2 = 1      bit 2 = 0
+            IMPORTANT: The RIM instruction must be
+            executed following a TRAP interrupt in                                                     The RST 7.5 (edge triggered) internal re-
+            order to restore the correct Interrupt Enable                                              quest filp flop will be reset if bit 4 of the
+            Status.                                                                                    accumulator = 1; regardless of whether
+                                                                                                       RST 7.5 is masked or not.
+                                                                                                       A hardware RESET of the BOSSA will set all
+                                                                                                       RST MASKs, and reset/disable all inter-
+            ,   : "-,   !.   ;   ~,_   ~ j;   I       .- . :   i- :   i'
+                                                                                                       rupts.
+                                                                                                       SIM can also load the SOD output latch.
+                                                                                                       Accumulator bit 7 is loaded into the SOD
+                   ACCUMULATOR CONTENT AFTER RIM                                                       latch if bit 6 is set. The latch is unaffected if
+                                                                                                       bit 6 is a zero. RESET IN input sets the SOD
+
+
+       'l I t:=
+      !SID !17.S!16.SIIS.SIIE IM7.S!M6.sIMS.sl
+                                                                                                       latch to zero.
+
+
+                                                  I                        =r~~:~;~:~I~~~::            Hexadecimal Format
+                             Interrupts Pending
+                                   L.- - - - - - -
+
+        L _ _ _ _ _ _ _ _ _ _ Serial Input Data                                                          8!M             30
+                                                                                                        ACCUMULATOR CONTENT BEFORE SIM
+                                 Cycles:                 1
+                                 States:                 4                                        7      654             320
+                                  Flags:                 none
+                                                                                                ISODISOE I X IR7.sIMSEIM7.SIM6.sIMS.sl
+
+
+                                                                                                                         ~::
+                                                                                                               A
+                                                                                                                                                T 5.5 Mask
+                                                                                                                                                 T 6.5 Mask
+                                                                                                                                                T 7.5 Mask
+                                                                                                                                         Mask Set Enable
+                                                                                                                                             Re set RST 7.5
+                                                                                                                                                  Undefined
+                                                                                                                                               S 00 Enable
+                                                                                                                                        Serial Output Data
+                                                                                                               Cycles:   1
+                                                                                                               States:   4
+                                                                                                                Flags:   none
+
+
+                                                                                               All mnemonics copyright ® Intel Corporation 1976
+
+                                                                                                                                            Appendix B
+394                                                                                                                           Practical Microprocessors
+
+
+## Page 421
+
+
+
+_ _ _ _ _ _ APPENDIX C
+                                                                            Signature Tables
+
+
+This appendix contains the signature tables for the /-LLab. These tables list every     INTRODUCTION
+IC pin plus the address and data bus lines.
+
+In most cases a signature will be listed for each pin, but there are a number of
+different ways in which the signature may be represented. If the pin is tied directly
+to ground or +5V, the table entry will simply indicate GND or Vcc rather than
+giving the signature. The Vcc signature is listed at the beginning of the table, and
+the GND signature is always 0000. The table may also show a 1 or a signature,
+which means the same thing as Vcc or GND except that the signal is a gate
+output, not tied directly to Vcc or GND. Finally, the table may show a Vcc or a
+GND signature with a B after it, which means the same thing as a 1 or a except
+that the light on the signature analyzer's probe tip should be blinking. For
+example, in Table C-2 on IC2, pin 3, the signature is 7A70B. This means that
+although the signal is always at the same logic level when the clock edge arrives,
+at other times it is at a different level. Refer to Lesson 17 for a complete explana-
+tion of how to use the signature tables when troubleshooting the /-LLab.
+
+
+Appendix C
+Practical Microprocessors                                                                          395
+                                 TABLE C-1. FREERUN ADDRESS SIGNATURES
+
+
+## Page 422
+
+
+
+                                                                      S036A SWITCHES
+       SOO4A
+     SWITCHES
+
+      START    I
+                         S036A
+                      CONNECTIONS
+
+                           A15
+                                                          SA
+
+
+                                                         I[;]~I
+                                                                FR
+                                                                                        I~~~~~~~~ I~~::~;
+                                                                                            76543210
+                                                                                             I NPUT SWITCHES
+      STOP     .J          A15                             NORM
+
+      CLOCK S
+
+
+    VCC SIGNATURE: 0001
+                           READ
+
+                                                  I~~~~~~~~ I:~:~"'
+                                                         BUS SWITCH
+                                                                                   Data Lines
+                                                                                   DO
+                                                                                   D1
+                                                                                   02
+                                                                                        X
+                                                                                        X
+                                                                                        X
+                                                                                                   AO
+                                                                                                   A1
+                                                                                                   A2
+                                                                                                          Address Lines
+                                                                                                        UUUU
+                                                                                                        5555
+                                                                                                        CCCC
+                                                                                                                A8 HC89
+                                                                                                                A9 2H70
+                                                                                                                A10 HPPO
+                                                                                   D3   X          A3   7F7F    A11 1293
+                                                                                   D4   X          A4   5H21    A12 HAP7
+                    IC1                                        IC2
+                                                                                   D5   X          A5   OAFA    A133Cse
+       GNO                  VCC                   0000                VCC          D6   X          A6   UPFH    A143827
+                                                                                   D7   X          A7   52F8    A15755P
+        1293                0000                UUUU                  52F8
+        1293                755P                0001-8                0000-8                            rC3
+       HPPO                 755P                0001-8                0001-8
+                                                                                               X                VCC
+       HPPO                 3827                  5555                UPFH
+                                                                                               X                0000
+       2H70                 3827                CCCC                  OAFA
+                                                                                            0000                0000
+       2H70                 3C9S                0001-8                0001-8
+                                                                                  0000 or 0001                  0001-8
+       HC89                 3C96                0001-8                0001-8
+                                                                                            0000                0001
+       HC89                 HAP7                  7F7F                5H21
+                                                                                            0000                0001
+       GND                  HAP7                  GND                 0001-B
+                                                                                            0000                0000
+                                                                                            0000                0001
+                    rC4                                        rcs                          0000                0001-8
+
+       52F8                 VCC                  UPFH                 VCC                   0000                0001
+      UPFH                  HC89                 OAFA                 52F8                  0001                OOOO-B
+       OAFA                 2H70                  5H21                HC89              0001-8                  0001
+       5H21                 0001                  7F7F                2H70              0001-8                  755P
+       7F7F                 3PCF                UUUU                  X                 0001-8                  3827
+
+      CCCC                  HPPO                  5555                X                 0001-8                  3C96
+       5555                 0000-8              CCCC                  X                 0001-8                  HAP7
+
+      UUUU                  X                    84AF                 X                 0001-8                  1293
+          X                 X                     GNO                 0001              0001-8                  HPPO
+          X                 X                                                           0000-8                  2H70
+          X                 X                                                               GND                 HC89
+       GND                  X
+
+
+                    IC6                                        rC7                                      IC8
+
+      UPFH                 VCC                    1293                VCC                   0001                VCC
+      OAFA                 52F8                  HAP7                 3PCF                  0000                F770
+       5H21                 HC89                  3Cse                84AF                  0001                F771
+       7F7F                2H70                   3827                960F                  GNO                 CCCC
+      UUUU                 X                      755P                4154              UUUU                    5555
+       5555                X                    0001-8                UA87               8HUC                   U6AH
+      CCCC                 X                      1920                597C               8HUA                   U6AF
+       84AF                X                      GND                 C34C                  GND                 960F
+       GND                 0001
+
+
+X = Don't Care Signature    B    = Blinking GND or VCC Signature                                            Appendix C
+396                                                                                           Practical Microprocessors
+
+
+## Page 423
+
+
+
+                      TABLE C-1. FREERUN ADDRESS SIGNATURES (Continued)
+
+
+               IC9                              IC10                         IC11
+
+       0001             vee          0001-8              vee          84AF          vee
+       0001             He89           vee               U6AF       0000-8          0001
+       0000             2H70           0000              vee          84AF          F771
+       0001             1883          71U6               5555        8Hue           0001
+     0000-8             1883          2F8U               vee        0001-8          0000-8
+     0001-8             0000-8         2F8P              71U6       0001-8          4154
+       GND              0001-8        GND                71U7        GND            4154
+
+
+               IC12                             IC13                         IC14
+
+     0001-8             vee          0000-8              vee         GND            vee
+     0000-8             0001           0001              UA87           X           GND
+     0000-8             0000              X              0001           X           X
+     0001-8             0000           0001              X              X           X
+       0001             0001              X              0001           X           X
+       0000             0001           0001              X              X           X
+       GND              0000              X              0001           X           X
+                                       0001              X              X           X
+                                          X              0001           X           X
+                                      GND                X           GND            X
+
+
+               IC15                             IC16                         IC17
+
+       vee              vee            vee               vee         vee            vee
+       0001             0001           0001              0001        0001           0001
+          X             X                 X              X              X           X
+          X             X                 X              X              X           X
+       0001             0001           0001              0001        0001           0001
+       0001             0001           0001              0001        0001           0001
+          X             X                 X              X              X           X
+          X             X                 X              X              X           X
+       0001             0001           0001              0001        0001           0001
+       GND              e34e          GND                1920        GND            597e
+
+
+               IC18                             IC19                         IC20
+        0000            vee            0001              vee            x           0001
+        0001            4154           0001              X              X           X
+        0001            0001           0001              X           0001           0001
+     0001-8             X              0001              X           GND            vee
+     0000-8             0001           0001              X           0001           0001
+0000 or 0001            X              0001              X              X           X
+0000 or 0001            0001           0001              X              X           0001
+0000 or 0001            X              0001              X
+0000 or 0001            0001              X              X
+       GND              X
+
+
+Appendix C
+Practical Microprocessors                                                                    397
+                                     TABLE C-2. FREERUN ROM SIGNATURES
+
+
+## Page 424
+
+
+
+                                                                   S036A SWITCHES
+        SOO4A
+      SWITCHES
+
+       START    "L
+                          5036A
+                       CONNECTIONS
+
+                            ROM
+                                                       SA
+
+
+                                                  I[;J~I
+                                                            FR
+                                                                                     I~~~~~~~~ I~~::: ;
+                                                                                       76543210
+                                                                                        INPUT S~VITCHES
+       STOP     I           ROM                        -NORM
+
+
+       CLOCK S
+
+
+      VCC SIGNATURE
+                           READ
+
+
+                           7A70
+                                              I~~~~~~~~ I~~::"'
+                                                      BUS SWITCH
+                                                                                Data Lines
+                                                                                DO
+                                                                                01
+                                                                                02
+                                                                                     A66U
+                                                                                     H278
+                                                                                     1P32
+                                                                                              AO
+                                                                                              A1
+                                                                                              A2
+                                                                                                    Address Lines
+                                                                                                   H62U
+                                                                                                   C21A
+                                                                                                   HA07
+                                                                                                          A8 9635
+                                                                                                          A9 1734
+                                                                                                          A108P54
+                                                                                03   14FH     A3   HOAA   A110000-8
+                                                                                04   A314     A4   P030   A120000-8
+                     IC1                                    IC2
+                                                                                05   OHF1     AS   4442   A130000-8
+        GNO                   VCC              0000                VCC          06   1HHA     A6   4U2A   A140000-8
+                                                                                07   AC52     A7   0772   A150000-8
+       0000-8                 0000            H62U                 0772
+       0000-8                 0000-8         7A70-8                0000-8                          IC3
+        8P54                  0000-8         7A70-8                7A70-8
+                                                                                          X               VCC
+        8P54                  0000-8          C21A                 4U2A
+                                                                                          X               0000
+         1734                 0000-8          HA07                 4442
+                                                                                       0000               0000
+         1734                 0000-8         7A70-8                7A70-8
+                                                                               0000 or 0001               7A70-8
+         9635                 0000-8         7A70-8                7A70-8
+                                                                                       0000               7A70
+        9635                  0000-8          HOAA                 P030
+                                                                                       0000               7A70
+        GNO                   0000-8           GNO                 7A70-8
+                                                                                       0000               0000
+                                                                                       0000               7A70
+                     IC4                                    ICS                        0000               7A70-8
+        0772                  VCC             4U2A                 VCC                 0000               7A70
+        4U2A                  9635             4442                0772               7A70                0000-8
+        4442                  1734             P030                9635              7A70-8               7A70
+        P030                  7A70            HOAA                 1734              7A70-8               0000-8
+       HOAA                   0000-8          H62U                 A66U              7A70-8               0000-8
+        HA07                  8P54            C21A                 H278              7A70-8               0000-8
+        C21A                  0000-8          HA07                 1P32              7A70-8               0000-8
+        H62U                  AC52           7A70-8                14FH              7A70-8               0000-8
+        A66U                  1HHA            GNO                  7A70              7A70-8               8P54
+        H278                  OHF1                                                   0000-8               1734
+        1P32                  A314                                                    GNO                 9635
+        GNO                   14FH
+
+
+                     IC6                                    IC7                                    Ica
+        4U2A                  VCC            0000-6                VCC                7A70                VCC
+        4442                 0772            OOOO-B                OOOO-B              0000               7A70-B
+        P030                 9635            0000-8                7A70-8             7A70                0000-8
+       HOAA                   1734           0000-8                7A70-B             GNO                 HA07
+        H62U                  A314           0000-8                7A70-B             H62U                C21A
+        C21A                  OHF1           7A70-B                7A70-8            0000-8               0000-8
+        HA07                  1HHA           7A70-B                7A70-B            7A70-8               7A70-8
+      7A70-8                  AC52            GNO                  7A70-B              GNO                7A70-8
+        GNO                   7A70
+
+
+X = Don't Care Signature B = Blinking GND or VCC Signature                                            Appendix C
+398
+
+
+## Page 425
+
+
+
+                      TABLE C-2. FREERUN ROM SIGNATURES (Continued)
+
+
+                ICg                          IC10                         IC11
+
+       7A70           vcc         7A70-8               vcc       7A70-8          vcc
+       7A70           9635          VCC                7A70-8    0000-8          7A70
+       0000           1734          0000               VCC       7A70-8          0000-8
+       7A70           P5AP        7A70-8               C21A      0000-8          7A70
+     0000-8           P5AP        0000-8               VCC       7A70-8          0000-8
+     7A70-8           0000-8      7A70-8               7A70-8    7A70-8          7A70-8
+       GND            7A70-8        GND                0000-8     GND            7A70-8
+
+
+               IC12                          IC13                         IC14
+
+     7A70-8           VCC         OOOO-B               VCC        GND            VCC
+     0000-8           7A70          7A70               7A70-8     A66U           GND
+     0000-8           0000         A66U                7A70       A66U           AC52
+     7A70-8           0000          7A70               AC52       H278           AC52
+       7A70           7A70          H278               7A70       H278           1HHA
+       0000           7A70          7A70               1HHA        1P32          1HHA
+       GND            0000          1P32               7A70        1P32          OHF1
+                                    7A70               OHF1       14FH           OHF1
+                                    14FH               7A70       14FH           A314
+                                    GND                A314       GND            A314
+
+
+               IC15                          IC16                         1C17
+
+       vec            vcc           VCC                VCC         VCC           VCC
+       7A70           7A70          7A70               7A70       7A70           7A70
+       A66U           AC52         A66U                AC52       A66U           AC52
+       H278           1HHA          H278               1HHA       H278           1HHA
+       7A70           7A70          7A70               7A70       7A70           7A70
+       7A70           7A70          7A70               7A70       7A70           7A70
+       1P32           OHF1          1P32               OHF1        1P32          OHF1
+       14FH           A314         14FH                A314       14FH           A314
+       7A70           7A70          7A70               7A70       7A70           7A70
+       GND            7A70-8        GND                7A70-8     GND            7A70-8
+
+
+               IC18                          IC19                         IC20
+       0000           VCC           7A70                              X
+                                                       VCC                       7A70
+       7A70           7A70-8                           X
+                                    7A70                              X          X
+       7A70           7A70                             X
+                                    7A70                          7A70           7A70
+     7A70-8           14FH
+                                    7A70               X           GND           VCC
+     0000-6           7A70                             X
+                                    7A70                           7A70          7A70
+0000 or 0001          1P32                             X              X
+                                    7A70                                         X
+0000 Qr 0001          7A70
+                                    7A70               X              X          7A70
+0000 or 0001          H278                             X
+                                    7A70
+0000 or 0001          7A70
+                                       X               X
+       GND            A66U
+
+
+Appendix C
+Practical Microprocessors                                                                 399
+                                       TABLE C-3. S.A. WRITE SIGNATURES
+
+
+## Page 426
+
+
+
+                                                                     S036A SWITCHES
+         SOO4A
+       SWITCHES
+
+       START    I
+                         S036A
+                      CONNECTIONS
+
+                            A15
+                                                 MOVEU'
+                                               THEN DOWN.
+                                                             ~
+                                                                     SA
+
+                                                                          [;]
+                                                                             FR
+
+                                                                                           I~~~~~~~~ I~~~::;
+                                                                                             15543210
+                                                                                              I NPUT SWITCHES
+       STOP     I           A15                                       NORM
+
+
+       CLOCK .I
+
+
+    VCC SIGNATURE: ICAU
+                           WRITE
+
+                                                 I~~~~~~~~ I:~:':"'
+                                                        BUS SWITCH
+                                                                                      Data Lines
+                                                                                      DO
+                                                                                      01
+                                                                                      02
+                                                                                           937H
+                                                                                           C072
+                                                                                           F5A5
+                                                                                                    AO
+                                                                                                    Al
+                                                                                                    A2
+                                                                                                          Address Lines
+                                                                                                         UU3P
+                                                                                                         209C
+                                                                                                         HHCO
+                                                                                                                A8 9P91
+                                                                                                                A9 0765
+                                                                                                                Al00000-8
+                                                                                      03   UAOP     A3   85A9   Al1 1 P3H
+                                                                                      04   51H6     A4   6F64   A121C32
+                    IC1                                      IC2                      05   AU8U     AS   7A21   A137A26
+        GNO                 VCC                  0000                 VCC             06   2PPH     A6   A2UC   A140000-8
+                                                                                      07   H011     A7   3483   A159678
+        lP3H                0000                 UU3P                 3483
+        1P3H                9678                 937H                 H01l                               IC3
+       0000-8               9678                 con                  2PPH
+                                                                                                X               VCC
+       0000-8               0000-8               209C                 A2UC
+                                                                                                X               0000
+        0765                0000-8              HHCO                  7A2l
+                                                                                             0000               0000
+        0765                7A26                 F5A5                 AU8U
+                                                                                           1CAU-B               ICAU-8
+        9P91                7A26                 UAOP                 51H6
+                                                                                             0000               1CAU
+        9P91                1C32                 85A9                 6F64
+                                                                                             0000               lCAU
+        GND                 lC32                 GND                  1CAU-B
+                                                                                             0000               FP05
+                                                                                             0000               0000-8
+                    IC4                                      IC5                             0000               1CAU-8
+        3483                VCC                 A2UC                  VCC                    0000               lCAU-B
+       A2UC                 9P9l                 7A21                 3483                  1CAU                0000-8
+
+        7A21                0765                 6F64                 9P91                   937H               1CAU-8
+        6F64                lCAU                 85A9                 0765                   C072               9678
+        85A9                1CAU-8              UU3P                  937H                   F5A5               0000-8
+       HHCO                 0000-8               209C                 C072                  UAOP                7A26
+        209C                1CAU-8              HHCO                  F5A5                   51H6               1C32
+        UU3P                H011                 1FFA                 UAOP                  AU8U                lP3H
+        937H                2PPH                 GNO                  0000-8                2PPH                OOOO-B
+        C072                AU8U                                                             H01l               0765
+        F5A5                51H6                                                             GND                9P91
+        GND                 UAOP
+
+
+                    IC6                                      IC7                                         Ica
+       A2UC                 VCC                  1P3H                 VCC                   1CAU                VCC
+        7A21                3483                 lC32                 1CAU-B                 0000               0000
+        6F64                9P91                 7A26                 FP05                  1CAU                1CAU
+        85A9                0765               0000-8                 39U4                   GND                HHCO
+       UU3P                 51H6                 9678                 lCAU-B                UU3P                209C
+        209C                AU8U              1CAU-B                  1CAU-8                 0599               1CAU
+       HHCO                 2PPH                 9377                 58PO                   1P36               0000
+        lFFA                H011                 GND                  AA1P                   GND                39U4
+        GNO                 0000-8
+
+
+x = Don't Care Signature     B =   Blinking GND or VCC Signature                                             Appendix C
+
+
+## Page 427
+
+
+
+                   TABLE C-3. S.A. WRITE SIGNATURES (Continued)
+
+
+          IC9                            IC10                         IC11
+
+  1CAU           VCC          1CAU-8              VCC         FP05           VCC
+  1CAU           9P91            VCC              0000       CCA8            1CAU
+   0000          0765            0000             VCC        1FFA            1CAU
+ 0000-8          1FFH            0000             209C        0599           1CAU
+1CAU-B           1FFH           1CAU              VCC         0762           1CAU-8
+1CAU-B           1CAU-8        0000-8             0000        A007           1CAU-8
+   GND           0762            GND              1CAU        GND            1CAU-8
+
+
+          IC12                           IC13                         IC14
+
+   A007          VCC         1CAU-8               VCC        GND             VCC
+  CCA8           1CAU          1CAU               1CAU-8     937H            GND
+ 0000-8          0000           937H              1CAU       937H            H011
+1CAU-8           0000          1CAU               H011       C072            H011
+  1CAU           1CAU           C072               ICAU      C072            2PPH
+   0000          1CAU          1CAU               2PPH       F5A5            2PPH
+   GND           0000           F5A5              1CAU        F5A5           AU8U
+                               1CAU               AU8U       UAOP            AU8U
+                               UAOP               1CAU       UAOP            51H6
+                                GND               51H6       GND             51H6
+
+
+          IC15                           IC16                         IC17
+
+   VCC           VCC             VCC              VCC         VCC            VCC
+  HA59           CCC4           6PPH              22HH       65CU            C15H
+  937H           H011           937H              H011       937H            H011
+  C072           2PPH           C072              2PPH        C072           2PPH
+  PH2F           7769           C776              45CC        8957           70PP
+   7696          PPH2          5CCC               8C77       A5A1            1625
+  F5A5           AU8U            F5A5             AU8U        F5A5           AU8U
+ UAOP            51H6          UAOP               51H6       UAOP            51H6
+ CC4C            HHA5          2HHH               16PP        6037           81H5
+  GND            AA1P           GND               9377       GND             58PO
+
+
+          IC18                           IC19                         IC20
+  0000           VCC           6PPH               VCC             X          65CU
+1CAU-8           1CAU-8         C776              X             X            X
+1CAU-8           ICAU
+                               5CCC               X          81H5            8957
+1CAU-8           UAOP          2HHH               X          GND             VCC
+1CAU-8           1CAU
+                                16PP              X          1625            A5A1
+1CAU-8           F5A5
+                               8C77               X               X          X
+1CAU-8           1CAU
+                               45CC               X               X          6037
+1CAU-8           C072
+                               22HH               X
+1CAU-8           1CAU
+                                   X              X
+  GND            937H
+
+
+                                                                                      401
+                                       TABLE C-4. S.A. READ SIGNATURES
+
+
+## Page 428
+
+
+
+                                                                       5036A SWITCHES
+        5004A
+      SWITCHES
+
+       START    S
+                             5036A
+                        CONNECTIONS
+
+                              A15
+                                                 MOVE UP
+                                                THEN DOWN
+                                                              ~
+                                                                        SA
+
+                                                                      . ~ [;]
+                                                                               FR
+                                                                                         I~~~~~~~~ I~~~::;
+                                                                                          1G543210
+                                                                                           INPUT SWITCHES
+       STOP     ..r           A15                                       NORM
+
+
+       CLOCK    ..r
+
+      VCC SIGNATURE
+                             READ
+
+
+                            AU35
+                                                  I~~~~~~~Q I:~;:~w'
+                                                         BUS SWITCH
+                                                                                    Data Lines
+                                                                                    DO
+                                                                                    D1
+                                                                                    D2
+                                                                                         0122
+                                                                                         A7FP
+                                                                                         8863
+                                                                                                        Address Lines
+                                                                                                    AO 773F
+                                                                                                    A1 4H2F
+                                                                                                    A2 6087
+                                                                                                              A8 3U98
+                                                                                                              A9 3U98
+                                                                                                              A102UPO
+                                                                                    D3   H3A4       A3 5HA7   A11 AAH3
+                                                              IC2                   D4   F616       A4 6757   A12954C
+                      IC1
+                                                                                    D5   5C74       A5 HUC6   A1352A9
+                               VCC                0000                  VCC         D6   P165       A6 1C96   A140000-B
+        GND
+                                                                                    D7   36A9       A7 PAU5   A1578AU
+       AAH3                    0000               773F                  PAU5
+       AAH3                    78AU               0122                  36A9                          IC3
+        2UPO                   78AU              A7FP                   P165
+                                                                                                X             VCC
+        2UPO                  OOOO-B             4H2F                   1C96
+                                                                                                X             0000
+        3U98                  OOOO-B              6087                  HUC6
+                                                                                          0000                0000
+        3U98                  52A9                8863                  5C74
+                                                                                          13F3                AU35-B
+        3U98                  52A9               H3A4                   F616
+                                                                                          0000                AU35
+        3U98                  954C               5HA7                   6757
+                                                                                          0000                AU35
+        GND                   954C                GND                   AU35-B
+                                                                                          0000                CU4H
+                                                                                          0000                AU35-B
+                      IC4                                     IC5                                             AU35-B
+                                                                                          0000
+       PAU5                    VCC               1C96                   VCC               0000                AU35-B
+
+        1C96                  3U98               HUC6                   PAU5              AU35                OOOO-B
+
+       HUC6                   3U98                6757                  3U98              0122                2F69
+
+        6757                  AU35               5HA7                   3U98              A7FP                78AU
+
+       5HA7                   80H5                773F                  0122              8863                OOOO-B
+
+        6087                  2UPO               4H2F                   A7FP              H3A4                52A9
+
+        4H2F                  OOOO-B              6087                  8863              F616                954C
+
+        773F                  36A9               90AH                   H3A4              5C74                AAH3
+
+        0122                  P165                GND                   AU35-B            P165                2UPO
+
+        A7FP                  5C74                                                        36A9                3U98
+
+        8863                  F616                                                        GND                 3U98
+
+        GND                   H3A4
+
+
+                      IC6                                     IC7                                     Ica
+
+        1C96                  VCC                AAH3                   VCC               AU35                VCC
+
+       HUC6                    PAU5               954C                  80H5              0000                0000
+
+        6757                  3U98                52A9                  90AH              AU35                AU35
+
+       5HA7                   3U98              OOOO-B                  AU35              GND                 6087
+
+        773F                   F616              78AU                   3A7P              773F                4H2F
+
+        4H2F                  5C74             AU35-B                   UH9F              H443                AU35
+
+        6087                   P165            AU35-B                   AU35-B            7C76                0000
+
+       90AH                   36A9                GND                   AU35-B            GND                 AU35-B
+
+        GND                   AU35-B
+
+
+X = Don't Care Signature       B = Blinking GND or VCC Signature                                          Appendix C
+
+
+## Page 429
+
+
+
+                        TABLE C-4. S.A. READ SIGNATURES (Continued)
+
+
+              IC9                             IC10                         IC11
+
+     AU35             VCC          AU35-B              VCC         90AH           VCC
+     AU35             3U98           VCC               0000       OOOO-B          AU35
+      0000            3U98           0000              VCC         90AH           AU35
+    AU35-B            90AH           0000              4H2F         H443          AU35
+    OOOO-B            90AH          AU35               VCC        AU35-B          OOOO-B
+    AU35-B            OOOO-B       OOOO-B              0000       AU35-B          3A7P
+      GND             AU35-B         GND               AU35         GND           3A7P
+
+
+              IC12                            IC13                         IC14
+
+    AU35-B           VCC           OOOO-B              VCC          GND           VCC
+    OOOO-B           AU35           AU35               UH9F        0122           GND
+    OOOO-B           0000            0122              AU35        0122           36A9
+    AU35-B           0000           AU35               36A9        A7FP           36A9
+     AU35            AU35           A7FP               AU35        A7FP           P165
+      0000           AU35           AU35               P165        8863           P165
+      GND            0000            8863              AU35        8863           5C74
+                                    AU35               5C74        H3A4           5C74
+                                    H3A4               AU35        H3A4           F616
+                                     GND               F616         GND           F616
+
+
+              IC15                            IC16                         IC17
+
+     VCC             VCC             VCC               VCC          VCC           VCC
+     C202            OAF8           6C01               C139        HF4A           4787
+     0122            36A9           0122               36A9        0122           36A9
+     A7FP            P165           A7FP               P165        A7FP           P165
+     H2F8            C214           91AF               4P53        7H76           882F
+     674C            852F           CA46               94F9         3011          P21H
+     8863            5C74           8863               5C74         8863          5C74
+     H3A4            F616           H3A4               F616        H3A4           F616
+     F19H            4C06           92P9               324C         4923          H071
+      GND            AU35-B          GND               AU35-B       GND           AU35-B
+
+
+             IC18                             IC19                         IC20
+     0000            VCC            6C01               VCC                        HF4A
+                                                                       X
+   AU35-B            3A7P           91AF               X                          X
+                                                                       X
+   AU35-B            AU35           CA46               X            H071          7H76
+   AU35-B            H3A4           92P9               X            GND           VCC
+   OOOO-B            AU35           324C               X           P21H           3011
+     13F3            8863           94F9               X               X          X
+     13F3            AU35           4P53               X                          4923
+                                                                       X
+     13F3            A7FP           C139               X
+     13F3            AU35              X               X
+      GND            0122
+
+Appendix C
+Practical Microprocessors                                                                  403
+             TABLE C-4. S.A. READ SIGNATURES {Continued}
+
+
+## Page 430
+
+
+
+                                NOTE
+      Place all INPUT SWITCHES down for the Input Port Test and
+      Keyboard Test and check data line signatures as shown:
+
+
+                          I~~~~~~~~ I~~~:~:
+                            76543210
+                             INPUT SWITCHES
+
+
+        Input Port Test
+
+        DO      538C
+        01      U567
+        02      HAFA
+        03      810H
+        04      94CU
+        05      09HH
+        06      C3FF
+        07      6400
+
+        Keyboard Test
+
+        DO      F6FO       when 0, 1,4, 7, A or d key is pressed
+        01      602F       when 2, 5, 8, b or E key is pressed
+        02      4U81       when 3, 6, 9, C or F key is pressed
+        03      1446       when HOWR STEP key is pressed
+
+
+                                                                           Appendix C
+
+
+## Page 431
+
+
+
+_ _ _ _ _ _ APPENDIX D
+                                                                              Reading Logic
+                                                                                  Diagrams
+
+
+It is absolutely necessary that you be able to read logic diagrams in order to
+understand and troubleshoot microprocessor-based systems. Should you need a
+complete review of logic symbology, refer to HP's Practical Digital Electronics
+Course.
+
+One aspect of logic symbology that seems to cause more confusion than is
+necessary is centered around the use of the logic low level indicators (small
+bubbles). These logic low level indicators can be used to establish two different
+symbols to represent the same physical device. To clarify this important concept,
+the relationship between the basic AND gate and OR gate is shown in Table D-l
+By comparing the symbol changes to the truth tables, you can see that both
+symbols in each example satisfy the same truth table. In formal Boolean logic
+this relationship is defined by De Morgan's theorem (AB=A+B). Note that
+while it is not necessary to understand this theorem to understand (and
+troubleshoot) microprocessor systems, the use of Boolean logic does make
+some of the more advanced concepts simpler to learn.
+
+
+               EQUIVALENT SYMBOLS                            TRUTH TABLE
+          (N)AND                      (N)OR             A        B       X
+
+
+  :~x :=U- x
+                                                        1        1       1
+                                                        1        0       0
+                                                        0        1       0
+                                                        0        0       0
+
+
+  :=O-x :=U- x
+                                                        1        1       0
+                                                        1        0       1
+                                                        0        1       1
+                                                        0        0       1
+
+                                                        1        1
+
+  :=D-x :===D-x
+                                                                         0
+                                                        1        0       0
+                                                        0        1       0
+                                                        0        0       1
+                                                        1        1       1
+
+  :=C>-x :=D-x                                          1
+                                                        0
+                                                        0
+                                                                 0
+                                                                 1
+                                                                 0
+                                                                         1
+                                                                         1
+                                                                         0
+
+
+                      Table 0-1. Basic Gate Relationships
+
+
+Appendix D
+Practical Microprocessors                                                                405
+      When you read logic diagrams you may notice that the use of these two symbols
+
+
+## Page 432
+
+> [!note]
+> This page contains structured educational or figure-referenced content. Use the page image when exact labels, code, or tabular alignment matters.
+
+
+      is sometimes misleading. The reason for this confusion is that the person who
+      drew the diagram did not conform to the original conventions for the use of the
+      symbols. The purpose of having two symbols (for identical gates) is to allow the
+      use of the symbol that shows the functional application of the gate in a specific
+      circuit. Unfortunately, since the designer already knows what the gate does, he
+      sometimes does not bother to differentiate between the same physical gate used
+      in different ways. He shows all of the gates the way they are shown in the manu-
+      facturer's specification. To avoid this problem, the gates shown in this course are
+      drawn to indicate the specific functional application in the circuit shown.
+
+      As an example of the difference that the use of proper symbology can make, see
+      Figure 0-1. All of these circuits are identical and could be implemented using a
+      7400 gate. The choice of symbols is determined by the information that you wish
+      to convey to the reader. Note the differences in the three cases illustrated. In case
+      1 you can be fairly confident that low level signals are intended to activate gates A
+      and B and that a low level signal is the active output from gate C. With this
+      knowledge it is easier to check circuit operation. Case 2 is similar but has active
+      high level signals being implied as the inputs and the output of the combined
+      gates. However, in case 3, the same symbol is used for all three gates and it is
+      difficult to determine exactly how the circuit is intended to function. An additional
+      complication is added because the implied active low level outputs of gates A and
+      B are connected to the implied active high level inputs of gate C. The most
+      important point to remember is that circuit operation is identical in all three cases.
+      The only reason to use different symbols is to help the user understand the
+      purpose of the circuits in a specific application. Unfortunately more circuits are
+      drawn using the standard symbol in the manufacturer's specification than are
+      drawn using functional symbols. If you keep in mind the distinctions between the
+      different styles of logic diagrams, it is easier to determine how a specific circuit
+      operates.
+
+
+       A
+
+       8
+
+                                                                           TRUTH TABLE
+                                                                      A    B    C D    X
+       D                                 IMPLIED LOGIC FUNCTION IS
+                                         (A+8). (C+D) = X              0   0    0 0    0
+                             CASE 1
+                                                                       0   0    0 1    0
+                                                                       0   0    1 0    0
+       A                                                               0   0    1 1    1
+                                                                       0   1    0 0    0
+       8                                                               0   1    0 1    0
+                                                      X                0   1    1 0    0
+                                                                       0    1   1 1    1
+       C                                                               1    0   0 0    0
+       D                                 IMPLIED LOGIC FUNCTION IS     1    0   0 1    0
+                                         (A. 8) + (C • DJ = x          1    0   1 0    0
+                            CASE 2
+                                                                            0   1 1    1
+                                                                            1   0 0    1
+       A                                                                    1   0 1    1
+                                                                            1   1 0    1
+       B
+                                                                            1   1      1
+                                                      X
+       C
+                                        IMPLIED LOGIC FUNCTION IS
+       D                                DIFFICULT TO DETERMINE
+                            CASE 3
+
+
+                            Figure 0-1. Functional Logic Diagrams
+
+
+                                                                            Appendix 0
+406                                                           Practical Microprocessors
+
+
+## Page 433
+
+
+
+-          _ _ _ _ _ APPENDIX E
+                                                                    Demonstration and
+                                                                       Utility Programs
+
+
+This appendix contains the procedures required to run the demonstration and
+utility programs. A complete listing of all of these programs is contained in
+Appendix F.
+
+
+There are nine demonstration programs and each is run by loading the starting      DEMONSTRATION
+address and pressing RUN. For your convenience, each demonstration pro-
+                                                                                   PROGRAMS
+gram name and starting address is listed in Table E-1. Once you are familiar
+with each program, this information is all you will need to run the programs. In
+addition, detailed procedures are provided for your use when required.
+
+
+                Mnemonic     Starting       Description
+                             Address
+                  ECHO        0407 Presents input switch
+                                      data on output LEOs.
+                 ANOGT         04EO     Causes input switches
+                                        and output port to func~
+                                        tion as an AND gate.
+                  CONY         O4F8     Conveyor belt control-
+                                        ler.
+                   WTM         053E     WeU-tempered micro-
+                                        processor generates ran-
+                                        dom tones from the
+                                        ROM.
+                  SQRl                 $~rrel feedtJackshift
+                                        reg4ster disprdV··
+                 ORGAN                  KeybOard· tone genera-
+                                        tion.
+                  ROCT         05F9 • Rocket blast-off.
+                   STW         e662 Stopwatch.
+                  SNAKE        06C2     Snake paddle game;
+
+                        Table E-1. Demonstration Programs
+
+
+Appendix E
+Practical Microprocessors                                                                     407
+ECHO Procedure (presents input switch data                      b. Press the FETCH ADRS key and enter
+
+
+## Page 434
+
+
+on output LEOs):                                                   053E on the hexadecimal keys.
+  a. Press the RESET key if the display does                    c. Press RUN to start the program.
+                                                                d. Press RESET to exit the program.
+     not show u L R bLIP
+                                                              SQRl Procedure (squirrel feedback shift regis-
+  b. Press the FETCH ADRS key and enter                       ter display):
+     0407 on the hexadecimal keys.
+                                                                a. Press the RESET key if the display does
+  c. Press RUN to start the program.
+  d. Move the INPUT SWITCHES to any ran-                           not show u L R bLIP
+     dom combination of LOGIC 1 and LOGIC
+                                                                b. Press the FETCH ADRS key and enter
+     O. Note that the corresponding LEOs re-
+                                                                   055A on the hexadecimal keys.
+     flect whatever is set on the INPUT
+                                                                c. Press RUN to start the program.
+     SWITCHES. Keep in mind that the LED
+                                                                d. Observe the shifting pattern on the AD-
+     lights when the corresponding INPUT
+                                                                   DRESS/REGISTER display.
+     SWITCH is set to LOGIC O.
+  e. Press RESET to exit the program.                                                   Note
+                                                                   This pattern is generated by an
+ANDGT Procedure (causes input switches and                         algorithm similar to the one used
+output port to function as an AND gate):                           to compress data in the signature
+  a. Press the RESET key if the display does                       analyzer.
+     not show u L R b UP                                        e. Press RESET to exit the program.
+  b. Press the FETCH APRS key and enter                       ORGAN Procedure (keyboard tone generation):
+      04EO on the hexadecimal keys.                             a. Press the RESET key if the display does
+  c. Press RUN to start the program.                               not show u L R b U P
+  d. Move all of the INPUT SWITCHES to
+      LOGIC 1 and verify that OUTPUT LED 0                      b. Press the FETCH ADRS key and enter
+      lights.                                                      0599 on the hexadecimal keys.
+  e. Move     any combination     of   INPUT                    c. Press RUN to start the program.
+      SWITCHES to LOGIC 0 and verify that
+      OUTPUT LED 0 goes off.                                                            Note
+   f. Press RESET to exit the proqram.                             The hexadecimal keys now control
+CONV Procedure (conveyor belt controller dis-                      individual tone generators. The low-
+cussed in Lesson 3):                                               est frequency tone is controlled by 0
+                                                                   and the highest frequency tone is
+  a. Press the RESET key if the display does
+                                                                   controlled by F. Only one key should
+     not show u L R b U P                                          be pressed at a time. Table E-2 lists
+                                                                   the keys and their corresponding
+  b. Press the FETCH ADRS key and enter
+                                                                   notes.
+      04F8 on the hexadecimal keys.
+  c. Press RUN to start the program. The dis-
+      play shows 0, which indicates the number
+                                                                                 Note              Key
+      of gears that have passed the electric eye.                                                   n
+                                                                                  0                 LI
+  d. Press the 0 key. This simulates a pulse                                      E                  ,
+                                                                                                     I
+
+      from the electric eye. The display changes                                  F                 2
+      accordingly.                                                                A                 :I
+  e. Repeat step d until the display indicates                                     B                Y
+                                                                            middle C                c
+      that ten gears have passed. The OUTPUT                                                         -'
+                                                                                  0                 6..,
+      LEOs then simulate the motion of the box                                    E                     I
+      conveyor and an audio tone is generated.                                    F                 8
+   f. Repeat step e to see the process repeat.                                    G                 '3
+  g. Press RESET to exit the program.                                             A                 R
+                                                                                  B                 b
+                                                                                  C                 [
+WTM Procedure (well-tempered microproces-                                         0                 d,-
+sor generates pseudo random tones from the                                        E                 e
+                                                                                  F                 F
+ROM):
+  a. Press the RESET key if the display does
+     not show u L R b U P                                          Table E-2. Musical notes for Organ Program
+
+
+                                                                                                       Appendix E
+408
+
+
+## Page 435
+
+
+
+  d. Press any sequence of hexadecimal keys.                               b . Press the FETCH ADRS key and enter
+     If you have sufficient musical talent you                                 06C2 on the hexadecimal keys.
+     can play simple tunes.                                                c. Press RUN to start the program .
+  e. Press RESET to exit the program.
+                                                                                              Note
+ROCT Procedure (rocket blast-off) :                                           The rules of the game are simple.
+  a. Press the RESET key if th e display does                                 The DECR key controls the left pad-
+     not show u L R b U P                                                     dle and the 3 key controls the right
+  b. Press the FETCH ADRS key and enter                                       paddle. The left paddle (DECR )
+     05F9 on the hexadecimal keys.                                            starts the game by serving the little
+  c. Press RUN to start the program .                                         red dash to the opposing player (you
+  d. Observe the countdown on the display fol-                                may play against yourself) . Now lets
+     lowed by the simulated sound and visual                                  start a game and the remain ing rules
+     effect of a rocket taking off.                                           will be explained as you progress.
+  e. Press RESET to exit the program or RUN                                d. The player using the left paddle should
+     to repeat it.                                                            press the DECR key. Note th at the red
+                                                                              dash begins to "snake" across the display.
+STW Procedure (stopwatch) :
+                                                                           e. The player using the ri ght paddle should
+  a. Press the RESET key if the display does                                  wait u n'ti I the red dash reaches its fi nal
+     not show u L R b U P                                                     position (upper right hand corner of the
+                                                                              ADDRESS/ REGISTER display) before press-
+  b. Press the FETCH ADRS key and enter                                       ing the 3 key.
+      0662 on the hexadecimal keys.
+  c . Press RUN to start the program.                                                                Note
+                                             nn                              The most important skill to develop
+  d. Verify that the display shows 0      00 ULI                             in the snake paddle ball game is to
+                                                                             learn to correctly judge the amount
+  e. Press the 3 key and verify that the display                             of time the red dash remains in each
+     starts to count in 1/ 100 of a second incre-                            position as it travels across the dis-
+     ments. Press the 3 key again to halt the                                play. This time judgement is impor-
+     timer. Pressing the 3 key will alternately                              tant because the amount of time the
+     start and stop the timer. The timer can                                 dash remains in the home (final) po-
+     count to 9 minutes 59 seconds 99 one-                                   sition determines the speed of the re-
+     hundreds of a second before starting                                    turn (see Table E-3) . The objective of
+     again.                                                                  timing the return is to be able to
+  f. Press the 0 key to reset the timer.                                     press the key during period 3. If you
+  g. Press RESET to exit the program .                                       time your response correctly, the re-
+                                                                             sulting faster return is more difficult
+SNAKE Procedure (Snake paddle game):                                         for your opponent to handle . An au-
+  a. Press the RESET key if the display does                                 dible trill signals the change in return
+     not show u L R b U P                                                    speed (faster or slower ).
+
+
+                                                   Direction of dash
+
+
+         OK to               Press the            Press the key during        Press the key during        Dash goes out and
+         press key           key during this      this period and the         this period and the         you lose a point.
+         before dash         peri od and you      speed 01 the return is      speed is doubled.
+         reaches home        lose a point.        reduced by one-half.
+         pOSition.
+
+
+                                 8                        CD                         CD
+         ~r~~~s /~.--------
+               at
+         home position.
+                                                    Total time period
+                                                    dash is at home
+                                                    position.
+                                                                        ---------o_~.
+                                                                                                     .1
+
+                                           Table E-3.    Timing the Return
+
+
+Appendix E
+Practical Microprocessors                                                                                                     409
+ f. Now, whoever has the red dash stationary                              the serve if you had it on the previous
+
+
+## Page 436
+
+
+    on his side has the serve and should start                            serve. The position of the dash on the dis-
+    the volley by pressing the control key                                play indicates which player has the serve.
+    (DECR or3).                                                           The game is set for 10 points. Therefore,
+g. Continue to volley and try to return the red                           the first player to show the hexadecimal
+    dash faster by correctly timing the return.                           character A on his side is the winner. Note
+h. Whenever either player misjudges the tim-                              that pressing the control keys has no effect
+    ing for the return, his opponent scores a                             once a player has won a game.
+    point. The speaker sounds to indicate a
+    point has been scored. The score for each                          i. To start another game press the 0 key. This
+    player is shown on the appropriate side of                            resets the scoreboard and enables the left
+    the DATA display. Each time you score a                               paddle player to begin the game by serv-
+    pOint you either become the serving player                            ing the red dash to his opponent.
+    (if your opponent had the serve) or retai n                        j. Press RESET to exit the program.
+
+
+UTILITY PROGRAMS
+  The utility programs are subroutines that you can use when writing your own programs. Table E-4lists
+the utility programs and gives the starting address, the registers that are modified by the subroutine, the
+required input data, and a brief description of the program. For some examples of the use of these utility
+programs, refer to Experiments 14-1 and 14-3.
+
+
+       Program      Registers      Data          Starting                         Comments
+        Name        Modified     Required        Address
+
+         BEEP          All         None           0010'     Produces a single beep of fixed frequency and dura-
+                                                            tion. Can also be called by coding a 07 into your
+                                                            program. 07 is a Restart 2 command (RST 2).
+
+
+        BEEP 1      All except     Set B           0012     Produces a single beep of fixed duration at the fre-
+                         B        for freq                  quency established by register B. When B is set to
+                                                            a small value, the beep tone is a high frequency
+                                                            (the minimum value allowed is 01). When B is set to
+                                                            a larger value, the tone is lower in frequency.
+
+
+        BEEP 2      All except     Set B           0447     Produces a single beep with the frequency estab-
+                     Band 0       for freq.                 lished by register B (see BEEP 1). The duration of the
+                                 and 0 for                  beep is established by register O. The larger the value
+                                  duration                  in 0 the longer the duration of the beep (the mini-
+                                                            mum value allowed is 01).
+
+         KIND           A        keyboard         014B      Updates the display while scanning, debouncing, and
+       (key input                 inputs                    decoding the keyboard inputs. The value of the
+      and Decode)                                           pressed key (O-F) is placed in the A register.
+
+
+        KPU         A, H, and    keyboard         0185      Scans keyboard and clears the zero flag if any key is
+        (Key            L          input                    pushed.
+       Pushed)
+
+
+         SOS          None        display         01C8      The segment data stored in RAM locations OBFA to
+        (Scan                    segments                   OBFF are sent to display digits 0 to 5. Each digit is on
+       Display                                              for 1 ms during the display scan (see Table E-5).
+      Segments)
+
+
+                                              Table E-4. Utility Routines
+
+
+                                                                                                          Appendix E
+410                                                                                        Practical Microprocessors
+
+
+## Page 437
+
+
+
+        Program     Registers          Data               Starting                              Comments
+         Name       Modified         Required             Address
+
+         DCD         None            display                  01E9      Takes the display digit character codes(OO to IC)
+       (Display                       digits                            stored in RAM display locations OBFO to OBF5 and
+       Character                                                        codes them into the seven segment format. It then
+       Decoder)                                                         stores these codes in RAM display locations OBFA to
+                                                                        OBFF and scans the display one time. The decoding
+                                                                        is done using the DCC table at address 0218 (see
+                                                                        Tables E-6 and E-7).
+
+
+        STDM           All             DE                  0018'        Takes the six character message beginning at the
+        (Store                       register                           address specified in the DE register pair and stores it
+        Display                        pair                             in UDSP display RAM locations OBFO to OBF5. The
+       Message)                                                         first character of the message appears in the far right
+                                                                        position of the display. This routine is normally fol-
+                                                                        lowed by the DCD subroutine. The STDM routine can
+                                                                        also be called by coding a OF into your program. OF
+                                                                        is a Restart 3 command (RST 3).
+
+
+        DELA         None             None                    0429      Causes a fixed 1 ms delay to occur.
+        (Fixed
+        Delay)
+
+
+         DELB        None              BC                     0430      Causes a variable delay to occur. The delay is equal
+       (Variable                     register                           to approximately 1 ms times the numerical value in
+        Delay)                         pair                             the BC register pair.
+
+         RSl         None             None                0008'         Software breakpoint for return to monitor. CF is the
+                                                                        RST 1 command.
+
+       'RST can be used (see comments)
+
+                                        Table E-4. Utility Routines (Continued)
+
+
+           DDSP 0-5, Adrs OBFA -           OBFF
+            Active low, a zero bit turns on the segment
+                                           a
+
+                                 f    I-,b                                     76543210
+                                                                             IdPI 9 I fie I die I b I a I
+                                 elgl  _         •
+                                                         dp
+                                                                data byte
+
+
+
+                         RAM                                                                     Decoded Display Digit
+                       Address                                  Label                             (in segment code)
+                         OBFA                                  DDSPO                        0 (rightmost digit)
+                         OBFB                                  DDSP1                        1
+                         OBFC                                  DDSP2                        2
+                         OBFD                                  DDSP3                        3
+                         OBFE                                  DDSP4                        4
+                         OBFF                                  DDSP5                        5 (leftmost digit)
+
+
+                                               Table E-S.       Decoded Display Digits
+
+
+Appendix E
+Practical Microprocessors                                                                                                         411
+                                                                 Character
+
+
+## Page 438
+
+
+                                                                 Code in
+                                               Display          OBFO-OBF5
+                                              Character          Addresses
+                                                         n
+                                                         LI        00
+                                                          I
+                                                         I         01
+                                                     2             02
+                                                         j         03
+                                                     L{            04
+                                                     5             05
+                                                     &             06
+                                                     7             07
+                                                     8.            08
+                                                     9             09
+                                                     R             OA
+                                                     b             DB
+                                                     [             DC
+                                                     d             00
+                                                     E             DE
+                                                     F              OF
+                                               (blank)              10
+                                                     H              11
+                                                     I
+                                                     L              12
+                                                     LI             13
+                                                     P              14
+                                                     0              15
+                                                     U              16
+                                                                    17
+                                                     c             18
+                                                     I             19
+                                                     8.            1A
+                                                     I             1B
+                                                                   1C
+
+
+                                      Table E-6. Display Character Decoder
+
+
+      UDSP 0-5, Adrs OBFO - OBF5
+      Hex character codes are decoded using the Display Code Converter table (DCC) starting at address 0218 in
+      the program listing.
+
+
+                    RAM                                                          Undecoded Display Digit
+                  Address                    Label                                    (In hex code)
+                   OBFO                     UDSPO                            0    (rightmost digit)
+                   OBF1                     UDSP1                            1
+                   OBF2                     UDSP2                            2
+                   OBF3                     UDSP3                            3
+                   OBF4                     UDSP4                            4
+                   OBF5                     UDSP5                            5    (leftmost digit)
+
+
+                                        Table E-Z        Undecoded Display Digits
+
+
+                                                                                                               Appendix E
+
+
+## Page 439
+
+
+
+_ _ _ _ _ _ APPENDIX F
+                                                                      Microprocessor Lab
+                                                                             ROM Listing
+
+
+This appendix contains the complete listing of the monitor, utility and demonstra-
+tion programs stored in the ROM. The procedures for using the demonstration
+and utility programs is contained in Appendix E.
+
+Table F-1 contains an alphabetical list of the symbols and labels and the hexa-
+decimal addresses at which they are used in the program. Table F-2 is the listing
+of the ROM program. The first column is the hexadecimal address for the instruc-
+tion. Note that when an instruction opcode requires more than one location, the
+list is discontinuous. For example, the JMP opcode at location 0005 requires three
+memory locations. The address sequence at that point jumps from 0005 to 0008
+indicating that the JMP opcode used three memory locations. The second
+column is the hexadecimal contents of that address. Keep in mind that address
+information is entered least significant byte first. Therefore, in location 0005, the
+C34OO0 code causes a jump to location 0040. In the third column the user symbols
+that are used as labels are shown. The fourth column contains the instruction
+mnemonic. A complete explanation of these codes and mnemonics are contained
+in Appendix B. One important point to remember is that the 8085 assembler
+expects all numerical data to be in decimal. When hexadecimal data is used, an
+H is inserted after the number. The last column contains brief programmer com-
+ments. General comments and descriptions starting at the beginning of the fourth
+column and extending through the fifth column are placed at the start of pro-
+grams, subroutines, or modules.
+
+
+Appendix F
+Practical Microprocessors                                                               413
+ ALL     A 0281   ANDGT    A 04EO   BEEP        A 0010      BEEP1   A 0012   BEEP2     A 044
+
+
+## Page 440
+
+
+ BEEP5   A 0464   BEEP6    A 046F   BEEP7       A 047E      BEEP8   A 0480   BEEP9     A 048
+ CDCRM   A 02B3   CDCRR    A 02CD   CFETA       A 02B8      CFETP   A 02BD   CFETR     A 020
+ CINSS   A 02A4   CODE.    A 05BB   CONV        A 04F8      CRUN    A 02A9   CSTRM     A 02A
+ DCD     A 01E9   DCD1     A 01F3   DCD2        A 0210      DCRM    A 03AA   DCRR      A 03F
+ DDSP5   A OBFF   DEL1     A 0431   DEL2        A 0434      DEL3    A 0436   DELA      A 042
+ DLY     A 05AE   DMT      A 0241   DPS         A 0319      DSP     A 0038   DTIME     A 005
+ ENDGM   A 06F7   FETA     A 0328   FETA1       A 032F      FETA2   A 0340   FETA3     A 036
+ FETA6   A 0393   FETA7    A 039C   FETAR       A 0329      FETCH   A 0247   FETR      A 020
+ FETR3   A 02F1   FETR4    A 02FE   FETR5       A 0300      FETR6   A 0310   FLG       A 025
+ FSTIN   A 0001   HDSS     A 03F7   ICX         A 0287      1M      A 0270   INCR      A 001
+ KIND    A 014B   KIND1    A 0140   KIND2       A 0156      KIND3   A 0164   KIND4     A 017
+ KPU     A 0185   KPU1     A 0190   KRD         A 019A      KRD1    A 01A3   LEFT      A OOF
+ LOSTN   A 0028   LOUT     A 0030   LSM         A 0704      MA      A 0240   MB        A 025
+ ME      A 0261   MERR     A OODC   MERR1       A OOE5      MERR2   A OOED   MH        A 026
+ MLP     A 0518   MOVE     A 0514   MSP         A OBCE      NCTL    A 034A   NOKEY     A 050
+ ORGAN   A 0599   ORGAN1   A 059B   PADL        A 07A2      PASS    A 0738   PASS1     A 073
+ PCL     A 0279   PLAY     A 075A   PLAY1       A 0767      PNTLS   A OOFF   PPER      A OOC
+ RAML2   A OBD7   RBND     A 070C   RBND1       A 0727      READ    A 05CO   RESET     A 000
+ ROCM    A 065C   ROCT     A 05F9   ROCT1       A 0601      ROCT2   A 0603   ROCT3     A 061
+ RS      A OBD6   RS1      A 0008   RS4         A 0020      RS4C    A OAFO   RS5       A 002
+ RS5C    A OAF3   RS6      A 0030   RS65        A 0034      RS65C   A OAFC   RS6C      A OAF
+ RSM     A 07E2   RSRV     A 0719   RSTGM       A 0799      RUN     A 03C2   RUN1      A 03C
+ SATL2   A 04A1   SATL3    A 04A7   SATL4       A 04AF      SAVA    A OBE7   SAVE      A OBE
+ SAVPC   A OBDC   SAVSH    A OBDF   SAVSL       A OBOE      SCAN    A 0028   SDM       A 023
+ SDS1    A 0100   SERV     A 06C8   SERV1       A 06EB      SERV2   A 0700   SHIFT     A 05C
+ SNAKE   A 06C2   SPEED    A OBOO   SPH         A 0260      SPKR    A 05B5   SPL       A 027
+ SQRL2   A 057B   SQRL3    A 0586   STDM        A 0018      STRM    A 03AF   STRR      A 041
+ STRT2   A 0064   STRT3    A 0073   STRT4       A 008A      STRT5   A D09C   STRT6     A OOA
+ STW1    A 0669   STW2     A 0693   STW3        A 069B      STW4    A 06A4   STW5      A 06A
+ STWM    A 06BC   TABLE    A 05E2   TIME        A D08C      TIME1   A 07BO   TIMER     A 07A
+ TRAP    A 0024   TRIL     A 07B9   TRIL1       A 07BF      TRIL2   A 07CD   TRP       A OOF
+ TRP3    A 0111   TRP4     A 0115   TRP5        A 011B      TRP6    A 0124   TRP7      A 014
+ UDKY    A OBE8   UDSPO    A OBFO   UDSP1       A OBF1      UDSP2   A OBF2   UDSP3     A OBF
+ UR      A OAEF   USP      A OBBO   WTM         A 053E      WTM1    A 0541   XLOOP     A 07F
+
+
+                                Table F-1.   User Symbols
+
+
+                                                                                    Appendix F
+
+
+## Page 441
+
+
+

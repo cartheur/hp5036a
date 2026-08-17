@@ -1,0 +1,2146 @@
+## Page 201
+
+                                             Scans by Artekmedia => 2012
+
+
+
+
+_ _ _ _ _ _ _ _ _ EXPERIMENT 11-2
+                                                                               Using Breakpoints
+
+
+
+   CONCEPT
+
+  In this experiment you insert a breakpoint in the counter program and examine the accumulator each
+  time through the loop. Instead of repeatedly pressing the step key (as in Experiment 5-1) to go through
+  the loop, all you do is press RUN. When the jJLab executes the breakpoint instruction, the program
+  stops, and control returns to the monitor.
+
+
+   PROCEDURE
+
+       A) Key in the program in Table 11-3. This is the counter program from Experiment 5-1, with a
+          breakpoint instruction added after the STA instruction.
+
+
+                    Address       Contents         Label         Instruction       Comments
+                       0804          3E                          MVI, A,O      ;Set A to zero
+                                                                     I
+                       0805          00
+                       0806          32           LOOP:          STA 3000      ;Output A to port
+                       0807          00
+                       0808          30
+                       0809          CF                          RST 1         ;Breakpoint
+                       080A          3C                          INR A         ;Increment A
+                       080B          C3                          JMP LOOP      ;Loop back
+                       080C          06
+                       0800          08
+
+
+                                   Table 11-3.   Counter Program with Breakpoint
+
+
+       B) Verify that the program is correctly stored.
+
+      C) Press F:~;;   0 0 G 8 B·                  The microprocessor executes the program up to the
+
+          breakpoint and then returns to the monitor. Since all the output port LEOs are on, you know
+          that the instructions were executed. The display shows the address of the next instruction to be
+          executed (080A).
+
+       0) Press   B.   The program continues until it reaches the breakpoint again. The output port LEOs
+
+          indicate that the loop has been executed again.
+
+       E) Press   B    several times to see the LEOs count.
+
+
+
+
+Lesson 11
+Practical Microprocessors                                                                                    175
+EXPERIMENT ll-2 _ _ _ _ _ _ _ __
+
+## Page 202
+
+Continued
+
+
+
+                       .
+      F) Press r~~~) The contents of the accumulator correspond to the value shown in the output
+
+          port LEDs.
+
+      G) Press (~)     B.   The program executes the loop once more.
+
+      H) Press r~~~H). You can now s~ the new value in the accumulator.
+
+       I) Repeat steps G and H several times and verify that the LEDs and the accumulator count
+          together.
+
+
+  SUMMARY
+
+  This experiment illustrated how to use a breakpoint to observe the operation of the counter program.
+  You inserted a breakpoint instruction at the point at which you wanted to stop the program. The
+  breakpoint instruction allowed you to monitor the program's operation up to that point. You saw less
+  step-by-step detail than with the single-step modes, but you pressed only one key (RUN) for each pass
+  through the program.
+
+
+
+
+                                                                                               Lesson 11
+                                            Scans by ArtekMedia => 2012
+176                                                                            Practical Microprocessors
+                                             Scans by Artekmedia => 2012
+
+## Page 203
+
+
+
+
+
+_ _ _ _ _ _ _ _ _ _ _ _ REVIEW
+                                                                                   Lesson 11
+
+
+
+The basic set of instructions that has been presented allows data to be
+exchanged with memory and I/O and modified in several ways. The call and
+return instructions facilitate the use of subroutines. The large group of MOV
+instructions allows data to be moved among any of the 8085's general-purpose
+registers (A,B,C,D,E,H and L). These registers are convenient places for tempor-
+ary data storage. The "M register" provides indirect addressing capability.
+
+Breakpoints allow a program to be executed at full speed and then stopped at the
+desired point. The contents of the registers and the memory can then be
+examined or modified. This allows the correct operation of the program to be
+verified without stepping through each instruction individually.
+
+
+
+
+Lesson 11
+Practical Microprocessors                                                                 177
+QUIZ _ _ _ _ _ _ _ _ _ _ __
+
+## Page 204
+
+Lesson 11
+
+
+
+            1. The B,C,D,E,H and L registers are used primarily for:
+               a. specifying which interrupts should be enabled.
+               b. temporary data storage.
+               c. controlling the stack.
+               d. specifying the next instruction.
+
+
+            2. The M "register" is:
+              a. a general-purpose register.
+              b. the instruction register.
+              c. the program counter.
+              d. the memory location pointed to by Hand L.
+
+
+            3. To examine the contents of the C register, you would press FETCH REG
+               and then _ _ _ _ _ _ __
+
+
+            4. Breakpoints are used for:
+              a. stopping a program at a desired place.
+              b. calling subroutines.
+              c. manipulating the stack.
+              d. exec uti ng each instruction individually.
+
+
+
+
+                                                                               Lesson 11
+                             Scans by ArtekMedia => 2012
+178                                                            Practical Microprocessors
+                                             Scans by Artekmedia => 2012
+
+## Page 205
+
+
+
+
+
+_ _ _ _ _ _ LESSON 12
+                                                     The 8085 Instruction Set
+
+
+This lesson describes some additional instructions for programming the 8085.          INTRODUCTION
+The complete instruction set is not described, but a representative group
+is presented, including logical and arithmetic instructions. The j.lLab is used to
+observe the operation of the instructions. The use of the stack is also discussed.
+
+
+
+One of the most common building blocks for digital hardware is the logic gate.        LOGICAL
+Four basic gate functions are NOT. AND, OR, and exclusive-OR. Each of these           INSTRUCTIONS
+functions can also be performed by software.
+
+The NOT function is performed by the Complement Accumulator (CMA) instruc-
+tion, which was demonstrated in Experiment 4-3. Each bit of the accumulator
+is inverted.
+
+The AND function is performed by the And Accumulator (ANA r) instruction.
+For example, ANA 0 causes the contents of the 0 register to be ANDed with the
+contents of the accumulator. The result is left in the accumulator. Note that the
+other register (0 in this example) is not changed. Each variation (to operate on
+each register) has its own opcode.
+
+Figure 12-1 shows a hardware equivalent of the ANA instruction. The AND
+function is performed individually on each bit of the accumulator. For example,
+if A = 1011 0110 and 0 = 00111100, then the result of the instruction ANA 0 is:
+
+
+                                00111100 (0 register)
+                       AND      10110110 (Accumulator)
+                                00110100 (Accumulator)
+
+
+The OR function is performed by the OR Accumulator (ORA r) instruction.
+Exclusive-OR is performed by XRA r. The operation of these instructions is similar
+to the ANA instruction, except that the logic function is different.
+
+Since no address or data is specified, all of these instructions require only a
+single byte of code. Refer to the instruction set fold-out for the list of opcodes.
+
+
+Lesson 12
+Practical Microprocessors                                                                        179
+           i.....-
+
+## Page 206
+
+
+                                        n-
+                     Accumulator
+
+                                         n-
+                                         -
+                     D
+                     A
+                     T
+                               D
+                               A
+                               T
+                                             -   -"
+
+                     A         A
+                                              ~
+                     I         0
+                     N         U
+                               T                  -   j
+
+
+
+
+                                                   U-
+                                                      n-  ~
+
+
+
+                                                            -   .,/
+
+
+
+
+                                   -
+
+                     A,B,C,D,E
+                       H, or L
+                       Register
+
+
+
+
+      Figure 12-1. Hardware Equivalent of ANA Instruction
+
+
+
+
+                                                            Lesson 12
+180      Scans by ArtekMedia => 2012        Practical Microprocessors
+                                            Scans by Artekmedia => 2012
+
+## Page 207
+
+
+
+
+
+--------_EXPERIMENT 12-1
+                                                                                 Logical Instructions
+
+
+
+   CONCEPT
+
+   In this experiment, you enter and run a program to demonstrate three logical functions: AND, OR, and
+   exclusive-OR. Data is input from the input port switches and then modified by a logical instruction.
+   The output port LEOs display the results.
+
+
+   PROCEDURE
+
+     A) Translate the program in Table 12-1 to machine code and key it into the IlLab. Each mnemonic
+        must be converted to the appropriate opcode (from the reference card) and followed by the
+        required data (if any). A completed program listing appears in Appendix A.
+
+        This program reads the data from the input port switches and then ANDs it with the value
+        0011 1100. The result is written to the output port LEOs. The program then loops back so that you
+        can change the input and verify that the output responds.
+
+
+
+               Address      Contents         Label        Instruction                Comments
+                 0800                       START:      LOA     2000       ;Read input port
+                 0801
+                 0802
+                 0803                                   MVI     B,3C       ;Set B register to 0011 1100
+                 0804
+                 0805                                   ANA B              ;AND accumulator with B
+                 0806                                   STA 3000           ;Send to output port
+                 0807
+                 0808
+                 0809                                   JMP     START      ;Repeat
+                 080A
+                 080B
+
+                              Table 12-1.    Program to Demonstrate Logical Instructions
+
+
+     B) Verify that the program is correctly stored.
+
+
+    C) Press F:;;;~   0 0 G 0 El                 The program is now running.
+
+
+    D) Set all the input switches to 1 (up). The output LEOs show the pattern 00111100 (0 = on,
+       1 = off).
+
+
+
+
+Lesson 12
+Practical Microprocessors                                                                                   181
+EXPERIMENT 12-1 _ _ _ _ _ _ _ __
+
+## Page 208
+
+Continued
+
+
+
+      E) Change the positions of the input switches and verify the output response. The bits that are
+         ANOed with zeros will not be affected by the input switches.
+
+      F) Press [ReSET) to return control to the monitor. Notice that the input switches no longer affect the
+         output LEOs. Change the ANA 8 instruction (at address 0805) to ORA 8 (opcode 80).
+
+      G) Run the program.
+
+      H) Observe the relationship between various settings of the input switches and the pattern in the
+         output LEOs. Note the difference between the AND and OR functions. The bits that are ORed with
+         zeros are affected by the input switches.
+
+      I) Press (~) . Change the ORA 8 instruction to XRA 8 (opcode A8).
+
+      J) Repeat steps G and H. The bits that are exclusive-ORed with ones are inverted.
+
+
+  SUMMARY
+
+  In this experiment the j.LLab read various values from the input switches, modified them by several
+  different logical instructions, and then displayed the results on the output LEOs. This allowed the
+  operation of the logical instructions to be observed. When the AND function is used, selected bits can
+  be forced to zero. With the OR function, selected bits can be forced to one. Using XOR, selected bits
+  can be inverted.
+
+
+
+
+                                                                                                    Lesson 12
+182                                            Scans by ArtekMedia => 2012          Practical Microprocessors
+                                                Scans by Artekmedia => 2012
+
+## Page 209
+
+
+
+
+A common use for logical instructions is to select certain bits of a word. This is         MASKING
+called masking. For example, suppose that eight switches are connected to an
+input port. To test only a single bit (a single switch), the processor must disregard
+the other bits. Figure 12-2 shows the flowchart for a program that tests the switch
+connected to bit 3 of the input port. If the switch is off, the output LEOs are turned
+on; otherwise, they are turned off.
+
+
+                                          Test Bit 3
+
+
+
+
+                                         Input data
+                                        from switches
+
+
+
+
+                                          AND data
+                                        with 00001000
+                                            binary
+
+
+
+
+                                  YES                   NO
+
+
+
+
+                          Turn off                           Turn on
+                           LEOs                               LEOs
+
+
+
+
+           Figure 12-2. Flowchart for Program to Test Bit 3 of Input Port
+
+
+
+Table 12-2 shows the program listing. The program first reads the data from the
+input port into the accumulator. It then sets the B register to the mask val ue and
+ANOs the B register with the accumulator. The result is that all bits except bit 3
+are forced to zero. (Since 0 AND 1 = 0 and 1 AND 1 = 1, any bit ANOed with a
+1 is unchanged.) Finally, the program uses the JZ instruction to jump if the zero
+flag is set. The zero flag indicates that the entire byte (and therefore bit 3) is zero.
+
+
+Complete the program in Table 12-1 by adding the ON and OFF routines. Use                  PROGRAMMING
+the ON routine to turn on the output port LEOs and the OFF routine to turn                 EXERCISE 12-1:
+them off.
+                                                                                           MASKING
+Convert the program to machine code and key it into the ,uLab. Locate the
+program anywhere between 0800 and OBOO.
+
+Check your program carefully and verify that it is correctly stored. Run the
+program and verify that the input switches properly control the output LEOs.
+All the LEOs should go on only if the switch on bit 3 is up. The other switches
+should have no effect.
+
+
+Lesson 12
+Practical Microprocessors                                                                               183
+                 Now modify the program to test a different bit of the port (a different switch). If it
+
+## Page 210
+
+                 does not work correctly, recheck the logic of the program and the conversion to
+                 machine code. Next, verify that the program is correctly stored. As a last resort,
+                 turn to Appendix A which lists the complete program.
+
+
+                  Address     Contents      Label       Instruction              Comments
+                    0800                   START:       LOA 2000 ;Read input port to accumulator
+                    0801
+                    0802
+                    0803                                MVI     8,08   ;Set 8 to mask value (0000
+                    0804                                                1000 binary)
+                    0805                                ANA 8          ;Set all bits except no. 3 to zero
+                    0806                                JZ  OFF        ;Test for accumulator = 0
+                    0807
+                    0808
+                    0809                     ON:                       ;Turn on LEOs
+                    080A
+                    0808
+                    080C
+                    0800
+                    080E                                JMP START
+                    080F
+                    0810
+                    0811                     OFF:                      ;Turn off LEOs
+                    0812
+                    0813
+                    0814
+                    0815
+                    0816                                JMP START
+                    0817
+                    0818
+
+
+                                          Table 12-2.   Program to Test Bit 3
+
+
+  CLEARING THE   The XRA A instruction exclusive-ORs the accumulator with itself. Since the
+  ACCUMULATOR    exclusive-OR of anything with itself is zero, this instruction clears the accumu-
+                 lator using only one byte of memory. The alternative, MVI A,O, requires two bytes
+                 of memory.
+
+
+
+      SHIFTING   Another commonly required function is the shifting of data to the right or the
+                 left. This is performed in hardware using a shift register. The 8085 has instructions
+                 that shift the data in the accumulator. Rotate Right Circular (RRC) performs the
+                 right shift and Rotate Left Circular (RLC) performs the left shift. These instruc-
+                 tions operate only on the accumlator. "Circular" refers to the fact that the LS8 is
+                 shifted to the MS8 (or vice versa) as shown in Figure 12-3.
+
+
+                 For example, suppose that the accumulator contains the value 0010 0001. After
+                 an RRC is executed, it will contain 1001 0000. Note that the LS8 is moved to the
+                 MS8. This happens because the data is rotated as if the bits were arranged in a
+                 circle, with the MS8 and LS8 adjacent to each other.
+
+
+                                                                                            Lesson 12
+184                               Scans by ArtekMedia => 2012               Practical Microprocessors
+                                              Scans by Artekmedia => 2012
+
+## Page 211
+
+
+
+
+
+       Accumulator
+
+                     (MSB)                                             (LSB)
+                                   Rotate Left Circular (RLC)
+
+
+
+
+       Accumulator
+
+                     (MSB)                                             (LSB)
+                                  Rotate Right Circular (RRC)
+
+                     Figure 12-3. Rotate Instruction Function
+
+
+
+Write a program following the flowchart in Figure 12-4 to demonstrate the opera-   PROGRAMMING
+tion of the rotate instructions. Convert the program to machine code and key it    EXERCISE 12-2:
+into the }.LLab. Step through the program and verify that the output port LEOs     ROTATES
+show the operation of the rotate instruction.
+
+Now add a breakpoint to the program so that you can use RUN instead of
+INSTR STEP. Each time RUN is pressed, the data should shift.
+
+If you can not get your program to work, turn to Appendix A for the solution.
+
+
+
+                                   (       Rotale
+
+
+                                              ~
+                                       Sel Accumulator
+                                        to 11111110
+
+
+
+
+                                    Write Accumulator
+                                     to Output Port
+
+
+
+                                              +
+                                            Rotata
+                                         Accumulator
+                                        (left or Right)
+
+
+                                               I
+
+             Figure 12-4. Flowchart for Programming Exercise 12-2
+
+
+Lesson 12
+Practical Microprocessors                                                                       185
+         ADDITION   The most basic arithmetic function is the addition of two numbers. The ADD r
+
+## Page 212
+
+                    instruction adds the contents of the specified register to the contents of the
+                    accumulator and stores the result in the accumulator.
+
+                    For example, ADD D adds the contents of the D register to the contents of the
+                    accumulator. Suppose that the D register contains 10010011 and the accumulator
+                    contains 1010 1010. The result is:
+
+
+                                         Decimal           Binary
+                                           147           1001 0011 (D reg ister)
+                                    +      170      +    10101010 (Accumulator)
+                                           317          1 0011 1101 (Accumulator)
+
+
+
+
+THE CARRY FLAG      Note that the result is greater than 255 decimal, so it is more than eight bits long.
+                    To accomodate this overflow, the processor contains a carry flag. This flag acts
+                    as the ninth bit of the accumulator and can be tested by the Jump If Carry
+                    (JC) and Jump If No Carry (JNC) instructions. This test is similar to the test
+                    of the zero flag.
+
+                    For example, the following instructions will add the D register to the accumulator
+                    and jump to location 0820 if a carry is generated:
+
+                                                         AND D
+                                                         JC    0820
+
+                    If no carry is generated (result < 256 decimal), then the program will continue
+                    with the next instruction.
+
+                    The carry flag is also used when adding numbers longer than eight bits. Two
+                    (or more) registers are used to represent each number. The least significant bytes
+                    are added first. Then the most significant bytes are added. The carry from the
+                    least-significant byte (if any) is added to the most significant byte. The carry bit
+                    thus functions as a link between the two bytes.
+
+                    You can examine the flags by pressing FETCH REG and then STORE/INCR. The
+                    flags are all combined into one byte, as shown in Figure 12-5. Only the carry and
+                    zero flags are used in this course. The sign flag is just a copy of the MSB and is
+                    used for two's complement arithmetic (described in Lesson 15). Not all instruc-
+                    tions affect all the flags. MOV instructions, for example, do not affect any flags.
+                    The instruction descriptions in Appendix B indicate which flags are affected by
+                    each instruction.
+
+
+
+
+      SUBTRACTION   The SUB r instruction subtracts the contents of the specified register from the
+                    accumulator. For example, SUB B subtracts the contents of the B register from
+                    the accumulator.
+
+                    The subtract instruction uses the carry flag as a borrow flag. If the carry flag is
+                    set after a SUB B instruction, it indicates that the value in the B register is greater
+                    than the value in the accumulator.
+
+
+                                                                                             Lesson 12
+186                                     Scans by ArtekMedia => 2012          Practical Microprocessors
+                                                Scans by Artekmedia => 2012
+
+## Page 213
+
+
+
+
+
+              Bit
+               7     8      5    4      3        2          o
+             (MSB)                                         (LSI)
+                                     Not Used
+
+
+
+
+                                                                   CARRY
+
+
+                                                                   PARITY
+
+
+                                                                   AUXCARRY
+
+
+                                                                   lZERO
+
+
+                                                                   SIGN
+
+
+                         Figure 12-5. Microprocessor Flags
+
+
+
+
+Lesson 12
+Practical Microprocessors                                                     187
+EXPERIMENT 12-2 _ _ _ _ _ _ _ __
+
+## Page 214
+
+Arithmetic Functions
+
+
+
+      CONCEPT
+      The INSTR STEP key is used to execute a program which demonstrates the functions of the arithmetic
+      instructions. The FETCH REG key is used to set the registers before an instruction is executed and
+      examine them afterwards.
+
+
+
+
+      PROCEDURE
+       A) Fill in the machine code for the program in Table 12-3. This program subtracts the B register
+          from the accumulator, and then adds the C register to the accumulator.
+
+
+                        Address          Contents          Instruction                   Comments
+                               0800                        SUB B           ;Subtract B from accumulator
+                               0801                        ADD C           ;Add C to accumulator
+
+                                        Table 12-3.   Arithmetic Instruction Demonstration Program
+
+
+       B) Key the program into the ~Lab.
+
+       C) Press (F~~) to display the accumulator.
+
+       D) Key in the data A7 and press s;r..0c": . This stores A7 in the accumulator. (Actually, the data is stored
+           in a RAM location which the monitor uses to save the value of the accumulator. When RUN,
+           INSTR STEP, or HDWR STEP is pressed, the accumulator is loaded from memory.)
+
+       E) Press [DECR) to verify that the accumulator contains the data A7.
+
+       F) Press   ~r,."c"..E   twice to display the B register.
+
+       G) Key in the data 23. Press ~~,."c": to store this data in the B register.
+
+       H) The C register is now displayed. Key in the data 93. Press ~~,."c": to set the C register. The registers
+          now contain the following data:
+                                           A   A7      =
+                                                       B = 23       C = 93
+
+        I) All the inputs to the program are now set. Press                                               II'\ISTR
+                                                                                                           STEP      to execute
+           the SUB B instruction.
+
+
+
+
+                                                                                                                    Lesson 12
+188                                                        Scans by ArtekMedia => 2012
+                                                                                                    Practical Microprocessors
+                                                 Scans by Artekmedia => 2012
+
+## Page 215
+
+
+
+
+_ _ _ _ _ _ _ _ _ EXPERIMENT 12-2
+                                                                                                     Continued
+
+
+
+     J) Press r~~~H) to view the accumulator. Does it contain the expected value? Remember that these
+        numbers are hexadecimal (A7 hex - 23 hex = 84 hex).
+
+    K) Press ~~.!'c'::' to view the flag register. Convert the value to binary and check the state of the carry
+        and zero flags by referring to Figure 12-5. This subtraction generated no borrow (so the carry
+        flag was not set). and the result was not zero.
+
+     L) Using    ~i.!'C""   to step through the registers. verify that Band C have not changed.
+
+    M) Press r~TgH)         '~::: to execute the ADD C instruction.
+
+    0) Press r~~~~). The result of the addition is 84 hex + 93 hex = 117 hex. Since the result is greater than
+        FF hex. it will not fit into th~ eight-bit accumulator. The least significant eight bits (17 hex) remain
+        in the accumulator. and a carry is generated.
+
+     P) Press ~~N°c": to view the flag register. Check the state of the carry flag. The flag is set. indicating that
+        the result was greater than FF hex (255 deCimal).
+
+    Q) Verify that the Band C registers did not change.
+
+   SUMMARY
+
+   This experiment demonstrated the operation of the addition and subtraction instructions. After each
+   operation, the accumulator contained the result. The other register contained its original value. The
+   carry flag indicated whether an overflow (or borrow) occurred.
+
+   You used the FETCH REG key to set the inputs to the program. You then examined the program's
+   outputs. To provide a visual demonstration of the instructions.
+
+
+
+
+Lesson 12
+Practical Microprocessors                                                                                              189
+   SUBROUTINES   Large programs can be simplified by using subroutines to perform repetative
+
+## Page 216
+
+ AND THE STACK   tasks. For example, suppose a program must do a series of calculations involving
+                 several multiplications. One general-purpose multiplication subroutine can be
+                 written, which is then used any time a multiplication must be performed. Sub-
+                 routines are also useful for dividing a program into small modules, as described
+                 in Lesson 13.
+
+                 The CALL instruction is used to access a subroutine. When a CALL instruction
+                 is executed, the microprocessor saves the contents of the program counter (the
+                 return address) in the stack, a specially-accessed part of memory. The micro-
+                 processor goes back to this return address when a RET instruction is executed
+                 at the end of the subroutine. The program then resumes execution at the instruc-
+                 tion immediately following the CALL.
+
+                 Suppose that a sixteen-bit register were used for storing the return address. Can
+                 you see the problem this causes? If the subroutine calls another subroutine
+                 (referred to as nested subroutines), then the first return address is lost.
+
+                 The solution to this problem is to use a group of memory locations (called the
+                 stack). As one routine calls another, the return addresses are stored in sequential
+                 memory locations. Figure 12-6 shows the sequence of operations as routine A
+                 calls routine B which calls routine C. The contents of the stack and the PC at
+                 each step are shown in Figure 12-7. The sequence of events is as follows:
+                  a.   The main program is being executed.
+
+                  b.   The main program calls subroutine A. The return address is stored in the
+                       stack, and the PC is loaded with the starting address of routine A.
+
+                  c.   Routine A calls routine B. The return address for routine A is placed on the
+                       stack, and the PC is loaded with the starting address of routine B.
+
+                  d.   Routine B returns. The last entry in the stack is loaded into the PC, and
+                       control has returned to routine A.
+
+                  e.   Routine A returns control to the main program.
+                 You can think of the stack as a pile of plates; any number of plates can be piled
+                 on, and they are removed in the reverse order. This is called a push-down, or
+                 Last In First Out (LIFO), stack. Since the 8085 uses the RAM for the stack, it
+                 can be arbitrarily large. A special register in the processor (the stack pointer)
+                 contains the address of the top of the stack. The location of the stack is estab-
+                 lished by setting the stack pointer to the desired address.
+
+                 The J..!Lab's power-up program sets the stack pointer to OBBO. This allows you to
+                 use the stack without setting the stack pointer. It is possible for your program
+                 to set the stack pointer outside of the available RAM area. This will happen, for
+                 example, if a series of subroutine calls are executed without any returns, which
+                 will cause the program to halt. However, the next time you press RUN or either
+                 STEP key, the monitor checks the stack pointer. If it is at an undesirable value
+                 «OB40 or >OBFF), it is set back to OBBO. Normally the stack pointer does not go
+                 beyond the allowable range, and the monitor does not change it.
+
+                 You can examine the stack pointer using the J..!Lab's register mode. Since it is a
+                 sixteen-bit register, it is displayed in two parts: the high-order byte (SPH) and the
+                 low-order byte (SPL).
+
+
+                                                                                         Lesson 12
+190                               Scans by ArtekMedia => 2012            Practical Microprocessors
+                                                                  Scans by Artekmedia => 2012
+
+## Page 217
+
+
+
+
+
+                         MAIN
+                       PROGRAM
+             a
+                                                   SUBROUTINE A                  SUBROUTINE B
+
+
+
+
+                        CALLA
+                                      /'                   CALL B
+                                                                       /
+                                      ~                     RET        ~              RET
+
+
+
+
+Figure 12-6.           Sequence of Events as Main Program Calls Routine A Which Calls
+                       Routine B
+
+
+
+
+                                PROGRAM COUNTER                               STACK
+
+
+
+                                                                      II
+                                                                                                ~
+        al                    Main Pgm. Current Address
+
+
+
+
+                                                                             I
+        bl       CALLA        Routine A Starting Address
+
+
+
+
+        cl       CALL B       Routine B Starting Address
+
+
+
+
+        dl RET                Routine A Return Address
+
+
+
+
+        el       RET      I   Main Pgm. Return Address      I
+
+                                  Figure 12-7. Operation of the Stack
+
+
+The CALL and RET instructions manipulate the stack pointer automatically.                           PUSH AND POP
+It is also possible to use the stack manually. The PUSH instruction stores a pair                   INSTRUCTIONS
+of registers in the stack, and the POP instruction reads the data back into the
+registers. Since the stack is designed for storing addresses, which are sixteen
+bits long, registers are stored two at time. PUSH B, for example, pushes the B
+and then the C register onto the stack. POP B restores both of these registers
+from the top of the stack.
+
+
+Lesson 12
+Practical Microprocessors                                                                                      191
+      These instructions are commonly used for temporarily saving the contents of
+
+## Page 218
+
+      registers. For example, suppose that a program uses the Band C registers to
+      store some data. It then calls a subroutine which also must use these registers.
+      The subroutine can save the original contents of these registers (as set by the
+      calling program) by using PUSH B. The Band C registers can now be used by
+      the subroutine. Then, near the end of the subroutine, a POP B instruction is used
+      to restore the registers to their initial values. Alternatively, the saving and restoring
+      can be done by the main program just before and after the CALL instruction.
+
+
+
+
+                                                                               Lesson 12
+                      Scans by ArtekMedia => 2012
+192                                                            Practical Microprocessors
+                                             Scans by Artekmedia => 2012
+
+## Page 219
+
+
+
+
+
+                                                                                        REVIEW
+                                                                                        Lesson 12
+
+
+
+
+The logical instructions allow standard logic gate functions to be performed by
+software. The instructions operate on eight bits in parallel, providing the equiva-
+lent function of eight two-input logic gates. They are commonly used for
+selecting or modifying certain bits of a word.
+
+The arithmetic instructions provide the basic addition and subtraction capabili-
+ties. With both the logical and arithmetic instructions, the result is always left in
+the accumulator. The carry flag is used by the arithmetic instructions to indicate
+an overflow or a borrow.
+
+The rotate instructions are useful for manipulating the bits in a word. The data in
+the accumulator may be shifted left or right.
+
+The stack is used for storing subroutine return addresses and allows the routines
+to be nested. It can also be used for storing and recovering the contents of the
+registers via the PUSH and POP instructions.
+
+
+
+
+Lesson 12
+Practical Microprocessors                                                                      193
+ QUIZ _ _ _ _ _ _ _ _ _ _ __
+
+## Page 220
+
+ Lesson 12
+
+
+
+
+             1. Suppose the B register contains 37 hex, and the accumulator contains 14 hex.
+                After executing the instruction ANA B, the accumulator will contain:
+               a. 37 (hex).
+               b. 14.
+               c.4B.
+               d. 23.
+
+
+             2. In question 1, if the instruction were ORA B, the result would be:
+               a. 37.
+               b. 14.
+               c.4B.
+               d. 23.
+
+
+             3. To leave the MSB unchanged and set all other bits to zero, the accumulator
+                should be ANDed with:
+               a. 01.
+               b. 10.
+               c. 80.
+               d. F1.
+
+
+             4. If the accumulator initially contains F3 hex, the following program will jump
+                to address _ _ _ __
+                     MVI B,23
+                     ADD B
+                     JC  0930
+                     JMP 0900
+
+
+             5. The stack is used for storing subroutine return addresses because:
+               a. the regular memory is too small.
+               b. the registers cannot hold an address.
+               c. it allows subroutine nesting.
+               d. all of the above are true.
+
+
+
+
+                                                                                 Lesson 12
+                              Scans by ArtekMedia => 2012
+194                                                              Practical Microprocessors
+                                             Scans by Artekmedia => 2012
+
+## Page 221
+
+
+
+
+
+_ _ _ _ _ _ LESSON 13
+                                               Software Design Techniques
+
+
+
+
+Designing a complex piece of software is just as involved as designing a complex       INTRODUCTION
+piece of hardware, but the problems are somewhat different. A new set of
+techniques is necessary for designing software that is easy to debug and
+modify. This lesson describes the software development process. As an example ,
+a traffic light controller program is presented.
+
+This lesson is concerned only with the design of software systems. If this topic is
+not of interest to you, this lesson may be skipped without loss of continuity.
+
+
+
+When writing programs using the j..LLab, the assembly language must be                 DEVELOPMENT
+translated "by hand" to machine language. The machine code is then keyed into          SYSTEMS
+the j..LLab. While this is an adequate system for writing short programs, it is too
+cumbersome for a major software project.
+
+
+
+
+Intel's Intellec MDS® Development System. Clockwise from the left, the components
+are: CRT terminal, printer, dual floppy disk drives, paper tape reader PROM program-
+mer, and microcomputer with ICE card. (Photo Courtesy Intel Corp.)
+
+
+Lesson 13
+Practical Microprocessors                                                                            195
+                   Most microprocessor software is written using a development system, a micro-
+
+## Page 222
+
+                   computer system especially designed for software and hardware development.
+                   A typical system includes 32-64K bytes of RAM, dual floppy disk drives for
+                   program storage, a CRT terminal with a keyboard, and a printer. The software
+                   usually includes an editor for entering and editing assembly language programs,
+                   an assembler for translating assembly to machine language, and a monitor, or
+                   debugger, for setting breakpoints, examining registers, and so forth. Such a
+                   system greatly eases the development process.
+
+                   As an aid to hardware debugging, many development systems include an In-
+                   Circuit Emulator (ICE). The microprocessor IC is removed from the system under
+                   test, and a cable from the development system (with a 40-pin plug on the end) is
+                   plugged in its place. The development system can now completely control and
+                   monitor the operation of the system under test. ICE is one of the most
+                   sophisticated design and debugging tools available.
+
+
+
+
+      A SOFTWARE   When designing a complex program, you must follow an orderly sequence.
+DESIGN PROCEDURE   The following is a suggested procedure:
+
+                        •   Define the problem.
+                        •   Design the sol ution - partition into functional blocks.
+                        •   Flowchart the programs.
+                        •   Write the programs.
+                        •   Test and debug each routine.
+                        •   Test and debug the entire program.
+
+                   The first step is the most obvious, yet it is often overlooked. Before you can begin
+                   to design a solution, you must understand the problem. A set of specifications for
+                   the program should be created: what are its inputs, how must it process them,
+                   and what are its outputs?
+
+
+                   Once these specifications have been determined, you can design the software.
+                   Before you start to write programs or even to draw flowcharts, think about the
+                   overall design of the system. It is best to separate the software into relatively
+                   small, modular sections. Make sure that each section has well-defined inputs and
+                   outputs. This approach allows you to attack the problem in manageable portions.
+                   It also allows you to test the program in small pieces, making it much easier to
+                   find errors in the program. The same approach is taken in hardware design by
+                   breaking up the system into functional blocks.
+
+                   There are many ways to structure any given programming task. One approach,
+                   called structured programming, provides an excellent technique for program
+                   design. While it is not completely described in this course, its general philosophy
+                   is followed.
+
+                   Once the problem is defined, an approach chosen, and the program divided up
+                   into modules, you can flowchart your logic. There is generally an overall flow-
+                   chart that gives the "big picture" and shows each program module as a single
+                   box. There is also a flowchart for each module.
+
+
+                                                                                           Lesson 13
+  196                                  Scans by ArtekMedia => 2012         Practical Microprocessors
+                                               Scans by Artekmedia => 2012
+
+## Page 223
+
+
+
+
+Now the actual program can be written. If the preceeding steps have been done
+carefully and thoroughly, this task is fairly straightforward. There is another
+parallel to hardware design: once the right approach to a problem has been
+determined, the actual implementation is usually relatively easy.
+
+
+After the program modules are written, they must be tested. Even an experienced
+programmer does not expect all of the programs to work correctly the first time.
+The modularity of the program is very important at this stage. Each module can
+be tested separately or together with routines that have already been tested. The
+module is supplied with the required inputs, and its outputs are then examined to
+see if they are correct. It is much easier to debug an individual module than the
+entire software system. When all the modules work, then it is time to tie them all
+together and test the whole system.
+
+
+
+
+This section describes a traffic light controller program to illustrate the software    A SOFTWARE
+design process. First the basic controller is developed, and then a number of           DESIGN EXAMPLE
+improvements are suggested. The output port LEDs are used for the traffic lights.
+
+
+Consider a simple two-street intersection. Each signal consists of a red, yellow,
+and green light. The controller must sequence the lights as follows:
+
+
+     1. Light A = red
+     2. Light B = green
+     3. Wait green time
+     4. Change light B to yellow
+     5. Wait yellow time
+     6. Change light B to red
+     7. Change light A to green
+     8. Wait green time
+     9. Change light A to yellow
+    10. Wait yellow time
+    11. Repeat entire process (go to step 1)
+
+
+You could program this sequence in a straightforward manner, but that is not the
+best solution in terms of the program length. Notice that the program contains
+two repetitive segments: one to sequence signal A from green to yellow to red,
+and one to do the same for signal B. It is more efficient if one program is used to
+sequence both signals.
+
+Rgure 13-1 shows flowcharts to implement the controller in this way. The main
+program uses the sequencing routine to control each signal in turn. The sequen-
+cing routine controls both signals. The main program tells the sequencing routine
+which signal it wants changed by defining a register to be used as the "signal
+flag." The main program sets this register before calling the sequencing routine,
+which then tests the register. If the register is zero, signal A is sequenced. If the
+register is not zero, signal B is sequenced. This transfer of information between a
+calling program and a subroutine is called parameter passing.
+
+          'I
+Lesson 13
+Practical Microprocessors                                                                          197
+                                (       Traffic       )
+
+## Page 224
+
+                                                                                Change Selected
+                                                                                 Signal 10 Green
+                                                                                See Other Signal
+                                      Signal Flag                                     Red
+                                          =A
+
+
+                                         J                                           Wait
+                                                                                  Green Time
+                                    Call Sequencing
+                                         Rout«.e
+
+
+
+
+                                          •
+                                      Signal Flag
+                                          =B
+                                                                                 Change Signal
+                                                                                   to Yellow
+
+
+
+
+                                          t                                           Wait
+                                                                                  Yellow Time
+                                    Call Sequencing
+                                         Routine
+
+
+
+                                                                                     Return
+
+
+
+
+                     Figure 13-1a. Traffic Light Controller           Figure 13-1 b. Sequencing Routine
+                                   Main Program
+
+                    The basic architecture (structural design) of the traffic light controller is now
+                    defined. The main program is quite simple, since all the details are handled by the
+                    sequencing routine. A well-structured program will usually have a very simple
+                    main program.
+
+
+THE SEQUENCING      If the signal flag is not set, the sequencing routine first sets signal A green and
+                    signal B red. Then signal A is changed to yellow, and signal B remains red. On the
+       ROUTINE
+                    other hand, if the signal flag is set, then signal A is held red while signal B is
+                    cycled through green and yellow. Note that it is not necessary to set the signal red
+                    at the end of the sequence. This is done when the other signal is set to green at
+                    the beginning of the next cycle.
+
+
+      THE CHANGE    Since the sequence is the same regardless of th~ signal involved, the sequencing
+          ROUTINE   routine does not take the signal flag into consideration. The output routine (to be
+                    described shortly) checks this flag.
+
+                    The signal lights (the output port LEDs) are all connected to a single output port,
+                    as shown in Figure 13-2. Two unused bits control extra LEDs, which are always
+                    off. Table 13-1 shows the bit patterns for the various signal settings. Notice that the
+                    difference between the first two patterns (signal A active) and the second two
+                    patterns (signal B active) is that the left-hand four bits are switched with the right-
+                    hand four bits. This is not surprising, since the same operation is performed on
+                    each signal, each of which uses half of the output port's eight bits.
+
+
+                                                                                              Lesson 13
+198                                     Scans by ArtekMedia => 2012           Practical Microprocessors
+                                                    Scans by Artekmedia => 2012
+
+## Page 225
+
+
+
+
+
+                                                           {II
+                                                           :s
+                                                           III
+
+
+
+
+  Port 3000 _ _.....                                 Output Port
+  Select                                            Address 3000
+
+
+                             7      6           5     4          3      2          o
+
+
+
+                       Red
+
+
+
+
+      +5V------~~~                  __-~-~__-~-~._-~-~
+                                                    Not                           Not
+                             '-..-'                              '-..-'
+                                 Signal B           Used                          Used
+                                                                     Signal A
+
+
+                 Figure 13-2. LED Connections for Traffic Light
+
+
+
+
+                                            8              A
+
+                                        C....I Z      C....I Z
+                                        wwa:          wwa:
+                                        a:>-o         a:>-o
+                                                                            Hex
+            A Green, 8 Red              0 1 1 1       1    1 0 1             70
+            A Yellow, 8 Red             0 1 1 1       1    0 1 1             78
+            8 Green, A Red              1 1 0 1       0    1 1 1             07
+            8 Yellow, A Red             1 o 1 1       0    1 1 1             87
+
+
+
+                        Table 13-1. Traffic Light Bit Patterns
+
+
+
+
+With this background, the logic of the sequencing and change routines can be
+explained. The sequencing routine always sequences signal A (i.e., it always
+sequences the right-hand four bits). It calls the change routine to do the actual
+output operation. Figure 13-3 shows the flowchart for the change routine. If the
+signal flag is set (indicating that signal B should be sequenced), then the
+change routine simply switches the left and right halves of the data before it is
+output. This is accomplished by rotating the data four bit positions.
+
+
+Lesson 13
+Practical Microprocessors                                                                199
+                                     Change
+
+## Page 226
+
+
+                                                                                     Delay
+
+
+
+
+                                                  NO
+                                                                                    Initialize
+                                                                                     Count
+
+                                         Yes
+
+
+
+
+                                   Rotate Data
+                                   Four Times
+                                                                                   Decrement
+                                                                                     Count
+
+
+
+
+                                   Output Data
+                                    to LEOs
+
+
+
+                                                                                          Yes
+
+
+
+                                     Return                                          Return
+
+
+
+
+                    Figure 13-3. Change Signal Routine                Figure 13-4. Basic Delay Routine
+
+
+
+
+      THE DELAY   The system is now designed except for the delay routine. A routine is needed that
+        ROUTINE   causes a delay varying from a few seconds (yellow time) to as long as ~ minute or
+                  two (green time).
+
+
+
+                  One way of generating time delays is shown in Figure 13-4. A register is initialized
+                  to some value and then decremented until it reaches zero. It takes approximately
+                  7 J.l.s to decrement and test the register and jump back to the beginning.
+                  Therefore, delays of from 7 J.l.s to 7 x 255 =1,785 J.l.s (1.785 ms) can be set by initial-
+                  izing the counter to values from 1 to 255. To obtain a variable delay, the delay
+                  subroutine is written so that it does not initialize the count, but expects tt'ris
+                  information from the calling program. This is another instance of parameter
+                  passing.
+
+
+
+                  The delay program for the traffic light controller works on this principle. However,
+                  there is a problem with the routine in Figure 13-4: it has a maximum delay of less
+                  than two milliseconds, and the traffic light needs tens of seconds. The solution is
+                  a straightforward extension of this technique. An additional register is used to
+                  extend the count value up to 65,536. The details of this process are presented
+                  later in this lesson.
+
+
+                                                                                             Lesson 13
+200                                   Scans by ArtekMedia => 2012            Practical Microprocessors
+                                                   Scans by Artekmedia => 2012
+
+## Page 227
+
+
+
+
+
+A structure chart is useful for showing how the program is partitioned. It shows      STRUCTURE
+which routines are called by which programs. Figure 13-5 shows a structure chart
+for the traffic light controller. The main routine, called TRAF, is represented       CHARTS
+by a box at the top of the chart. TRAF calls the subroutine SEa, which in turn
+calls both CHNG and DLY. Note that this is not a flowchart and does not provide
+information about the actual program flow. Instead, it provides general informa-
+tion about the logical structure of the program. The parameters that are passed
+from one routine to another are also shown.
+
+
+
+
+                                           TRAF
+
+
+                                                        1SO'"~   FI..
+
+
+
+                                           SEa
+
+
+
+               Signal Fla,~ /
+               SignalDa/        ~
+
+                            ./
+
+                         CHNG                                DELAY
+
+
+
+
+               Figure 13-5. Traffic Light Controller Structure Chart
+
+
+
+
+The specifications and flowcharts for each of the required programs are now           THE CONTROLLER
+complete. To write the programs, you must choose specific registers for each          PROGRAMS
+function. The E register is used for the signal flag (the choice is arbitrary). The
+main program is quite simple, as shown in Table 13-2.
+
+
+
+
+                   TRAF: MVI E,O                 ;Sequence signal A
+                         CALL SEa
+                         MVI E,1              ;Sequence signal B
+                         CALL SEa
+                         JMP TRAF
+
+
+                        Table 13-2.   Traffic Light Main Program
+
+
+Lesson 13
+Practical Microprocessors                                                                         201
+      This program closely follows the flowchart presented previously. The sequencing
+
+## Page 228
+
+      routine (SEQ) is shown in Table 13-3.
+
+
+                           SEQ: MVI H,70              ;Set signal green
+                                CALL CHNG
+                                MVI 0,6                ;Wait green time
+                                CALL DELAY
+                                MVI H,7B               ;Set signal yellow
+                                CALL CHNG
+                                MVI 0,2                ;Wait yellow time
+                                CALL DELAY
+                                RET
+
+
+                           Table 13-3.    Traffic Light Sequencing Routine
+
+      The sequencing routine first sets the H register to the pattern for signal A red and
+      signal B green, as shown in Table 13-1. Since the LEOs indicate negative logic, the
+      pattern uses ones for off and zeros for on. It then calls the change routine to send
+      the data to the signal lights. If the signal flag (register E) is set, the change routine
+      switches the two halves of the data. This allows the routine to sequence either
+      signal. The H register is arbitrarily chosen to pass the signal data between the two
+      routines.
+
+      Now the delay must be generated. This is done by a delay routine (to be
+      discussed shortly), which expects the delay variable to be in register O.
+      Therefore, the 0 register is initialized and the delay routine is called. The
+      sequence then repeats for the yellow light, with a different data value (to cause
+      the yellow LED to be on) and a different delay value.
+
+      The traffic light change routine (Table 13-4) tests the signal flag in register E. The
+      contents of register E are first moved to the accumulator. Then the contents of the
+      accumulator are compared with the value zero. If the contents of the accumulator
+      (the signal flag) are zero, the microprocessor's zero flag will be set. This flag is
+      tested by the JZ instruction. Note that the MOV A,H instruction between the
+      compare and the test operations does not interfere with the test because it does
+      not affect the flags. The JZ instruction tests the zero flag, not the contents of the
+      accumulator. If the signal flag is not set, the program jumps to the "output" step. If
+      the signal flag is set, then the data is rotated four times to switch the left and right
+      halves. Each rotate instruction shifts the data one bit position.
+
+
+                 CHNG: MOV A,E                ;Is signal flag set?
+                       CPI 0                  ;Compare signal flag to zero
+                       MOV A,H                ;Move signal data to accumulator
+                       JZ  OUTP               ;Not set-output data directly
+                       RLC                    ;Set-Rotate data
+                       RLC
+                       RLC
+                       RLC
+                 OUTP: STA 3000               ;Output data to signal
+                          RET
+
+                            Table 13-4.    Traffic Light Change Routine
+
+
+                                                                                 Lesson 13
+                        Scans by ArtekMedia => 2012
+202                                                              Practical Microprocessors
+                                                Scans by Artekmedia => 2012
+
+## Page 229
+
+                                                                                                             I
+The delay routine for the traffic light controller is complicated slightly by the          DESIGNING
+length of time delay required. To explain its design, some basic delay routines are        THE DELAY
+explained first. Table 13-5 shows a simple, commonly used delay routine, which             ROUTINE
+follows the flowchart in Figure 13-4.
+
+           DELAY: OCR A                 ;Decrement counter          4 states
+                  JNZ DELAY             ;Loop unless zero           7/10 states
+                  RET                                               10 states
+
+                          Table 13-5.   Simple Delay Routine
+
+To use this routine, the accumulator is set to the desired delay value and the delay
+routine is called. The accumulator is decremented until it reaches zero, and then
+control returns to the calling program.
+The delay time generated by this program can be analyzed as follows. Appendix
+B shows the number of clock periods (states) required to execute each instruc-
+tion. Four states are required for the OCR A, and seven or ten states for the.JNZ.
+The jump requires ten states if the condition is satisfied and the jump is
+performed, and seven states if it is not. The RET requires ten states.
+The routine therefore requires 4 + 10 = 14 states for each pass through the loop,
+except for the last time through. When the accumulator reaches zero, the JNZ
+does not cause a jump and therefore requires only seven states. The RET
+instruction then uses ten states. This makes the total for the last pass 4 + 7 + 10 =
+21. The equation for the total delay is therefore:
+                          DELAY = (A-1)14 + 21 states
+Since the ,uLab uses a 2 MHz clock, a state is 0.5 ,us long. The delay equation can
+therefore be rewritten as:
+                         DELAY = (A-1)7 ,us + 10.5 ,us
+"A" in this equation denotes the initial value in the accumulator. If it is 1, for
+example, then the delay is (1-1)7 + 10.5 = 10.5 ,us. Notice that the first term goes to
+zero because the jump is never executed. The first time through the loop, the
+accumulator is decremented to zero, and the conditional jump is never per-
+formed.
+
+The longest delay is caused by setting the accumulator to zero. The first time
+through the loop, it is decremented and set to 255. Since the accumulator is not
+tested for zero until after it is decremented, it gives the equivalent of A = 256 in the
+delay time equation. The maximum delay is then (256-1)7 +10.5 =1,795 ,us. This is
+less than two thousandths of a second and is not very useful as a delay interval
+for the traffic light controller.
+
+The 8085 has a group of instructions that operate on pairs of registers instead            USING
+of individual registers. While these instructions are not strictly necessary, they are     REGISTER PAIRS
+often very convenient. The long delay routine in Table 13-6 provides a good
+example of the use of one of these instructions.
+
+                  DELAY: DCX B                 ;Decrement counter
+                         MOV A,B               ;Test for zero
+                         ORA C
+                         JNZ DELAY             ;Repeat until zero
+                         RET
+
+                    Table 13-6.   Delay Routine Using Register Pair
+
+
+                Lesson 13
+Practical Microprocessors                                                                              203
+      The DCX instruction decrements a register pair, treating it as a single sixteen-bit
+
+## Page 230
+
+      number. This allows the delay count to have values up to 216 =65,536. DCX B
+      specifies that the Band C registers should be decremented as a pair. In a register
+      pair instruction, "B" refers to the Band C pair. If there is a borrow from the C
+      register, it is automatically subtracted from the B register.
+
+      Unfortunately, the DCX instruction does not affect the zero flag. To set the zero
+      flag, one byte of the count is moved to the accumulator, and then it is ORed with
+      the other byte. The result is zero only if both bytes are zero. Now the zero flag is
+      set, and the JNZ instruction can be used to test the count for zero.
+
+      The timing analysis for this routine is very similar to the one previously presented.
+      The DCX B takes six states, the MOV A,B and ORA C each take four, and the
+      other instructions are the same as in the previous example. The delay equation is
+      therefore:
+                                 DELAY = (N-1)24 + 31 states
+                                         = (N-1)12 J.l.s + 15.5 J.I.S
+      uN" is the binary value in the Band C registers. The maximum delay is (65,536-1)12
+      J.l.s + 15.5 J.I.S = 0.786 seconds. This delay is closer to the values needed for the
+      traffic light, but it is still too short. However, this routine can be used to generate a
+      longer delay by combining it with a single register count loop. Figure 13-6 shows
+      the flowchart. To generate the longer delay time, the delay routine in Table 13-5 is
+      used with the delay value always set to zero (for the maximum 0.786 second
+      delay). This routine is then placed inside another count loop. The delay value
+      (passed to the delay routine in the D register) determines how many times this
+      0.786 second delay is executed. This can be done up to 256 times, so the
+      maximum delay is 256 x 0.786 seconds = 201 seconds, an adequate value
+      for the traffic light controller.
+
+
+                                             Long Delay
+
+
+
+
+                                           Wall 0.786 Sec.
+                                            (Program In
+                                             Table 13-6)
+
+
+
+
+                                             Decrement
+                                               Count
+
+
+
+
+                                Figure 13-6. Long Delay Routine
+
+
+                                                                                Lesson 13
+                        Scans by ArtekMedia => 2012             Practical Microprocessors
+204
+                                              Scans by Artekmedia => 2012
+
+## Page 231
+
+
+
+
+Table 13-7 shows the listing. The 0.786 second delay is implemented with the
+same program used previously. The Band C registers are set to zero for
+maximum delay. This is accomplished with the Load Register Pair Immediate
+(LXI) instruction. It is similar to the MVI instruction, except that two registers are
+loaded at once. Two bytes of data follow the LXI opcode. The first data byte goes
+to the C register, and the second byte to the B register.
+
+The 0 register is used for the main delay count. Note that this program has two
+loops. An "inner" loop generates the 0.786 second delay and an "outer" loop
+generates multiples of this delay. Arranging loops in this way is called nesting.
+
+Delay routines are commonly used in a wide variety of microprocessor applica-
+tions. They are used for programmed oscillators and pulse generators, key-
+board debouncing (discussed in the following lesson), and many other appli-
+cations.
+
+
+
+
+               DELAY: LXI B,O             ;Initialize inner loop count
+                LOOP: DCX S               ;0.786 sec delay loop
+                      MOV A,S
+                      ORA C
+                      JNZ LOOP
+                      OCR 0               ;Decrement main count
+                      JNZ DELAY           ; and loop unless zero
+                      RET
+
+
+                       Table 13-7.   Traffic Light Delay Routine
+
+
+By testing the routines one at a time, you can isolate problems more easily. The         TESTING
+general procedure is to use the keyboard to set the registers (from which the            TECHNIQUES
+routine expects to get its inputs) to given test values, and then run the routine.
+Breakpoints are often used to stop the program at the desired spot. Alternatively,
+the single-step mode can be used. The routine's outputs are then examined to see
+if they are correct. This may involve examining registers or memory locations or
+observing the state of an output port.
+
+The order in which the routines are tested is important. If you test a routine that
+calls an untested routine, then you may not know which routine is causing the
+problems. Therefore, the routines you should test first are those that do not call
+any other routines. The structure chart (Figure 13-5) conveniently identifies these
+routines (they are at the bottom of the chart). Next, you should test routines
+that call only previously tested routines. These appear on the next level of the
+structu re chart.
+
+The following experiments demonstrate the testing and use of the traffic light
+controller program. The entire program is listed, with the machine code added, in
+Table 13-8. NOPs are added to the mai n program so that new features can be
+readily added later. It is a good practice to do so in all your programs. To prac-
+tice your coding skills, cover up the machine code and code the program
+yourself. Then check to see that the code you generated was the same as that
+shown in Table 13-8.
+
+
+Lesson 13
+Practical Microprocessors                                                                             205
+      MAIN PROGRAM
+
+## Page 232
+
+        Address   Contents     Label       Instruction              Comments
+         0810       1E         TRAF:     MVI      E.O         ;Sequence signal A
+         0811       00
+         0812       CD                   CALL SEQ
+         0813       30
+         0814       08
+         0815       00                   NOP
+         0816        00                  NOP
+         0817        00                  NOP
+         0818        00                  NOP
+         0819       1E                   MVI      E.1         ;Sequence signal B
+         081A       01
+         081B       CD                   CALL     SEQ
+         081C       30
+         081D       08
+         081E       C3                   JMP      TRAF
+         081F       10
+         0820       08
+
+
+      SEQUENCING ROUTINE
+        Address   Contents     Label       Instruction            Comments
+         0830       26           SEQ:     MVI     H.7D        ;Set signal green
+         0831       7D
+         0832       CD                   CALL CHNG
+         0833       55
+         0834       08
+         0835       16                    MVI     D.6         ;Wait green time
+         0836       06
+         0837       CD                   CALL     DELAY
+         0838       70
+         0839       08
+         083A       26                    MVI     H.7B        ;Set signal yellow
+         083B       7B
+         083C       CD                   CALL     CHNG
+         083D       55
+         083E       08
+         083F       16                    MVI     D.2         ;Wait yellow time
+         0840       02
+         0841       CD                   CALL     DELAY
+         0842       70
+         0843       08
+         0844       C9                    RET
+
+
+
+
+                     Table 13-8. Traffic Light Controller Program
+
+
+                                                                        Lesson 13
+                  Scans by ArtekMedia => 2012            Practical Microprocessors
+206
+                                             Scans by Artekmedia => 2012
+
+## Page 233
+
+
+
+
+
+  CHANGE ROUTINE
+     Address    Contents      Label      Instruction              Comments
+      0855         7B        CHNG:     MOV       A,E       ;Signal flag set?
+      0856         FE                  CPI       0
+      0857         00
+      0858         7C                  MOV       A,H
+      0859         CA                  JZ        OUTP      ;Flag not set-output
+      085A         60                                      data directly
+      085B         08
+      085C         07                  RLC                 ;Flag set-rotate
+      0850         07                  RLC                 data
+      085E         07                  RLC
+      085F         07                  RLC
+      0860         32         OUTP:    STA       3000     ;Output data to
+      0861         00                                     signal
+      0862         30
+      0863         C9                  RET
+
+
+
+
+  DELAY ROUTINE
+    Address Contents          Label     Instruction                 Comments
+     0870      01            DELAY:    LXI       B,O         ;Initialize inner loop
+     0871      00                                            delay
+     0872      00
+     0873      OB             LOOP:    DCX       B           ;Inner loop 0.786
+     0874      78                      MOV       A,B         sec delay
+     0875      B1                      ORA       C
+     0876      C2                      JNZ       LOOP
+     0877      73
+     0878      08
+     0879       15                     OCR       0           ;Main loop
+     087A      C2                      JNZ       DELAY
+     087B      70
+     087C      08
+     0870      C9                      RET
+
+
+
+
+             Table 13-8. Traffic Light Controller Program (Continued)
+
+
+
+
+Lesson 13
+Practical Microprocessors                                                             207
+EX~OFOI!r\!~F'NT
+
+## Page 234
+
+   r   I    ~.'   !   V \   ~!
+                                        13-·11   _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ __
+
+
+
+
+Testing the Traffic light
+Controller Program
+
+
+      CONCEPT
+      In this experiment you enter and test the traffic light controller routines. One routine is tested at a time.
+      When they all work, the entire program is then tested. The register mode and breakpoint features of the
+      MLab are used extensively.
+
+      PROCEDURE
+          A) Key in the four routines in Table 13-8. Note that there is space left between the routines. This
+             leaves room for them to be modified.
+
+          B) Verify that they are correctly stored.
+
+          C) Test the delay routine first. When you test the routine, you want it to stop when it is finished. It
+             should not try to execute the return instruction, since it was not called by another routine.
+             Therefore, replace the RET instruction at the end of the delay routine (address 087D) with a
+             breakpoint (RST 1, opcode CF).
+
+          D) Set the D register to 5. (Press        @J and then      S;NOCRR'   four times to access the D register. Then
+             press    0 S~N°c"R'   .)   This sets the delay value to five.
+
+          E) Run the delay routine (starting at address 0870). The display should go blank for about four
+             seconds (5 x 0.786) and then show the address following the breakpoint (087E). If it doesn't
+             work, check the memory contents against Table 13-8. Be sure the RET has been changed to a
+             RST 1. Check that you are performing step D correctly.
+
+          F) Set the D register to another value, and run the routine again. Calculate the expected delay, and
+             measure the actual delay to see if it corresponds.
+
+         G) If the times correspond, the delay routine is working correctly. Change the RST 1 at address
+            087D back to a RET.
+
+             The delay routine has now been tested, and you are ready to test the CHNG routine.
+
+         H) The CHNG routine expects two inputs: the signal flag in the E register and the signal data in
+            the H register. Set the E register to zero and the H register to 7D (01111101). This will set the left-
+            hand signal to red and the right-hand signal to green when the routine is run.
+
+           I) Replace the RET at the end of the change routine (address 0863) with a breakpoint.
+
+          J) Run the change routine (starting at address 0855). The signals should be set as described in
+             step H.
+
+          K) Set the E register to 1. This sets the Signal flag and causes the two signals to reverse.
+
+
+
+
+                                                                                                                 Lesson 13
+208                                                     Scans by ArtekMedia => 2012              Practical Microprocessors
+                                             Scans by Artekmedia => 2012
+
+## Page 235
+
+
+
+
+
+_ _ _ _ _ _ _ _ _ _ EXPERI/V\ENT 13-1
+                                                                                               Continued
+
+
+
+        L) Run the change routine. The left-hand signal should now be green and the other one red.
+
+       M) Set the H register to the appropriate data to cause one signal to be red and the other yellow
+          (refer to Table 13-1).
+
+       N) Run the change routine, and verify that the signals operate correctly.
+
+       0) If they do, the change routine is correct. If they do not, check whether the program is correctly
+          stored and whether you performed the test procedure (beginning with step H) correctly.
+
+        P) Change the breakpoint at address 0863 back to a RET instruction.
+
+           The CHNG routine has now been tested, and you are ready to test the SEQ routine.
+
+       Q) The only input the sequencing routine expects is the signal flag (register E). Set register E to
+          zero. This sets the Signal flag to select the right-hand signal.
+
+       R) Change the RET at the end of the sequencing routine (address 0844) to a breakpoint.
+
+        S) Run the sequencing routine (address 0830). The right-hand signal should sequence through
+           green and yellow. It does not change to red because that is done on the next cycle, when the
+           other signal is changed to green. That part of the program is not being executed yet.
+
+       T) Set the E register to 1 to test the left-hand Signal.
+
+       U) Run the sequencing routine again. The other signal should sequence from green to yellow.
+
+        V) If it does, the sequencing routine works. Change the breakpoint at address 0844 back to
+           a RET.
+
+           All the modules have now been tested, and you are ready to test the entire system.
+
+       W) Run the main program (address 0810). Each light should sequence in turn. If they do not, check
+          whether you have replaced the breakpoints with RET instructions and whether the main
+          program is correctly stored.
+
+        X) The delay values were set unrealistically short to make the program's operation easier to
+           observe. Try changing them to other values.
+
+   SUMMARY
+   This experiment tested and ran the traffic light controller. Each routine was tested individually, starting
+   with the lowest level (those that call no other routines). By testing in this way, the number of
+   possible problem sources is kept to a minimum, and faults can be more easily pinpointed.
+
+
+
+
+Lesson 13
+Practical Microprocessors                                                                                        209
+ IMPROVING THE    There are many ways in which the basic traffic light controller can be improved.
+
+## Page 236
+
+                  One factor to consider is that the two streets may have different amounts of
+  TRAFFIC LIGHT
+                  traffic. If so, the green light time should be different for each.
+   CONTROLLER
+                  To add this modification, the sequencing routine must accept another parameter
+                  in addition to the signal flag: the green light time. This can be accomplished quite
+                  simply. First, the MVI 0,6 instruction is deleted from the sequencing routine (this
+                  instruction sets the green light time). Then instructions are added to the main
+                  program to set the 0 register (green light time). A listing of the modified main
+                  program is shown in Table 13-9.
+
+
+
+                   Address       Contents         Label            Instruction         Comments
+
+                    080E            16          TRAF:         MVI      0,6        ;Set Green Time A
+                    080F            06
+                    0810            1E                        MVI      E.O        ;Sequence signal A
+                    0811            00
+                    0812            CO                        CALL SEQ
+                    0813            30
+                    0814            08
+                    0815            00                        NOP
+                    0816            00                        NOP
+                    0817            16                        MVI 0.10            ;8et Green Time 8
+                    0818            10
+                    0819            1E                        MVI      E.1        ;Sequence signal 8
+                    081A            01
+                    0818            CD                        CALL SEQ
+                    081C            30
+                    0810            08
+                    081E            C3                        JMP TRAF
+                    081F            OE
+                    0820            08
+
+
+
+                           Table 13-9.   Traffic Light Main Program with Variable Green Times
+
+
+
+
+                                                                                             Lesson 13
+                                     Scans by ArtekMedia => 2012             Practical Microprocessors
+210
+                                             Scans by Artekmedia => 2012
+
+## Page 237
+
+
+
+
+
+_ _ _ _ _ _ _ _ _ EXPERIMENT 13-2
+                                                                                     Modifying the
+                                                                           Traffic light Controller
+
+
+    CONCEPT
+
+    In this experiment the traffic light controller is modified to provide different green light times for each
+    signal.
+
+
+    PROCEDURE
+
+        A) If the traffic light controller program in Table 13-8 is not still in the ~Lab's memory, key it in
+           (except for the main program).
+
+        8) Change the MVI 0,6 in the sequencing routine (addresses OS35 and 0836) to NOPs.
+
+        C) Key in the modified main program shown in Table 13-9.
+
+        D) Run the traffic light controller (which now starts at OSOE) and time the cycles to see if they are
+           different.
+
+        E) Vary the green times for each signal to verify that the program performs as expected.
+
+
+    SUMMARY
+
+    This experiment demonstrated a Simple modification of traffic light controller. The modular structure of
+    the program made this change easy to implement.
+
+
+
+
+Lesson 13
+Practical Microprocessors                                                                                     211
+ PROGRAMMING       There are many other possible ways to improve the traffic light controller. Here
+
+## Page 238
+
+  EXERCISE 13-1:   are some of them:
+ TRAFFIC LIGHT         1. Provide different yellow times for each signal.
+   CONTROLLER          2. Make both signals red for a few seconds instead of simultaneously making
+                          one red and one green.
+ MODIFICATIONS         3. Use the two spare LEOs as left-turn arrow indicators.
+                       4. Use one of the input port switches to simulate a sensor in the road, and
+                          do not allow the signal to change unless cars are waiting at the red light.
+
+                   These are just a few of the possibilities. The first one requires simple changes to
+                   the main program and the sequencing routine. The second can be imple-
+                   mented with some additions to the sequencing routine, and the third is similar.
+                   The fourth, which is somewhat more involved, has been left for you to solve.
+
+                   Modify the programs to implement one or more of these functions. If you add
+                   more than one, add them one at a time. By testing the program after each
+                   function is added, you will be able to find the problems more easily. Solutions to
+                   these exercises are in Appendix A.
+
+
+
+
+                                                                                                         I
+                                     Scans by ArtekMedia => 2012
+                                                                                          Lesson 13
+212                                                                       Practical Microprocessors
+                                            Scans by Artekmedia => 2012
+
+## Page 239
+
+
+
+
+
+ _________________ RE'ViEW
+                                                                                      Lesson 13
+
+
+
+The first step in designing a program is the definition of the problem. A solution
+can then be designed, determining the general operation of the program. It is
+advantageous to partition the program into small, modular routines. The main
+program utilizes the routines, directing the flow without having to handle the
+details. Once the structure has been designed, the routines are flowcharted and
+coded. Finally, the main program and the subroutines are keyed in and tested.
+
+Using a modular structure has many advantages. Dividing any problem into
+several smaller problems makes the solution easier, since the parts can be con-
+sidered one at a time. Well-structured programs are easier to write, to debug, to
+modify, and to understand.
+
+Subroutines communicate with each other by passing parameters. The traffic
+light controller used several parameters: the signal flag, the signal data, and the
+delay value.
+
+Delay routines are used for providing a specified time interval between events.
+Since the time to execute an instruction is determined by the clock frequency,
+which is crystal-controlled, the time to execute a program loop can be precisely
+determined. By executing a loop a specified number of times, the desired delay
+can be obtai ned.
+
+
+
+
+Lesson 13
+Practical Miroprocessors                                                                    213
+Lesson 13
+
+## Page 240
+
+
+
+
+            1. The first step in designing a program is to define the _ _ __
+
+
+            2. A good way to write a complex program is as:
+              a. one continuous program.
+              b. a series of programs that are executed in sequence.
+              c. one main program that calls a routine for each task.
+              d. a main program and one subroutine.
+
+
+            3. A parameter is:
+              a. a value passed from one routine to another.
+              b. the contents of the program counter.
+              c. the return address.
+              d. the number of times a program is executed.
+
+
+            4. Delay routines:
+              a. are limited to short time delays.
+              b. are inaccurate.
+              c. are rarely useful.
+              d. are useful for a wide range of time delays.
+
+
+
+
+                        Scans by ArtekMedia => 2012                       Lesson 13
+214                                                       Practical Microprocessors
+
+## Page 241
+

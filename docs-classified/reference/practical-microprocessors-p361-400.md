@@ -1,0 +1,2717 @@
+# Practical Microprocessors
+
+- Source PDF: `docs/Practical Microprocessors.pdf`
+- Category: `microprocessor-lab-handbook`
+- Printed: `March 1979`
+- Pages: `361-400 of 484`
+- Conversion: `pdftotext` with page markers
+- Figures: `docs-classified/reference/practical-microprocessors-p361-400/figures`
+- Diagnostic Scope: `Reference and teaching handbook for the HP 5036A uLab / Microprocessor Lab, covering fundamentals, 8085 programming, lab experiments, hardware, interfacing, logic-probe troubleshooting, and signature analysis.`
+- Notes: `The file name says Practical Microprocessors, and the scanned text confirms it is the 1979 Hewlett-Packard handbook by Michael Slater and Barry Bronson. OCR is usable for search but figure-heavy and lab-diagram pages still need image verification.`
+
+## Agent Notes
+
+Use this handbook for explanation, training, experiment context, programming examples, and subsystem reasoning. Use the service manual when the task is part replacement, formal troubleshooting flow, or exact service signatures.
+
+## Recommended Use
+
+- Reach for this document first when the user needs conceptual background: bus behavior, memory mapping, addressing, timing, I/O, peripherals, interrupts, or 8085 programming patterns.
+- Reach for the service manual first when the user is diagnosing a live hardware fault and needs official test setup, switch positions, chip-level service references, or repair workflow.
+- Use this handbook as the interpretation layer behind the service manual when a symptom needs architectural explanation.
+
+## High-Value Navigation
+
+- `Table of Contents` begins at `## Page 5`
+- `Section I: Microprocessor Fundamentals` begins near `## Page 9`
+- `Section II: Introduction to Programming` begins near `## Page 16`
+- `Section III: Microprocessor System Hardware` begins near `## Page 24`
+- `Section IV: Microprocessor Systems` begins near `## Page 34`
+- `Section V: Microcomputer Programming` begins near `## Page 56`
+- `Section VI: Troubleshooting Techniques` begins near `## Page 66`
+- `Lesson 16`: logic probe, logic pulser, and current tracer troubleshooting
+- `Lesson 17`: signature analysis and fault-isolation workflow
+
+## Trust Notes
+
+- Repeated scan-insert pages and footer clutter were removed where possible.
+- OCR is strong enough for lesson discovery and concept lookup, but formulas, figures, code listings, and tabular values should be checked against the matching page image when quoted or used diagnostically.
+- Use the service-manual verified companion and structured signature tables for exact `5036A` service signatures; this handbook is better for understanding why those signatures matter.
+
+## Extracted Text
+
+## Page 361
+
+
+
+
+
+_ _ _ _ _ _ _ LESSON 20
+                                                              Microprocessor Survey
+
+
+The world's first commercial eight-bit microprocessor was the Intel 8008, intro-       THE 8085 IN
+duced in 1971. By today's standards it is very slow and difficult to use, but at the   PERSPECTIVE
+time of its introduction, it was a major breakthrough. Two years later the 8080 was
+introduced and represented a significant improvement in both speed and ease of
+implementation. The 8080 rapidly became an industry standard. The 8085 is the
+third generation of this series. It is facter than the 8080 and requires fewer
+components for a complete system.
+
+Intel did not remain alone in the microprocessor field for long. The 8080's most
+significant early competitor was Motorola's 6800. The 6800 has a number of
+features lacking in the 8080 but has not become quite as popular.
+
+Zilog's Z80 is another outgrowth of the 8080. It is also a substantial improvement
+over the 8080, but is quite different from the 8085. The 8080, Z80, 6800, and some
+other important processors are described later in this lesson.
+
+
+Eight-bit microprocessors are more powerful than is needed for many simple             FOUR-BIT
+control applications. Four-bit microprocessors, being simpler and less expensive,      MICROPROCESSORS
+are often more suitable. Early four-bit microprocessors required external ROM,
+RAM, and liD, just as the eight-bit processors. More recent devices include the
+processor, RAM, ROM, and liD on a single integrated circuit.
+
+The most significant architectural difference between four-bit and eight-bit
+microprocessors is that the four-bit machines use separate program and data
+memory. The program memory (usually ROM) is generally eight bits wide, while
+the data memory is four bits wide. Eight-bit words are used for the instructions,
+since a four-bit word permits only sixteen different instructions.
+
+
+Lesson 20
+Practical Microprocessors                                                                            335
+      SIXTEEN-BIT     At the other end of the applications spectrum, there are some situations in which
+
+
+## Page 362
+
+
+
+MICROPROCESSORS       eight-bit processors are inadequate. Sixteen-bit microprocessors, which are
+                      architecturally similar to minicomputers, provide increased power for such
+                      applications. They provide greatly improved arithmetic capabilities and are well
+                      suited to "number crunching" applications. More recent sixteen-bit microproces-
+                      sors provide many sophisticated features to facilitate the implementation of
+                      operating systems and high-level languages.
+
+                      Sixteen-bit microprocessors can do computations involving large numbers much
+                      faster than eight-bit processors because they handle sixteen bits at a time.
+                      Eight-bit processors can handle equally large numbers, but they must break them
+                      up into eight-bit sections, which significantly slows the computation.
+
+     SINGLE-CHIP      The next advance after the integration of an entire CPU was the inclusion of ROM,
+MICROCOMPUTERS        RAM, and 1/0 on the same chip. This has been done for four, eight, and sixteen-bit
+                      processors. These processors typically provide 1K to 4K or more bytes of ROM
+                      for program storage, and 64 to 256 or more bytes of RAM for temporary data
+                      storage. The I/O facilities range from 16 to 32 lines. Some of the more advanced
+                      devices also include a UART (serial I/O controller) on the chip. These chips
+                      provide a complete microcomputer system on a single IC and are a simple,
+                      inexpensive solution to many control applications. Often an entire board with
+                      dozens of SSI and MSI ICs can be replaced with a single IC.
+
+                      Some single-chip microcomputers are available with a UV EPROM instead of the
+                      ROM. This facilitates system prototyping, since software changes can be made by
+                      reprogramming the EPROM. When the design is finalized, a less expensive mask
+                      ROM version can be used.
+
+
+          BIT-SLICE   Bit-slice processors differ substantially from other microprocessor types. Each
+                      bit-slice processor chip has a relatively small word size (usually four bits I, but
+       PROCESSORS     they can be stacked together to make as long a word as desired. For example,
+                      four four-bit "slices" can be used to form a sixteen-bit processor.
+
+                      Another distinguishing characteristic of bit-slice processors is that they do not
+                      have a fixed instruction set. The user must write the microprogram that
+                      defines the instruction set. This allows the instruction set to be customized for
+                      each application, resulting in fast, efficient programs. However, it greatly in-
+                      creases the design effort required to build a system.
+
+                      Bit-slice processors are bipolar devices, while general-purpose processors are
+                      MOS devices. Bit-slice processors are therefore much faster and consume more
+                      power. They also require faster memories to keep up with them.
+
+                      As this brief discussion suggests, bit-slice systems are very powerful and also quite
+                      complicated. The CPU generally contains dozens of ICs, and the programming is
+                      quite complex. They are used in applications that demand this speed and power,
+                      such as digital signal processing, high-speed arithmetic processors, high-speed
+                      control systems, and minicomputers.
+
+
+MICROPROCESSOR        More than thirty general-purpose microprocessors and about the same number of
+   DESCRIPTIONS       single-chip microcomputers are now available. (Refer to the bibliography for more
+                      information on the available devices.) In this section a few of those that have been
+                      used in high volume are described: the 8080A, the Z80, the 6800, the 6500 series,
+                      the F8, and the TMS 1000.
+
+
+                                                                                              Lesson 20
+
+
+## Page 363
+
+
+> [!note]
+> This page contains structured educational or figure-referenced content. Use the page image when exact labels, code, or tabular alignment matters.
+
+
+
+The Intel 8080
+Figure 20-1 shows the basic 8080 CPU, the predecessor to the 8085. The 8080
+requires three chips to provide the functions supplied by the 8085 itself: a clock
+generator (8224), CPU (8080), and system controller (8228). The 8080A does not
+multiplex the address and data lines, but it does multiplex the control signals and
+the data. The 8228 controller IC demultiplexes the control information. The 8080's
+maximum clock rate is 2 MHz as compared to the 8085's 3 MHz. (As with most
+processors, selected higher speed versions of the 8080 and 8085 are available.)
+The 8080 requires three power supplies (+5, -5 and +12 V), whereas the 8085
+requires only +5 V.
+
+
+                           GND                 AO                    AO
+                           +sv                 A1                    A1
+                           -sv                 A2                    A2
+                          + 12V                A3                    A3
+                                               A4                    A4
+                                               AS                    AS
+                                       8080    AS                    AS
+                                       CPU     A7                    A7
+                                               A8                            ADDRESS BUS
+                                                                     A8
+               SYSTEM DMA REO.                 A9                    A9
+                                              A10                    A10
+                                             A11                     A11
+               SYSTEM INT. REO.               A12                    A12
+                                             A13                     A13
+                   INT. ENABLE    INTE       A14                     A14
+                                             A1S                     A1S
+                                              WR
+                                            DBIN
+                                            HLDA
+
+                                                                     DBO
+                                                                     DB1
+                                                                     DB2
+                                                                     DB3
+   WAIT REO.                                                                   DATA BUS
+                                                                     DB4
+                                                                     DBS
+  SYS. RESET
+                                                                     DBS
+                                                                     DB7
+                                                                     fNTA
+                                                                     MEM R
+                                                                     MEMW     CONTROL BUS
+                                                                     i7()R
+                                                                     IfOW
+
+
+                         Figure 20-1. Three-Chip BOBO-Based CPU
+
+The 8080 lacks the RST 5.5, 6.5, and 7.5 interrupts, as well as the TRAP input. It
+also does not have any serial I/O pins. The instruction set is identical to the
+8085's, except that the 8085 includes two additional instructions to control the
+interrupts and the serial I/O. All 8080 programs will run on the 8085, but the timing
+is different. Nearly all new designs use the 8085 rather than the 8080.
+
+The Zilog Z80
+Zilog's Z80, like the 8085, is a descendant of the 8080. However, it has many
+features not found in either the 8080 or the 8085. Like the 8085, it requires no clock
+generator or system controller chip and operates from a single +5 V supply. Unlike
+the 8085, its instruction set has been greatly expanded. It includes all of the 8080
+instructions (so that it can run 8080 programs), but it also includes a large group of
+powerful new instructions. For example, a block of data of any size can be moved
+from one part of memory to another with a single instruction. Any bit of any
+register can be tested, set, or cleared with a single instruction. These are just two of
+the many additional instruction types which can ease the programmer's task
+considerably. Relative and indexed addressing (described below in the 6800
+description) were also added. The Z80 includes all of the 8080's registers (8, C, 0,
+E, etc.) but has two complete sets of them.
+
+
+Lesson 20
+Practical Microprocessors                                                                   337
+      This is far from a complete description of the Z80's features, but it illustrates the
+
+
+## Page 364
+
+
+> [!note]
+> This page contains structured educational or figure-referenced content. Use the page image when exact labels, code, or tabular alignment matters.
+
+
+      basic concept: the Z80 is an 8080-type processor with a number of hardware
+      simplifications and greatly improved software capabilities.
+
+
+      The Motorola 6800
+      The 6800 microprocessor was the 8080's first direct competitor and is widely
+      used. However, it differs from the 8080 and its descendants in a number of
+      important ways.
+
+      The 6800 operates from a single + 5V supply and does not require a system
+      controller chip. It does, however, require a non-TTL compatible, two-phase clock
+      and therefore requires a special clock generator circuit. Its standard maximum
+      clock frequency is 1 MHz (faster versions are available), but this cannot be
+      directly compared with the 8085's 3 MHz clock. While the 8085 requires from
+      three to six clock cycles for each memory reference, the 6800 requires only one.
+      A 1 MHz 6800 may therefore actually operate faster than a 3 MHz 8085.
+
+      The 6800's read and write control signals are quite different from the 8085's.
+      Figure 20-2 shows the timing for a read operation. The clock consists of two
+      nonoverlapping signals, <1>1 and <1>2 (this is called a two-phase clock). Shortly
+      after the rising edge of <1>1, the address and RIW lines are set up. Valid Memory
+      Address (VMA) goes high at this time, indicating that the address bus contains
+      valid information. <1>2 signals the addressed device to place the data on the bus,
+      and, at the falling edge of <1>2, this data is stored in the microprocessor.
+
+                                                             Data read into
+                                                            microprocessor
+
+
+                   <1>1
+
+
+                   <1>2
+
+
+           READ/WAlfE _ _ _- J
+
+
+             ADDRESS
+
+
+                 VMA _ _ _- J
+
+
+                 DATA
+         FROM MEMORY -     -   -   -    -   -   -   -   -
+        OR PERIPHERAL
+
+
+                 Figure 20-2. 6800 Control Signals, Showing a Read Operation
+
+
+                                                                                      Lesson 20
+338                                                                   Practical Microprocessors
+
+
+## Page 365
+
+
+> [!note]
+> This page contains structured educational or figure-referenced content. Use the page image when exact labels, code, or tabular alignment matters.
+
+
+
+Note that the meaning of the RIW signal is different from the 8085's READ and
+WRITE signals. The RIW signal does not indicate the exact time at which the
+transfer occurs, but only specifies the direction. The timing for the transfer is
+provided by the <1>2 clock. This is quite different from the 8085's timing, in which
+the READ and WRITE signals specify both the direction and the timing, and the
+clock rate is faster than the data transfer rate.
+
+Figure 20-3 shows the 6800's write timing. It is identical to the read timing except
+that R/W is low instead of high. The microprocessor places data on the bus when
+<1>2 goes high, and, at the falling edge of <1>2, the addressed device stores this
+data.
+
+                                                           Data stored by
+                                                      memory or peripheral
+
+
+              <1>2
+
+
+       READ/WRITE --'""""\.
+
+
+         ADDRESS
+
+
+             VMA----J
+
+
+           DATA
+           FROM -    -   -    -   -   -   -   -   -   -
+ MICROPROCESSOR
+
+
+                         Figure 20-3. 6800 Write Operation
+
+6800 Software
+The 6800's instruction set differs from the 8085's in several important ways. The
+6800's registers are shown in Figure20-4.Like the 8085, it has a stack pointer and
+a program counter. It also has a sixteen-bit register, called the index register, and
+two eight-bit accumulators. There are no general-purpose registers (other than
+the accumulators).
+Because of the lack of general-purpose registers, external RAM must be used
+for most temporary data storage. This simplifies the instruction set, since the
+variations of each instruction needed to refer to each register are unnecessary.
+The second accumulator can be used for operands or results.
+The greatest difference between the software power of the 8085 and that of the
+6800 is the use of three additional addressing modes in the 6800: indexed, rela-
+tive, and direct. Indexed addressing uses the index register just described. In this
+
+
+Lesson 20
+Practical Microprocessors                                                               339
+                                     Program          Counter
+
+
+## Page 366
+
+
+> [!note]
+> This page contains structured educational or figure-referenced content. Use the page image when exact labels, code, or tabular alignment matters.
+
+
+
+                                      Stack           Pointer
+
+
+                                      Index           Register
+
+
+                                                  Accumulator
+                                                      A
+
+
+                                                  Accumulator
+                                                      B
+
+
+                                                 Condition Code
+                                                    (Flags)
+
+
+                              Figure 20-4. 6800 CPU Registers
+
+      mode, the effective address (the address sent to the memory) is the sum of the
+      offset specified in the instruction and the contents of the index register. The index
+      register can be set, incremented, or decremented just like the other registers.
+      This addressing technique is useful for handling blocks of data and performing
+      table-oriented operations.
+
+      Relative addressing allows you to specify an address relative to the current
+      instruction. You can, for example, write an instruction that causes the processor
+      to jump ahead three addresses or jump backwards seven addresses. The 8085,
+      on the other hand, always requires you to specify the actual address (called
+      absolute addressing).
+
+      The direct addressing mode allows you to specify only the low-order byte of the
+      address, with the upper byte assumed to be zero. This shortens by one byte any
+      instruction that references the first 256 memory locations.
+
+
+      The 6802 is a newer version of the 6800. The 6802 includes 128 bytes of RAM and a
+      clock generator on the CPU chip. The instruction set is identical to the 6800's.
+      Several other descendants of the 6800 also exist.
+
+      The 6800 has been only briefly described here, but this discussion should give
+      you an idea of the differences between the 6800 and the 8085. Complete
+      information may be obtained from the Motorola literature.
+
+
+      The MOS Technology 6500
+      The 6500 series is widely used, particularly in high-volume consumer applica-
+      tions. The 6502 is the standard model.
+
+
+                                                                                  Lesson 20
+340                                                               Practical Microprocessors
+
+
+## Page 367
+
+
+
+
+The 6502's instruction set is sim ilar to the 6800's, but it has only one accumulator
+and a few additional addressing modes. A significant hardware difference is the
+inclusion of an on-chip clock generator.
+
+The 6502 microprocessor is available in several versions in 28-pin (instead of
+40-pin ) packages, which reduces the cost. The difference between the versions is
+the selection of deleted pin functions, since twelve pins must be eliminated. Some
+eliminate the interrupts and a few address lines, while others eliminate mostly
+address li nes. This allows small systems to be implemented with an inexpensive
+microprocessor that has only the functions and addressing range required for the
+application .
+
+The Fairchild Fa
+The F8 microprocessor is a two-chip system . The 3850 CPU and 3851 Program
+Storage Un it (PSU) combine to make a complete microcomputer system with
+64 bytes of RAM , 1K bytes of ROM , 32 I/ O lines, and a timer.
+
+The most unusual aspect of the F8 system is the divis ion of functions between
+the 3850 CPU and the 3851 PSU. Figure 20-5 shows the block diagram. The
+3850 CPU does not have an address bus; the program counter (PC) and memory
+addressing logic are part of the 3851 memory device. The CPU generates five
+
+
+     3850 CPU
+
+
+                                                                           321/0
+                                                                           lines
+
+
+                 Fig ure 20-5. Simplified Fa System Block D iagram
+
+
+Lesson 20
+Practical Microprocessors                                                               341
+      special control signals to control the program counter in the 3851. The CPU can
+
+
+## Page 368
+
+
+
+      set the address in the PC by sending the address in two parts over the data bus,
+      and instructing the PSU to load that data into the PC. It can also instruct the
+      PSU to increment the PC. If there is more than one PSU in the system, each
+      maintains its own PC. All the PCs are synchronized by the control signals from
+      the CPU. The elimination of the address bus makes sixteen pins available on
+      both the CPU and PSU packages, which are used to provide 32 bits of I/O.
+
+      There are a number of other members of the F8 family. The 3856 is a 2K byte
+      version of the 3851. There are also special interface chips for using standard static
+      or dynamic memories with the 3850. The 3870 is a single-chip version of the F8
+      that incorporates the functions of the 3850 and 3856, providing the processor,
+      2K bytes of ROM, and 64 bytes of RAM on the same chip. The 3871 is a single-
+      chip processor with 4K bytes of ROM and 132 bytes of RAM.
+
+      The F8 is widely used in control applications, including games, appliances, and
+      instruments. The single-chip version provides a very powerful system with a
+      single IC.
+
+      The Texas Instruments TMS 1000
+      The TMS 1000 is a family of single-chip four-bit microcomputers. Each device
+      contains the CPU, ROM, RAM, and I/O on a single IC and is very inexpensive in
+      large quantities. There are about 35 varieties available, with varying amounts of
+      ROM, RAM, and I/O. The ROM is 1K or 2K bytes, and the RAM is either 64 or 128
+      four-bit words. Up to sixteen I/O lines are available. These devices are widely used
+      in high-volume, low-end applications.
+
+
+342                                                          Practical Microprocessors
+
+
+## Page 369
+
+
+
+
+                                                                                        REVIEW
+                                                                                        Lesson 20
+
+
+A wide variety of microprocessors is now available. The general-purpose eight-bit
+types, such as the 8085 and 6800, provide a great deal of flexibility with a moderate
+amount of complexity. For small systems, single-chip microcomputers such as
+the 3870 or TMS 1000 provide an extremely simple and inexpensive system. At
+the high end, the sixteen-bit microprocessors provide minicomputer-like per-
+formance for more demanding applications. For very high-speed applications, bit-
+slice processors are used.
+
+All microprocessors share a common basic design: a CPU to fetch and execute
+instructions, memory to store instructions and data, and 1/0 ports to communicate
+with other devices. The various microprocessors have different instruction sets,
+using different registers and addressing modes. Most applications can be imple-
+mented using any of several different processors, though the amount of ROM and
+RAM required may vary considerably. There is always a data bus and an address
+bus, though they are sometimes hidden within an IC. The control signals may vary
+somewhat, but they always provide the same functions: telling the memory and 1/0
+when they should read or write data and allowing other devices to interrupt or halt
+the processor.
+
+When learning about a new microprocessor, look for the features that have been
+discussed. How many bits wide is the data bus? What are the registers in the
+CPU? What addressing modes are available? Are the address (or control) and
+data multiplexed? How many ICs are required to make a complete system? What
+kinds of support chips are available?
+
+The variety and sophistication of microprocessors is rapidly increasing. Once you
+understand the basic concepts and a few of the current microprocessors, you
+will be able to put the new devices in perspective and keep up with this rapidly
+advancing field.
+
+
+Lesson 20
+Practical Microprocessors                                                                      343
+ QUIZ _ _ _ _ _ _ _ _ _ _ __
+
+
+## Page 370
+
+
+
+ Lesson 20
+
+
+             1. The 8085 and Z80 evolved from the _ _ __
+
+
+             2. The 6502 and 6802 evolved from the _ _ __
+
+
+             3. Four-bit processors are used (instead of eight-bit processors) because:
+               a. they are faster.
+               b. they can access more memory.
+               c. they are easier to program.
+               d. they are less expensive.
+
+
+             4. Sixteen-bit processors are used (instead of eight-bit processors) because:
+               a. they are less expensive.
+               b. they consume less power.
+               c. they can handle a greater range of values.
+               d. they can perform calculations with large numbers more quickly.
+
+
+             5. Single-chip microcomputers generally include:
+               a. ROM, RAM, and 1/0 ports.
+               b. ROM and RAM, but require 1/0 ports.
+               c. only I/O ports.
+               d. RAM and 1/0 but no ROM.
+
+
+             6. Bit-slice microprocessors are:
+               a. easy to use.
+               b. inexpensive.
+               c. very flexible and powerful.
+               d. very similar to standard processors.
+
+
+             7. The memory control signals of different microprocessors:
+               a. are all the same.
+               b. vary in details, but always perform the same function.
+               c. can perform widely varying functions.
+               d. are always identical to 8085 control signals.
+
+
+344                                                             Practical Microprocessors
+
+
+## Page 371
+
+
+
+
+_ _ _ _ _ _ APPENDICES
+
+
+Appendices
+Practical Microprocessors                                 345
+    THIS
+
+
+## Page 372
+
+
+
+    PAGE
+    LEFT
+   BLANK
+
+    By
+
+
+
+
+## Page 373
+
+
+
+
+_ _ _ _ _ _ APPENDIX A
+                                                                Solutions to Problems
+
+
+This appendix contains solutions to all the problems in the text. There are four
+types of solutions:
+    • Answers to quizzes
+    • Solutions to programming exercises
+    • Machine code for programs used in experiments
+    • Solutions to troubleshooting faults
+The fault solutions beginning on page A-7 assume that only one fault is present
+in the J,LLab. They outline the steps taken to locate the faults using the J,LLab
+Generalized Troubleshooting Flowchart (Figure 19-1). The troubleshooting path
+taken for each of the faults is shown on this flowchart. You may wish to refer to
+them before reading the actual fault solutions. In these solutions, specific ICs or
+circuit areas are often called out within a signature test table based on a modest
+level of circuit insight. These "educated guesses" are done to save time probing
+all signature points in a table. Such a procedure is not, however, necessary to
+pinpoint bad signatures.
+
+
+Appendix A
+Practical Microprocessors                                                             347
+                           ANSWERS TO QUIZZES
+
+
+## Page 374
+
+
+
+  Lesson 1                     Lesson 6                   Lesson 11                 Lesson 17
+
+  1. c                         1. fetch                   1. b                      1. d
+  2. b                         2. c                       2. d                      2. d
+  3. address, data, and        3. hardware                3. STORE/INCR             3. d
+       control                 4. c                          three times            4. c
+                               5. b                       4. a                      5. b
+  4. bytes
+                                                                                    6. d
+  5. b
+                                                                                    7.   a
+  6. d                         Lesson 7                                             8. b
+  7.   a                                                   Lesson 12
+                               1. data,
+  8. d
+  9. a                            address/control          1. b
+                               2. b                        2. a
+  Lesson 2                     3. a                        3. c
+                               4. b                        4. 0930
+  1. 1 or 0                                                                         Lesson 18
+                               5. c                        5. c
+  2. 172
+                               6. c
+  3. 254                                                                            1. a
+                               7. d
+  4. AC                                                                             2. d
+                               8. -W~R-I=T-E, READ         Lesson 13
+  5. 1011 1001                                                                      3. d
+  6. FF (hex) = 377 (octal)                                1. problem               4. d
+  7.   c                       Lesson 8
+                                                           2. c                     5. a
+                                                           3.   a                   6. c
+                               1. a
+                                                           4. d
+  Lesson 3                     2. d
+                               3.   c
+  1. c                         4. b
+                                                           Lesson 14
+  2. assembly, machine         5. a
+  3. b                         6. c                        1. c                     Lesson 19
+  4. d                                                     2. b
+  5. a                         Lesson 9                    3. b
+                                                                                    1. d
+                                                           4. c
+                               1. c                                                 2. d
+  Lesson 4                     2. c                                                 3. b
+                               3. a                                                 4. b
+                                                           Lesson 15
+  1. FETCH ADRS                4. d                                                 5. d
+  2. DECR or                   5. c                        1. d
+     FETCH ADRS 0 8 0 2        6. c                        2. b
+  3. a                         7. d                        3. floating point
+  4. addresses                 8. d                        4. a
+  5. b                                                     5. b
+                               Lesson 10
+                                                                                    Lesson 20
+  Lesson 5
+                               1. b
+                                                           Lesson 16
+  1. a                         2. a                                                 1. 8080
+  2. c                         3. d                        1. b                     2. 6800
+  3. accumulator (registers)   4. a                        2. c                     3. d
+  4. CALL                      5. d                        3. d                     4. d
+  5. RET                       6. b                        4. d                     5. a
+  6. b                         7. c                        5. a                     6. c
+  7. a                         8. a                        6. b                     7. b
+
+
+                                                                                             Appendix A
+348
+
+
+## Page 375
+
+
+
+
+               PROGRAMMING EXERCISE SOLUTIONS
+                                 Note: These solutions are for the programming exercises only.
+                                 For programs used in experiments, see the following section.
+
+
+           Programming Exercise 12-1:                   Masking                                    Programming Exercise 13-1a:
+                                                                                                   Traffic Light Controller with
+ Address    Contents     Label       Instruction         Comments
+  0800                 START:       LOA 2000       ;Read input port to accum-
+                                                                                        Individually Variable Green and Yellow Times
+             3A
+  0801        00                                    ulator
+  0802        20
+  0803        06                   MVI    B,08     :Set B to mask value (0000
+  0804        08                                    1000 binary)
+  0805       AD                    ANA B           ;5et all bits except no. 3 to zere
+  0806       CA                    JZ  OFF         ;Te5t for accumulator:::: 0
+  0807        11
+  0808       08
+  0809       3E        ON:         MVI   A,O       ;Turn on LEOs
+  080A       00
+                                                                                                              Main Program
+  080B       32                    STA   3000
+  080C       00
+  0800       30                                                                         Address   Contents    Label      Instruction         Comments
+  080E       C3                    JMP   START
+  080F       00                                                                          080C       2E       TRAF:     MVI   L,1        ;Set yellow time A
+  0810       08                                                                          0800       01
+  0811       3E        OFF:        MVI   A,FF      ;Turn off LEOs                        080E       16                 MVI   0,6        ;8et green time A
+  0812       FF                                                                          080F       06
+  0813       32                    STA   3000                                            0810       1E                 MVI   E,O        ;Sequence signal A
+  0814       00                                                                          0811       00
+  0815       30                                                                          0812       CD                 CALL SEQ
+  0816       C3                    JMP START                                             0813       30
+  0817       00                                                                          0814       08
+  0818       08                                                                          0815       2E                 MVI   L,3        ;Set yellow time A
+                                                                                         0816       03
+                                                                                         0817       16                 MVI   0,10       ;5et green time B
+                                                                                         0818       10
+                                                                                         0819       1E                 MVI   E,1        ;Sequence signal B
+                                                                                         081A       01
+                                                                                         081B       CD                 CALL SEQ
+                                                                                         081C       30
+                                                                                         0810       08
+                                                                                         081E       C3                 JMP TRAF
+                                                                                         081F       oc
+           Programming Exercise 12-2:                    Rotates                         0820       08
+
+
+ Addres.   Contents     Label        Instruction         Comments
+  0800       3E                    MVI   A,FE      ;Set accumulator to 1111 1110
+  0801       FE
+  0802       32        LOOP:       STA   3000      ;Write to output port
+  0803       00
+  0804       30
+  0805       OF                    RRC             ;Rotate data
+  0806       C3                    JMP LOOP        ;Repeat
+  0807       02
+  0808       08
+                                                                                                         Sequencing Routine
+
+                                                                                        0830        26       SEQ:      MVI   H,7D      ;Set signal green
+                                                                                        0831       7D
+                                                                                        0832       CD                  CALL CHNG
+                                                                                        0833        55
+                                                                                        0834        08
+                                                                                        0835       00                  NOP             ;Wait green time
+                                                                                        0836       00                  NOP
+                                                                                        0837       CD                  CALL DELAY       ;Wait green time
+            Using Breakpoint in Exercise 12-2                                           0838       70
+                                                                                        0839       08
+                                                                                        083A       26                  MVI   H,7B      ;Set signal yellow
+Address    Contents     Label        Instruction        Comments                        083B       7B
+                                                                                        083C       CD                  CALL CHNG
+ 0800        3E                    MVI   A,FE      ;Set accumulator to 11111110
+                                                                                        0830       55
+ 0801        F,E
+                       LOOP:                                                            083E       08
+ 0802        32                    STA   3000      ;Write to output port
+                                                                                        083F       55                  MOV D,L         ;Wait yellow time
+ 0803        00
+                                                                                        0840       00
+ 0804        30
+                                                                                        0841       CD                  CALL DELAY
+ 0805        CF                    RST 1           ;Breakpoint
+                                                                                        0842       70
+ 0806        OF                    RRC             ;Rotate data
+                                                                                        0843       08
+ 0807        C3                    JMP LOOP        ;Repeat
+                                                                                        0844       C9                  RET
+ 0808        02
+ 0809        08
+                                                                                                   (CHANGE and DELAY routines same as in Table 13-81
+
+
+Appendix A
+Practical Microprocessors                                                                                                                                  349
+                 PROGRAMMING EXERCISE SOLUTIONS
+
+
+## Page 376
+
+
+
+                                                                   (Continued)
+
+
+                Programming Exercise 13-1b:                                                  Programming Exercise 13-1c:
+                 Traffic Light Controller with                                                Traffic Light Controller with
+                Both Signals Red Between Cycles                                                         Left-Turn Arrows
+
+
+                              Main Program                                                                Main Program
+
+      Address    Contents      Label        Instruction         Comments           Address   Contents     Label      Instruction          Comments
+                                                                                    080E       2E        TRAF:     MVI   L,6        :8et Green Ti me A
+       080E        16         TRAF:      MVI    D,6        ;Set Green Time A
+                                                                                    080F       06
+       080F        06
+                                                                                    0810       1E                  MVI   E,O        ;Sequence signal A
+       0810        1E                    MVI    E,O        ;Sequence signal A
+                                                                                    0811       00
+       0811        00
+                                                                                    0812       CD                  CALL SEQ
+       0812        CD                    CALL SEQ
+                                                                                    0813       26
+       0813        30
+                                                                                    0814       08
+       0814        08
+                                                                                    0815       00                  NOP
+       0815        00                    NOP
+                                                                                    0816       00                  NOP
+       0816        00                    NOP
+                                                                                    0817       2E                  MVI L,10         ;Set Green Time 6
+       0817        16                    MVI D,10          ;Set Green Time 6
+                                                                                    0818       10
+       0818        10
+                                                                                    0819       1E                  MVI   E,1        ;Sequence signal B
+       0819        1E                    MVI    E,1        :Sequence signal 8
+                                                                                    081A       01
+       081A        01
+                                                                                    0816       CD                  CALL SEQ
+       0816        CD                    CALL SEQ
+                                                                                    081C       26
+       081C        30
+                                                                                    0810       08
+       0810        08
+                                                                                    081E       C3                  JMP TRAF
+       081E        C3                    JMP    TRAF
+                                                                                    081F       OE
+       081F        OE
+                                                                                    0820       08
+       0820        08
+
+
+                          Sequencing Routine                                                         Sequencing Routine
+
+       0830        26         SEQ:       MVI    H,7D       ;5et signal green        0826       26        SEQ:      MVI   H,7E       ;8et left-turn indicator
+       0831        7D                                                               0827       7E
+       0832        CD                    CALL CHNG                                  0828       CD                  CALL CHNG
+       0833        55                                                               0829       55
+       0834        08                                                               082A       08
+       0835        00                    NOP               ;Wait green time         0826       16                  MVI   D,3        :Wait left-turn time
+       0836        00                    NOP                                        082C       03
+       0837       CD                     CALL DELAY                                 082D       CD                  CALL DELAY
+       0838       70                                                                082E       70
+       0839       08                                                                082F       08
+       083A       26                     MVI    H,76       ;Set signal yellow       0830       26                  MVI   H,7D       ;Set signal green
+       0836       76                                                                0831       7D
+       083C       CD                     CALL CHNG                                  0832       CO                  CALL CHNG
+       083D       55                                                                0833       55
+       083E       08                                                                0834       08
+       083F       16                     MVI    0,2        ;Wait yellow time        0835       55                  MOV D,L          ;Wait green time
+       0840       02                                                                0836       00                  NOP
+       0841       CD                     CALL DELAY                                 0837       CD                  CALL DELAY
+       0842       70                                                                0838       70
+       0843       08                                                                0839       08
+       0844       26                     MVI    H,77       ;Set both sigs red       083A       26                  MVI   H,76       ;Set signal yellow
+       0845       77                                                                0836       76
+       0846       CD                     CALL CHNG                                  083C       CD                  CALL CHNG
+       0847       55                                                                083D       55
+       0848       08                                                                083E       08
+       0849       16                     MVI    D,1        ;Wait both red time      083F        16                 MVI   D,2        ;Wait yellow time
+       084A       01                                                                0840       02
+       0846       CD                     CALL DELAY                                 0841       CD                  CALL DELAY
+       084C       70                                                                0842        70
+       084D       08                                                                0843        08
+       084E       C9                     RET                                        0844        C9                 RET
+
+                        (CHNG and DELAY routines same as in Table 13-81                          (CHNG and DELAY routines same as in Table 13-8)
+
+
+                                                                                                                                Appendix A
+
+
+## Page 377
+
+
+
+
+          PROGRAMMING EXERCISE SOLUTIONS
+                                                  ( Continued)
+
+    Programming Exercise 14-1:         Electronic Lock
+                                                                             Program for Exercise 14-1
+                           Flowchart
+                                                               Address   Contents    Label         Instruction          Comments
+
+                                                                0800       CD       FIRST;    CALL KIND          'Read first key
+                                                                0801       4B
+                                                                0802       01
+                                                                0803       FE                 CPI      07        ;Key ~ 7?
+                                                                0804       07
+                                                                0805       C2                 JNZ      FIRST     :Read again jf not
+              Lock                                              0806       00
+                                                                0807       08
+                                                                0808       CD       SECOND:   CALL KIND          ;Read second key
+                                                                0809       4B
+                                                                080A       01
+                                                                080B       FE                 CPI      03        :Key ~ 3?
+                                                                080C       03
+            Read First                                          0800       CA                 JZ       OPEN      ;Generate beep if yes
+                                                                080E       18
+               Key                                              080F       08
+                                                                0810       FE                 CPI      07        ;Key ~ 7?
+                                                                0811       07
+                                                                0812       CA                 JZ       SECOND    ;Read second key if yes
+                                                                0813       08
+                                                                0814       08
+                                                                0815       C3                 JMP      FIRST     ;Read first key if no
+                                                                0816        00
+                             No                                 0817       08
+                                                                0818       CD       OPEN:     CALL BEEP          ;Correct combination-
+                                                                0819       10                                      generate beep
+                                                                081A        00
+                                                                081B        C3                JMP      FIRST     :Repeat
+                                                                081C        00
+                  Yes                                                       08
+                                                                0810
+
+
+           Read Second
+               Key
+
+
+                                            No                               Programming Exercise 14-2:
+                                                                         Using the Keyboard and Display
+
+                                                               Address   Contents    Label         Instruction          Comments
+
+                     Yes                                        0800       CD       LOOP:     CALL KIND          :Read key
+                                                                0801       4B
+                                                                0802       01
+                                                                0803       32                 STA      OBOO      ;Store key In RAM
+                                                                0804       00
+                                                                0805       OB
+             Generate                                           0806       11                 LXI      D,MESS    ;5et message address
+              Beep                                              0807       00
+                                                                0808       OB
+                                                                0809       CD                 CALL SDM           ;Move message
+                                                                080A       18
+                                                                080B       00
+                                                                080C       CD                 CALL DCD           ;Display message
+                                                                0800       E9
+                                                                080E       01
+                                                                080F       C3                 JMP      LOOP      ;Repeat
+                                                                0810       00
+                                                                0811       08
+
+                                                                OBOO       00       MESS:     (Reserved for key data)
+                                                                OB01       10
+                                                                OB02
+                                                                OB03
+                                                                OB04
+                                                                OB05
+                                                                           10
+                                                                           10
+                                                                           10
+                                                                           10
+                                                                                              }'''"''
+Appendix A
+Practical Microprocessors                                                                                                                351
+                               PROGRAM FOR EXPERIMENTS
+
+
+## Page 378
+
+
+> [!note]
+> This page contains structured educational or figure-referenced content. Use the page image when exact labels, code, or tabular alignment matters.
+
+
+
+                         Experiment 12-1:                                                                           Experiment 14-2:
+      Program to Demonstrate Logical Instructions                                                            Program to Test for 2 Key
+
+ Address    Contents      Label          Instruction          Comments                  Address     Contents       Label        Instruction         Comments
+  0800        3A        START:        LOA    2000        ;Read input port                0800          3E                     MVI   A,F7      ;Set scan port to 1111 0111
+  0801         00                                                                        0801          F7
+  0802        20                                                                         0802          32                     STA   2800
+  0803        06                      MVI    B,3C        ;Set B register to 0011 1100    0803           00
+  0804        3C                                                                         0804          28
+  0805        AD                      ANA B              ;AND accumulator with 8         0805          3A        READ:        LOA   1800      :Read columns
+  0806        32                      STA 3000           ;Send to output port            0806           00
+  0807        00                                                                         0807          18
+  0808        30                                                                         0808          06                     MVI   B,07      ;Mask off all bits except
+  0809        C3                      JMP START          ;Repeat                         0809          07                                     three LSBs
+  080A        00                                                                         080A          AD                     ANA B
+  080B        08                                                                         080B          FE                     CPI 05          :Is data 101 ("2 key")?
+                                                                                         080C          05
+                                                                                         0800          C2                     JNZ   READ      ;If not, read again
+                                                                                         080E          05
+                                                                                         080F          08
+                                                                                         0810          CD                     CALL BEEP       ;Yes-generate beep
+                                                                                         0811          10
+                                                                                         0812           00
+                                                                                         0813           C3                    JMP   READ      ;Read again
+                  Experiment 12-2:                                                       0814           05
+                                                                                         0815           08
+   Arithmetic Instruction Demonstration Program
+                                                                                          To detect the 3 key, change location 080C to 3.
+
+ Address   Contents                Instruction         Comments
+                                                                                                                   Experiment 14-3:
+  0800        90                   SUB B               ;Subtract B from accumulator
+  0801        81                   ADD C               ;Add C to accumulator                                 Message Display Program
+
+                                                                                        Address     Contents      Label         Instruction         Comments
+                                                                                         0800          11                    LXI    0,0810    ;Set" message address
+                                                                                         0801          10
+                                                                                         0802          08
+                            Experiment 14-1:                                             0803          CD                     CALL STDM       ;Move message
+                                                                                         0804          18
+                   Program to Read Keyboard                                              0805          00
+                                                                                         0806          CD        LOOP:        CALL DCD        ;DispJay message
+                    and Beep if 7 Is Pressed                                             0807          E9
+                                                                                         0808          01
+                                                                                         0809          C3                     JMP   LOOP
+ Address    Contents       Label         Instruction           Comments                  080A          06
+                                                                                         080B          08
+  0800         CD        READ:         CALL KIND          ;Read key
+  0801         4B
+  0802          01
+  0803         FE                      CPI   07          ;Compare keycode
+  0804         07
+  0805         C2                     JNZ    READ
+  0806
+  0807
+               00
+               08
+                                                                                                                    Experiment 14-4:
+  0808         CD
+  0809         10
+                                      CALL BEEP          ;Generate beep if key = 7                           Program to Display a "2"
+  080A         00
+  080B         C3                     JMP    READ                                       Address     Contents      Label        Instruction         Comments
+  080C         00
+  0800         08                                                                        0800         3E        START:       MVI    A,4       ;Set scan port to select digit
+                                                                                         0801         04                                       (4 hex = 0000 0100 binary)
+                                                                                         0802         32                     STA    2800
+  To detect the E key, change location 0804 to DE.                                       0803         00
+                                                                                         0804         28
+                                                                                         0805         3E                     MVI    A,A4      ;Set segment port to display
+                                                                                         0806         A4                                      character "2"
+                                                                                         0807         32                     STA    3800
+                                                                                         0808         00
+                                                                                         0809         38
+                                                                                         080A         C3                     JMP    START
+                                                                                         080B         00
+                                                                                         080C         08
+
+
+                                                                                                                                                 Appendix A
+352                                                                                                                                Practical Microprocessors
+
+
+## Page 379
+
+
+
+
+                                 SOLUTION TO FAULT 1
+
+Problem:                                                                  Free-run working: Yes
+    A) Display: Stuck, random information
+    B) Output LEDs: Stuck, random informa-                                Table C-1 AO-A15: One bad signature found
+       tion
+    C) Keyboard: No response                                                  A) A11 signature is incorrect (HPPO).
+                                                                              B) A11 signature at IC1-3 (address buffer
+Power-up: Fail                                                                   output) is correct (1293) .
+                                                                              C) Trace along the signal path with the
+Lights on : Yes                                                                  signature analyzer between IC1-3 and
+Bus activity: Yes                                                                the A11 bus test point.
+                                                                              D) Locate Fault 1, a short between A 10 and
+SA test loop working: No                                                         A11 bus lines.
+
+
+                                       Troubleshooting Path for Fault 1
+
+
+                                                            leave
+                                                           It Alone
+
+
+                                                           Check
+                                                           Power
+                                                           Supply
+
+                                          es
+
+
+                                                        Check: Reset ,
+                                                       Hold, Clock. and
+                                                         Ready Lines
+
+
+                                                                                               Check Data
+                                               :;~o=======::!~
+                                               ./              Free ·Run
+                                                               Working                         and Control
+                                                                                     ?         Lines at p. P
+
+
+                                                                                         es
+
+
+                    Check S.A.                           Check S.A.               Check
+                    Read Table                           Write Table             Free·Run
+                                                                               Address Table
+
+
+                                  Check S.A.                                       Check
+                                  Write Table                                  Free-Run ROM
+                                                                                  Table
+
+
+Appendix A
+Practical Microprocessors                                                                                            353
+                                  SOLUTION TO FAULT 2
+
+
+## Page 380
+
+
+
+ Problem:
+      A) Display: Stuck
+      B) Output LEOs: Stuck
+      C) Keyboard: Inoperative                                                   Table C-1 AO-A15: All address signatures good
+
+Power-up: Fail                                                                   Table C-2: One bad signature found
+                                                                                     A) 05 signature is unstable.
+Lights on: Yes                                                                       B) 05 signature at IC4-15 (ROM output) is
+                                                                                        correct (OHF1).
+Bus activity: Yes                                                                    C) Trace signal path with the signature ana-
+                                                                                        lyzer between IC4-15 and the 05 test
+SA test loop working: No                                                                point.
+                                                                                     D) Locate Fault 2, an open trace to the 05
+Free-run working: Yes                                                                   ROM output.
+
+
+                                              Troubleshooting Path for Fault 2
+
+
+                                                                    Le ave
+                                                                  It Alo ne
+
+
+                                                               Check: Reset ,
+                                                              Hold, Clock, and
+                                                                Ready Lines
+
+
+                                                                                                      No    Check Dat a
+                                                     ":5~~======3~
+                                                     ~             Free -Run
+                                                                   Working                                  an d Control
+                                                                                           ?                Lines at ~ p
+
+
+                    Check S.A.   Read                 Write                              Check
+                                                                Check S.A.
+                    Read Table                                                         Free·Run
+                                                                Write Table
+                                                                                     Addre •• Table
+
+
+                                                                                        Check
+                                        Check S.A.
+                                                                                     Free·Run ROM
+                                        Write Table
+                                                                                         Table
+
+
+                                                                                                                           Appendix A
+
+
+## Page 381
+
+
+
+
+                                 SOLUTION TO FAULT 3
+Problem:                                                                 Table C-1 IC2: Bad ALE signature found
+  A ) Display: Stuck                                                       A ) ALE at IC2-11 is stuck high.
+  B ) Output LEOs: Stuck                                                   B ) ALE at IC12-4 is stuck high .
+  C ) Keyboard: Inoperative                                                C ) ALE at IC12-3 has good signature.
+                                                                           D ) ALE is the faulty signal. The signal is IC12-4,
+Power-up: Fail
+                                                                               IC10-1 , IC2-11 , or a trace on the board .
+Lights on: Yes                                                             E) Use the current tracer to verify that there is cur-
+                                                                               rent on IC12-4. Place the current tracer tip right
+Bus activity: Yes
+                                                                               on IC12-4 and adjust the sensitivity to about mid-
+SA test loop working : No                                                      way. The level of current on this pin appears to be
+                                                                               fairly high, suggesting that ICB is trying to drive
+Free-run working : Yes . No activity appears on AO-A?
+                                                                               the node. The fault must be elsewhere .
+lines
+                                                                           F) Trace the current path along the trace that runs
+Table C-1 AO-A 15: Bad signatures found                                        toward IC10-1 and then past it. Observe that the
+                                                                               high current is not going into IC10-1 .
+  A ) AO-A? lines are stuck (no activity ).
+                                                                           G ) Continue tracing the current toward IC2-11.
+  B ) AO-A? are stuck at I C2 outputs.
+                                                                           H ) The current disappears once you pass Fault 3.
+  C ) ADO-AD? are not stuck at IC2 inputs.
+                                                                               Fault 3 shorts the A LE line to ground .
+  D ) Suspect IC2 or ALE signal.
+
+                                           Troubleshooting Path for Fault 3
+
+
+                                                              Leave
+                                                            It Alone
+
+
+                                                           . Check
+                                                            Powe r
+                                                            Supply
+
+
+                                                         Check: Reset ,
+                                                        Hold, Clock , and
+                                                          Ready lines
+
+
+                                                                                                   Check Data
+                                              :;~O
+                                              ./
+                                                 ;::;;;:;;;:;::===::!~ Free-Run
+                                                                       Working
+                                                                                                   and Control
+                                                                                       ?            line s at }{ p
+
+
+                                                                                           es
+
+
+                    Check S.A.                                                      Check
+                                                          Check S.A.
+                    Read Table                                                     Free-Ru n
+                                                          Write Tabl e
+                                                                                 Address Table
+
+
+                                                                                     Check
+                                    Ch eck S.A.
+                                                                                 Free -Run ROM
+                                    Write Table
+                                                                                      Table
+
+
+Appendix A
+Prac t ical Mic roprocessors                                                                                                  355
+                                  SOLUTION TO FAULT 4
+
+
+## Page 382
+
+
+
+Problem:                                                                     Table C-3 IC6: One bad signature found
+      A) Display: IC6 failure message                                            A) A7 on IC6-17 appears to be stuck high.
+                                                                                 B) A7 on address bus has good signature.
+Power-up: Fail                                                                   C) Trace signal path with the signature
+                                                                                    analyzer between IC6-17 and the A7 test
+Lights on: Yes                                                                      point.
+                                                                                 D) Locate Fault 4, RAM address line A7
+Bus activity: Yes                                                                   pulled up to Vcc.
+
+SA test loop working: Yes                                                    A faulty address line input can be caused by an
+      Either RAM IC6 or the control signals going                            open trace or plate-through causing the RAM
+      to it are bad. If the control signals turn out to                      address pin to float high. An internally open
+      be good, then part of RAM IC6 is bad. At                               RAM input pin will cause a similar failure without
+      least some of it is good or else the keyboard                          producing a bad signature on the input pin of the
+      and the display would not be operable.                                 device.
+
+                                              Troubleshooting Path for Fault 4
+
+
+                                                               leave
+                                                              It Alone
+
+
+                                                           Check: Reset ,
+                                                          Hold, Clock, and
+                                                            Ready Lines
+
+
+                                                                                                   No   Check Data
+                                                     No
+                                                                                                        and Contr-:>I
+                                                                                                         Lines at J.l P
+
+
+                     Check S.A.                                                       Check
+                                                            Check S.A.
+                     Read Table                                                     Free-Run
+                                                            Write Table
+                                                                                  Addre •• Table
+
+
+                                                                                      Check
+                                       Check S.A.
+                                                                                  Free·Run ROM
+                                       Write Table
+                                                                                      Table
+
+
+                                                                                                                      Appendix A
+
+
+## Page 383
+
+
+
+
+                                   SOLUTION TO FAULT 5
+Problem:
+     A) Display: Stuck
+     B) Output LEOs: Flickering
+     C) Keyboard: Inoperative                                       Table C-1 IC7: Bad signatures found
+                                                                              A) Bad signatures on IC7 pins 3,7,9,10,11 ,
+Power-up: Fail                                                                   12,13,14,15.
+                                                                              B) The single bad input on pin 3 could
+Lights on: Yes                                                                   explain all the other bad output signa-
+                                                                                 tures.
+Bus activity: Yes                                                             C) Pin 3 shows no activity and a bad logic
+                                                                                 level on the signature analyzer probe tip.
+SA test loop working: No                                                         Suspect an open trace to A13 line.
+                                                                              D) Trace the signal path between IC7-3 and
+Free-run working: Yes                                                            the A13 test point.
+                                                                              E) Locate Fault 5, an open connection
+Table C-1 AO-A15: All signatures good                                            between A13 and IC7-3.
+                                        Trouble shooting Path for Fault 5
+
+
+                                                                 Le ave
+                                                                It Alone
+
+
+                                                                Check
+                                                                Power
+                                                                Suppl y
+
+
+                                                             Chec k: Reset,
+                                                            Hold. Clock. and
+                                                              Ready Li nes
+
+
+                                                                                                     Chec k Data
+                                                        N                                            and Con trol
+                                                                                                     Lin es at Jl P
+
+
+                          Check S.A.                                                    Check
+                                                              Check S.A.
+                          Read Tabl e                                                  Free·Run
+                                                              Write Table
+                                                                                     Address Table
+
+
+                                                                                         Check
+                                         Check S.A.
+                                                                                     Free- Run ROM
+                                         Write Tabl e
+                                                                                         Table
+
+
+Appendix A
+Practical Mic ro p rocess ors                                                                                          357
+                               SOLUTION TO FAULT 6
+
+
+## Page 384
+
+
+
+Problem:
+      A) Display: SP error message.
+      B) Data cannot be modified in the protect-                            Table C-3 ICs 11 , 12, 5, 6: Bad signatures found
+         able portion of RAM (080o-0AFF) . Data
+                                                                                A) A bad WR signature on IC5 or 6 pin 10
+         can be modified in the unprotected
+                                                                                   can be traced back through a string of
+         portion of RAM (0800-0BFF) .
+                                                                                   bad signatures on IC11 pins 3 and 2,
+Power-up: Fail                                                                     IC12 pins 2 and 1, IC11 pins 6 and 4 to a
+                                                                                   good signature on IC8-6.
+Lights on : Yes                                                                 B) Since IC11-4 and IC8-6 are supposed to
+Bus activity: Yes                                                                  be connected (and have the same sig-
+                                                                                   nature) , a break between them can be
+SA test loop working: Yes                                                          assumed .
+      The protectable portion of RAM appears to                                 C) Trace the signal path between IC11-4
+      be protected all the time. The circuits in-                                  and IC8-6.
+      volved in generating RAM write control sig-                               D) Locate Fault 6, a short to ground on
+      nals should be looked at first.                                              IC11-4.
+                                                Tro ublesh o otin g Path for Fault 6
+
+
+                                                                Leave
+                                                              It Al one
+
+
+                                                          Check: Rese t,
+                                                         Hold, Clock, and
+                                                           Read y Li nes
+
+
+                                                   No                                          No   Check Data
+                                                                                                    and Control
+                                                                                                    Lines at Jl P
+
+
+                  Check SA                                 Check S A              Check
+                  Read Table                                                     Free -Run
+                                                           Writ e Table
+                                                                               Address Table
+
+
+                                 Ch eck SA                                         Check
+                                 Wri te Table                                  Free·Run ROM
+                                                                                   Tabl e
+
+
+                                                                                                                   Appendix A
+
+
+## Page 385
+
+
+
+
+                                SOLUTION TO FAULT 7
+
+Problem:                                                                   Bus activity: No
+    A) Display: Stuck                                                          A) Ready line is stuck low at IC3-35.
+    B) Output LEOs: Stuck                                                      B) The step signal (IC10-5) , which goes to
+    C) Keyboard: Inoperative                                                      the Ready line, is high .
+                                                                               C) Trace the signal path between IC10-5
+Power-up: Fail                                                                    and IC3-35 (Microprocessor Ready in-
+                                                                                  put).
+Lights on : Yes                                                                D) Locate Fault 7, a short to ground on the
+                                                                                  Ready input.
+
+
+                                      Troubleshooting Path for Fault 7
+
+
+                                                                Leave
+                                                               It Alone
+
+
+                                                           Check: Reset ,
+                                                . / '_ _-tHOld. Clock, and
+                                                             Ready lines
+
+
+                                                    No
+                                                                                                  Check Data
+                                                                                                  and Control
+                                                                                                  lines at p. P
+
+
+                   Check S.A.                                                        Check
+                                                             Check S.A.
+                   Read Table                                                       Free·Run
+                                                             Write Table
+                                                                                  Address Table
+
+
+                                                                                      Check
+                                  Check S.A.
+                                                                                  Free-Run ROM
+                                  Write Table
+                                                                                      Table
+
+
+Appendix A
+Practical Microprocessors                                                                                              359
+                               SOLUTION TO FAULT 8
+
+
+## Page 386
+
+
+
+
+Problem:                                                                    Bus activity: No
+      A) Display: Stuck                                                         A ) Hold line is stuck high at IC3-39.
+      B) Output LEOs: Stuck                                                     B) Trace the signal from IC3-39 to Fault 8, a
+      C) Keyboard: Inoperative                                                      short to Vcc.
+
+Power-up: Fail
+
+Lights on : Yes
+
+
+                                           Troubleshooting Path for Fault 8
+
+
+                                                               leave
+                                                              It Alone
+
+
+                                                           Check: Reset .
+                                               ./-_ _iL.Hold , Clock, and
+                                                            Ready Lines
+
+
+                                                   No                                            Check Data
+                                                                                                 and Control
+                                                                                                 lines at fl P
+
+
+                  Check S.A.                                Check S .A.            Check
+                  Read Table                                                     Free-Run
+                                                            Write Table
+                                                                               .\ddre .. Table
+
+
+                                 Check S.A.                                        Check
+                                 Write Table                                   Free·Run ROM
+                                                                                   Table
+
+
+                                                                                                                Appendix A
+
+
+## Page 387
+
+
+
+
+                                 SOLUTION TO FAULT 9
+Problem:
+    A) Display: Center segment on all digits                            Table C-3 IC14, 15, 16, 19, display and output
+       fail to light.                                                   LEDs: Bad signatures found
+    B) Output LEDs: D6 LED fails to light on                                A) A lack of activity on the D6 output LED
+       power-up.
+                                                                               can be traced back to IC15-16, to IC15-17,
+Power-up: Completes power-up sequence, but                                     and finally to a good signature on
+fails visually                                                                 IC14-15.
+                                                                            B) A lack of activity on "g" segment (dis-
+Lights on: Yes                                                                 play pins 7 and 17) can be traced back to
+                                                                               IC19-11, to IC19-7, to IC16-16, to IC16-17,
+Bus activity: Yes                                                              and finally to a good signature on
+SA test loop working: Yes                                                      IC14-15.
+                                                                            C) Trace the signal path between IC14-15
+    The center segments of the display and the                                 and IC16-17.
+    D6 output LED have the D6 data line in                                  D) Locate Fault 9, an open trace on the D6
+    common and are devices that the micro-                                     buffered data line.
+    processor writes to.
+                                           Troubleshooting Path for Fault 9
+
+
+                                                          Leave
+                                                         It Alone
+
+
+                                                         Check
+                                                         Power
+                                                         Supply
+
+
+                                                      Check: Reset ,
+                                                     Hold. Clock. and
+                                                       Ready lines
+
+
+                                                No                                           Check Data
+                                                                                             and Control
+                                                                                             Lines at ~ p
+
+
+                                         es
+
+
+                    Check S.A.                         Check S.A.             Check
+                    Read Table                                               Free-Run
+                                                       Write Table
+                                                                           Address Table
+
+
+                                  Check S.A.                                  Check
+                                  Write Table                              Free·Run ROM
+                                                                              Table
+
+
+Appendix A
+Practical Microprocessors                                                                                             361
+                                    SOLUTION TO FAULT 10
+
+
+## Page 388
+
+
+
+Problem:                                                                            Table C-3 ICs 14,15, output LEOs: Bad signatures
+      When the ECHO demo program is run (ad-                                        found
+      dress 0407), output LEOs 4 and 5 are both                                         A) Identical signatures on output LEOs 4
+      controlled by input switch 5. Input switch 4                                         and 5 (correct output 5 signature) indi-
+      has no effect.                                                                       cate a probable short between them.
+                                                                                        B) Trace signatures back from output LED
+Power-up: Yes                                                                              4 to IC15-12 to IC15-13 to a good sig-
+                                                                                           nature on IC14-11 .
+SA test loop working: Yes                                                               C) Trace the signal path between IC14-11
+                                                                                           and IC15-13.
+      This could be a read fault from the input
+      switches or a write fault to the output LEOs.                                     D) Locate Fault 10, a short between the 04
+                                                                                           and 05 buffered data bus lines.
+
+
+                                                   Troubleshooting Path for Fault 10
+
+
+                                                                      Leave
+                                                                    It Al one
+
+
+                                                                 Check: Reset,
+                                                                Hol d, Clock, and
+                                                                  Re ady line s
+
+
+                                                                                                        Check Data
+                                                         No
+                                                                                                        and Contro l
+                                                                                                        Li nes at J.! P
+
+
+                  Check S.A.     Read                   Write                              Check
+                                                                  Chec k S.A.
+                                                                                          Free-Ru n
+                  Read Ta bl e                                    Write Table
+                                                                                        Address Tabla
+
+
+                                                                                           Check
+                                        Check S.A.
+                                                                                       Free -Run ROM
+                                        Write Ta bl e
+                                                                                           Table
+
+
+                                                                                                                      Appendix A
+
+
+## Page 389
+
+
+
+
+                                 SOLUTION TO FAULT 11
+Problem:
+    Keyboard: No response to FETCH ADRS,                                   A) Signatures do not change to proper
+    DECR, 3, 6, 9, C, F keys                                                  values on IC18-15 (02) when any of
+                                                                              these keys is pressed.
+Power-up: Yes                                                              B) IC18-16 remains high when any of these
+                                                                              keys is pressed.
+SA test loop working: Yes                                                  C) The correct signature appears near the
+    These nonreading keys have the 02 line in                                 keys (try to trace below the 3 key on the
+    common. This fault appears to be read-                                    top side of the board).
+    oriented.                                                              D) Trace the signal path between the key
+                                                                              column line and IC18-16.
+Table C-4 IC 18: Bad signatures found when keys                            E) Locate Fault 11 , an open trace between
+pushed                                                                        the 3-F key column and IC18-16.
+
+
+                                      Troubleshooting Path for Fault 11
+
+
+                                                              Leave
+                                                            It Alone
+
+
+                                                            Check
+
+
+                                                         Check: Reset,
+                                                        Hold, Clock, and
+                                                          Ready lines
+
+
+                                                                                               No   Check Data
+                                                   No
+                                                                                                    and Con trol
+                                                                                                    lines at Jl P
+
+
+                                                                                  Check
+                    Check S.A.                            Check S.A.
+                                                                                 Free-Run
+                    Read Table                            Write Ta ble
+                                                                               Address Table
+
+
+                                                                                  Check
+                                    Check S.A.
+                                                                               Free-Run ROM
+                                    Wri te Table
+                                                                                   Table
+
+
+Appendix A
+Practical Microprocessors                                                                                           363
+Problem:
+
+
+## Page 390
+
+
+
+                                  SOLUTION TO FAULT 12
+  A ) Display: Left two digits blank at all times                             B ) Good signatures on IC17-13 and IC17-14 indicate
+  B) Keyboard : Keys 7, 8, 9 input values 4, 5 , 6,                               a probable short between D4 and D5 lines on the
+      respectively                                                                output side of the scan port (IC17 ).
+                                                                              C ) A short between pins 12 and 15 will cause relative-
+Power-up: Completes power-up sequence, but fails                                  ly high currents to occur periodically when these
+visually                                                                          output pins are in opposite logic states. The path
+                                                                                  of current should flow from one output pin to the
+Lights on : Yes                                                                   board, along the trace, toward the short , through
+Bus activity: Yes                                                                 the short, and then into the othe r trace lead ing
+                                                                                  back to the other IC output pin .
+SA test loop working : Yes . Left two d isplay digits now                     D ) Using the current tracer, follow the current on the
+come on .                                                                         underside of the board from IC17 -12 to IC20-3 to
+     Scan latch lines D4 and D5 are common to the                                 the p late-th roug h to the left of the I NTR PT key .
+     the bad display and keyboard sections. This is                           E) Observe that the current goes away as the cur-
+     probably a write fault at the scan latch IC17 .                              rent tracer moves past the plate-through (still on
+Table C-3 IC17, 20 , and keyboard : Bad signatures                                the underside of the board ) toward the keyboard .
+found                                                                         F) Follow the current through the plate-through to
+                                                                                  the top of the board .
+  A ) Identical bad signatures on IC20-3 and IC20-5 ,                         G ) Locate Fau It 12, a short between scan Ii nes 4
+      on key scan rows, 4-6 and 7-9, and on IC17-12                               and 5.
+      and IC17-15 are found .
+                                           Troubleshooting Path for Fault 12
+
+
+                                                                 Leave
+                                                               It Alone
+
+
+                                                               Check
+                                                               Power
+                                                              Supply
+
+
+                                                           Check: Reset ,
+                                                          Hold, Clock , and
+                                                            Ready Lines
+
+
+                                                     No                                                 Check Data
+                                                                                                        and Control
+                                                                                                        lines at p. P
+
+
+                     Check S.A.                             Check S.A.                  Check
+                     Read Table                             Write Table                Free·Run
+                                                                                     Address Table
+
+
+                                       Check S.A.                                       Check
+                                       Write Table                                  Free·Run ROM
+                                                                                        Table
+
+
+                                                                                                                     Appendix A
+
+
+## Page 391
+
+
+
+
+_ _ _ _ _ _ APPENDIX B
+                                    BOBSA Instruction Set Reference
+
+
+The following information is extracted from Intel's MCS 85™ User's Manual*.         GENERAL
+For additional information on the capability of the 8085 Microprocessor refer to
+the User's Manual. In the explanations of the individual instructions, the hexa-
+decimal equivalent of each instruction is given in addition to the binary format.
+
+    The 8085 instruction set includes five different types of instructions:
+     • Data Transfer Group--move data between registers or between memory
+       and registers
+    • Arithmetic Group-add, subtract, increment or decrement data in regis-
+      ters or in memory
+     • Logical Group-AND, OR, EXCLUSIVE-OR, compare, rotate or com-
+       plement data in registers or in memory
+    • Branch Group-conditional and unconditional jump instructions, sub-
+      routine call instructions and return instructions
+     • Stack, I/O and Machine Control Group- includes I/O instructions, as
+       well as instructions for maintaining the stack and internal control flags.
+The individual instruction groups and Table B-1 are divided into these types of
+instructions and are presented in the same sequential order.
+
+
+Appendix B
+Practical Microprocessors                                                                     365
+                                                                                                                                                                                    BRANCH CONTROL                                  1/0 AND
+
+
+## Page 392
+
+
+
+                                        DATA TRANSFER GROUP                                                                ARITHMETIC AND LOGICAL GROUP
+                                                                                                                                                                                            GROUP                    MACHINE CONTROL
+  I                                                                                            I        I                                                                       I    I                          I    I              I
+                                                                                 Move                                                                                                          Jump                       Stack Ops
+                  Move                         Move (cont)                                                       Add-                 Increment··               Logical'
+                                                                                 Immediate
+
+
+                                                                                                                                                                                                                                      ~
+
+      r r "1i
+                                                                                                                                                                                         JMP adr      C3                                           C5
+
+
+                   "'1~
+                         7F                             5F                     A, byte    3E                          87                      3C                        A7               JNZ adr                                                   05
+                                                                                                                                                                                                      C2
+             A.B         78                      E.B    58                     S, byte    06                          80                      04                        AD                                               PUSH{
+                                                                                                                                                                                         JZ adr       CA                                           E5
+             A.C         79                      E.C    59                     C, byte    DE                          81                      DC                        A1               JNC adr                                                   F5
+                                                                                                                                                                                                      02                              PSW
+  MOV        A,D         7A              MOV     E,D    5A                     D, byte    16                          82                      14                        A2
+                                                                                                                                                                                         JC adr       DA
+
+                                                                                                                                                                                                                                    1~
+             A.E         7B                      E.E    5B                     E. byte    1E                          83                      1C                        A3                                                                         C1
+                                                                                                                                                                                         JPO adr      E2
+
+
+                                                                                                                                ""1:
+                                                                                                                                                                                                                                                   01
+
+
+                                                                                                        '"'1t
+             A.H         7C                      E.H    5C                     H, byte    26                          84                      24                        A4               JPE adr                         POP
+                                                                                                                                                                                                      EA                                           E1
+             A.L         70                      E.L    50                     l, byte    2E                          85                      2C                        A5               JP adr       F2                              PSW·         F1
+             A.M         7E                      E.M    5E                     M, byte    36                          86                      34                        A6               JM adr       FA
+
+
+      r r '+ '+                                                                                                                       i~
+                         47                             67                                                            8F                      03                                         PCHL         E9                 XTHL            E3
+                                                                                                                                                                        AF
+             B.B         40                      H.B    60                                                            88                      13                                                                         SPHL            F9
+                                                                                 Load                                           INX                                     A8                     Call
+             B.C         41                      H.C    61                                                            89                      23                        A9
+                                                                                 Immediate
+  MOV        B,D         42              MOV     H.D    62                                                            8A                 SP   33                                         CALL adr      CD
+                                                                                                                                                                        AA                                                     Input/Output
+             B.E         43                      H.E    63                                01                          8B                                                AB               CNZ adr       C4
+                                                                               B. dble
+             B.H         44                      H.H    64         LXI         D, dble    11                          8C                                                AC               CZ adr        CC
+                                                                                                                                      Decrement""                                                                        OUT byte             03
+             B.L         45                      H.L    65                     H, dble    21                          80                                                AD               eNC adr       04
+                                                                                                                                                                                                                         IN byte              DB
+             B.M         46                      H.M    66                     SP, dble   31                          8E                                                AE               CC adr        DC
+
+
+      r r '+ OC"l~ '"'1[
+                                                                                                                                              3D                                         CPO adr       E4
+                         4F                             6F                                                                                                              B7
+                                                                                                                                              05                                         CPE adr       EC                       Control
+             C.B         48                      L.B    68                     Load/Store                      Subtract·                                                BO
+                                                                                                                                              00                                         CP adr        F4
+             C.C         49                      L.C    69                                                                                                              B1
+                                         MOV     L,D    6A
+                                                                               lDAX B     OA
+                                                                                                                      97
+                                                                                                                                              15                                         eM adr        FC                01          F3
+  MOV        C,D         4A                                                                                                                                             B2
+                                                                               LDAX 0     1A                                                  10                                                                         EI          FB
+             C.E         4B                      L.E    6B                                                            90                                                B3
+                                                                               LHLO adr   2A                                                  25                                             Return
+             C.H         4C                      L.H    6C                                                            91                                                B4                                               NOP         00
+                                                                               LOA adr    3A                                                  20
+             C.L         40                      L.L    60                                                            92                                                B5               RET          C9                 HLT         76
+                                                                                                                                              35
+
+
+      r r ",it
+             C.M         4E                      L.M    6E                     STAX B   02                            93                                                B6               RNZ          CO
+
+
+                                                                                                                                DCX1~
+                                                                               STAX D   12                            94                      OB
+                         57                             77                                                                                                              BF               RZ           C8
+                                                                               SHLO adr 22                            95                      1B                                                                         New Instructions
+             D.B         50                      M.B    70                                                                                                              B8               RNC          DO
+                                                                               STA adr  32                            96                      2B                                                                           (BOSS Only)
+             D.C         51              MOV     M,e    71                                                                                                              B9               RC           08
+                                                                                                                                         SP   3B
+  MOV        D,D         52                      M.D    72                                                            9F                                                BA               RPO          EO                 RIM         20
+             D.E         53                      M.E    73                                                            98                                                BB               RPE          E8                 SIM         30
+                                                 M,H    74                                                            99                                                                 RP           FO
+
+
+                                                                                                                                                           ""1:
+             D.H         54                                                                                                             Specials                        BC
+             D,L         55                      M.L    75                                                            9A                                                                 RM           F8
+                                                                                                                                                                        BD
+             D.M         56                                                                                           9B              DAA·     27                       BE
+                                         XCHG          EB                                                             9C                                                                     Restart
+                                                                                                                                      CMA      2F
+                                                                                                                      90              STCt     37            Arith & Logical
+             byte '" constant, or logical/arithmetic expreSSion that evaluates to an                                                                                                                       C7
+                                                                                                                      9E              CMCt     3F            Immediate
+                     a-bit data quantity (Second byte 01 2-byte Instructions)                                                                                                                              CF
+             dble " constant. or loglcal/arrthmetlc expression that evaluates to a                                                                           ADI byte    C6                                07
+                     16-blt data quantity (Second and Third bytes 01 3-byte                                                                                  ACI byte    CE
+                                                                                                              Doubte Add t              Rotate t                                                           OF
+                     Instructions)
+             ,d,
+
+                                                                                                                                                                                         "+
+                                                                                                                                                             SUI byte    06                                E7
+                  '" 16-blt address (Second and Third bytes oI3-byte~nstructlons)
+
+
+                                                                                                            DAD1~
+                                                                                                                      09              RLC      07            S81 byte    DE                                EF
+                  = all flags (C, Z. S. p. AC) attected
+             .,   = ail flags except CARRY affected (exception INX and DCX
+                                                                                                                      19              RRC      OF            ANI byte
+                                                                                                                                                             XRI byte
+                                                                                                                                                                         E6
+                                                                                                                                                                         EE
+                                                                                                                                                                                                           F7
+                     affect no flags)                                                                                 29              RAL      17                                                          FF
+                                                                                                                 SP   39              RAR      1F            ORI byte    F6
+               t " only CARRY affected
+                                                                                                                                                             CPI byte    FE
+
+
+      00           NOP                                      2B   DCX     H                         56       MOV D.M                    81     ADD   C                   AC     XRA H                                07    AST        2
+      01           LXI        B,dble                        2C   INR     L                         57       MOV D.A                    82     ADD    0                  AD     XRA L                                08    RC
+      02           STAX       B                             20   OCR     L                         58       MOV E.B                    83     ADD   E                   AE     XRA M                                09
+      03           INX        B                             2E   MVI     L.byte                    59       MOV E.C                    84     ADD   H                   AF     XAA A                                DA    JC              ,d,
+      04           INA        B                             2F   CMA                               5A       MOV ED                     85     ADD   L                   BO     ORA B                                DB    IN              byte
+      05           OCR        B                             30   SIM·                              5B       MOV E.E                    86     ADD   M                   B1     ORA C                                DC    CC              ,d,
+      06           MVI        B.byte                        31   LXI     SP,dble                   5C       MOV E,H                    87     ADD   A                   B2     ORA 0                                DO
+      07           ALC                                      32   STA       ,d,                     50       MOV E.L                    88     ADC   B                   B3     ORA E                                DE    SBI    byte
+      08           ---                                      33   INX     SP                        5E       MOV E.M                    89     ADC   C                   B4     ORA H                                OF    RST 3
+      09           DAD        B                             34   INA     M                         5F       MOV E.A                    8A     ADC   0                   B5     ORA L                                EO    RPO
+      OA           LDAX       B                             35   OCR     M                         60       MOV HB                     8B     ADC   E                   86     ORA M                                E1    POP H
+      DB           DCX        B                             36   MVI     M.byte                    61       MOV H.C                    8C     ADC   H                   B7     ORA A                                E2    JPO    ad,
+      DC           INR        C                             37   STC                               62       MOV H.D                    80     ADC   L                   88     CMP B                                E3    XTHL
+      00           OCR        C                             38                                     63       MOV H.E                    8E     ADC   M                   B9     CMP C                                E4    CPO    ad'
+      DE           MVI        C.byte                        39  DAD      SP                        64       MOV H.H                    8F     ADC   A                   BA     CMP 0                                E5    PUSH H
+      OF           ARC                                      3A  LOA        ad'                     65       MOV H.L                    90     SUB   B                   BB     CMP E                                E6    ANI    byte
+      10           --                                       38  DCX      SP                        66       MOV H,M                    91     SUB   C                   BC     CMP H                                E7    AST 4
+        11         LXI        D,dble                        3C  INR      A                         67       MOV H.A                    92     SUB   0                   BD     CMP L                                E8    RPE
+        12         STAX       0                             3D  DCA      A                         68       MOV L.B                    93     SUB   E                   BE     CMP M                                E9    PCHL
+        13         INX        0                             3E  MVI      A.byte                    69       MOV L.C                    94     SUB   H                   BF     CMP A                                EA    JPE    ad'
+        14         INR        0                             3F  CMC                                6A       MOV L.D                    95     SUB   L                   CO     RNZ                                  EB    XCHG
+        15         DCA        0                             40  MOV      B.B                       6B       MOV L,E                    96     SUB   M                   C1     POP B                                EC    CPE    ad,
+        16         MVI        D.byte                        41, MOV      B.C                       6C       MOV L.H                    97     SUB   A                   C2     JNZ    ad'                           ED        ---
+        17         AAL                                      42  MOV      BD                        60       MOV L.L                    98     S8B   B                   C3     JMP    ad'                           EE    XRI    byte
+        18         --                                       43  MOV      B.E                       6E       MOV L.M                    99     SBB   C                   C4     CNZ    ad'                           EF    AST 5
+        19         DAD        0                             44  MOV      B.H                       6F       MOV LA                     9A     S8B   0                   C5     PUSH B                               FO    RP
+        1A         LDAX       0                             45  MOV      B.L                       70       MOV M,B                    9B     SBB   E                   C6     ADI    byte                          F1    POP PSW
+        1B         DCX        0                             46  MOV      B,M                       71       MOV M.C                    9C     S8B   H                   C7     RST  0                               F2    JP     ad'
+        1C         INA        E                             47  MOV      BA                        72       MOV M,D                    90     SBB   L                   C8     RZ                                   F3    01
+        10         OCR        E                             48  MOV      C.B                       73       MOV M.E                    9E     SBB   M                   C9     RET                                  F4    CP     ad,
+      1E           MVI        E.byte                        49  MOV      C.C                       74       MOV M,H                    9F     S8B   A                   CA     JZ                                   F5    PUSH PSW
+      1F           AAR                                      4A MOV       CD                        75       MOV M,L                    AD     ANA   B                   CB                                          F6    ORI    byte
+      20           RIM-                                     4B MOV       C,E                       76       HLT                        A1     ANA   C                   CC     CZ     ad,                           F7    RST 6
+      21           LXI        H,dble                        4C MOV       C.H                       77       MOV M.A                    A2     ANA   0                   CD     CALL   ad'                           F8    RM
+      22           SHLD           ad'                       40 MOV       C,L                       78       MOV A.B                    A3     ANA   E                   CE     ACI    byte                          F9    SPHL
+      23           INX        H                             4E MOV       C.M                       79       MOV A.C                    A4     ANA   H                   CF     RST 1                                FA    JM     ad,
+      24           INA        H                             4F MOV       CA                        7A       MOV A.D                    A5     ANA   L                   DO     RNC                                  FB    EI
+      25           OCR        H                             50  MOV      U.B                       7B       MOV A.E                    A6     ANA   M                   01     POP 0                                FC    CM     ad,
+      26           MVI        H.byte                        51  MOV      D.C                       7C       MOV A.H                    A7     ANA   A                   02     JNC    ad'                           FD    ---
+      27           OM                                       52  MOV      0,0                       70       MOV A,L                    AS     XAA   B                   03     OUT    byte                          FE    CPI             byte
+      28           ---                                      53  MOV      D,E                       7E       MOV A,M                    A9     XAA   C                   04     CNC    ad'                           FF    RST        7
+      29           DAD H                                    54  MOV      D.H                       7F       MOV AA                     AA     XAA   0                   05     PUSH D
+      2A           LHLD  ad'                                55  MOV      D.L                       80       ADD B                      AB     XRA   E                   06     SUI    byte
+
+
+      ·8085 Only
+
+
+                                                                                                                                                         All mnemonics copyright @ Intel Corporation 1976
+
+
+                                                                        Table 8-1. 808518080 Assembly Language Reference
+
+366                                                                                                                                                                              Practical Microprocessors
+
+
+## Page 393
+
+
+
+
+          INTEL" 8080/8085
+          INSTRUCTION SET REFERENCE TABLES                                                                                                                      HEX-ASCII TABLE
+
+                  INTERNAL REGISTER ORGANIZATION                                                                                           DD   NUL              21    ,        42       B                  63   c
+                                                                                                                                           01   SOH              22             43       C                  64   d
+                                                         B Reg. (8)          C Reg. (8)                                                    02   STX              23    #        44       0                  65   e
+                                                         DReg. (8)         I E Reg. (8)                                                    03   ETX              24   $         45       E                  66   I
+
+                                                         H Reg. (8)          L Reg. (8)
+                                                                                                                                           04   EOT              25   ".        46       F                  67   9
+                                                                                                                                           OS   ENO              26    &        47       G                  68   h
+                                                         Program Counter            (16)                                                   06   ACK              27             48       H                  69   ,
+          Is zlxlAClx                                    StackPotnter               (16)                                                   07   BEL              28   (         49       ,                  6A   J
+
+
+              1 r               Lb ;::,~                                                                                                   08
+                                                                                                                                           09
+                                                                                                                                           OA
+                                                                                                                                                BS
+                                                                                                                                                HT
+                                                                                                                                                LF
+                                                                                                                                                                 29
+                                                                                                                                                                 2A
+                                                                                                                                                                 2B
+                                                                                                                                                                       )
+
+
+                                                                                                                                                                       +
+                                                                                                                                                                                4A
+                                                                                                                                                                                4B
+                                                                                                                                                                                4C
+                                                                                                                                                                                         J
+                                                                                                                                                                                         K
+                                                                                                                                                                                         L
+                                                                                                                                                                                                            6B
+                                                                                                                                                                                                            6C
+                                                                                                                                                                                                            60
+                                                                                                                                                                                                                 k
+                                                                                                                                                                                                                 ,
+
+           ~=='===== ~:£~ CA'"                                                                                                             DB
+                                                                                                                                           DC
+                                                                                                                                                VT
+                                                                                                                                                FF
+                                                                                                                                                                 2C
+                                                                                                                                                                 20    -
+                                                                                                                                                                                40
+                                                                                                                                                                                4E
+                                                                                                                                                                                         M
+                                                                                                                                                                                         N
+                                                                                                                                                                                                            6E
+                                                                                                                                                                                                            6F
+                                                                                                                                                                                                                 n
+                                                                                                                                                                                                                 0
+                                                                                                                                           00   CR               2E             4F       0                  70   P
+                                                                                                                                           DE   SO               2F             50       P                  71   q
+                                                                                                                                           OF   S'               30   0         51       Q                  72   ,
+                      REGISTER-PAIR ORGANIZATION                                                                                           10   OLE              31   1         52                          73   s
+                                                                                                                                                                                         R
+                             PSW                                                                                                           11   DCl  (X-ON)      32   2         53       S                  74   I
+                                                                 B     (B/C((16(                                                           12   DC2  (TAPE)      33   3         54       T                  75   u
+              I      A (8(    I FLAGS (8) I                      D     (D/E)(16)                                                           13   DC3 (X-OFF)      34   4         55       U                  76   V
+
+                                                                                                                                           14   DC4 ~                                                       77
+           NOTE Leitmost Byte IS high-order                      H    (HILl (16)
+                                                                                                                                           15   NAK
+                                                                                                                                                                 35
+                                                                                                                                                                 36
+                                                                                                                                                                      5
+                                                                                                                                                                      6
+                                                                                                                                                                                56
+                                                                                                                                                                                57
+                                                                                                                                                                                         V
+                                                                                                                                                                                         W                  78   ,w
+           byte tor arithmetiC operations and                    Prog. Gtr. (16)                                                           16   SYN              37   7         58       X                  79   Y
+           addreSSing Left byte IS pushed on
+           stack first Right byte IS popped first                Stack Ptr. (16)                                                           17   ETB              38   8         59       Y                  7A   z
+                                                                                                                                           18   CAN              39   9         5A       Z                  7B   (
+                                                                                                                                           19   EM               3A             5B       I                  7C   I
+                                                                                                                                           lA   SUB              3B             5C                          70    I
+
+                   BRANCH CONTROL (NSTRUCTIONS
+                                                                                                                                           lB   ESC              3C   <         50       I                       (ALT MODE)
+                                                                                                                                           lC   FS               30    ~
+                                                                                                                                                                                5E               (")        7E       -
+                                                                                                                                           10   GS               3E    >        5F       -       (~)        7F    OEL
+              Flag Condition             Jump             Call              Return                                                         lE   RS               3F    ?        60                               (RUB OUTI
+              Zero-True             JZ       CA       CZ         CC         AZ     C8                                                      lF   US               40
+                                                                                                                                                                       "        61       a
+              Zero=False           JNZ       C2      CNZ         C4        RNZ     CO                                                      20   SP               41    A        62       b
+              Carry=True            JC       OA       CC         DC         RC     08
+              Carry=False          JNC       02      CNC         04        RNC     DO
+              Sign=Posltive         JP       F2      CP          F4        RP      FO
+              Sign=Negauve          JM       FA      CM          FC        RM      F8
+              Panty-Even           JPE       EA      CPE         EC        APE     E8
+              Parlty=Odd           JPO       E2      CPO         E4        APO     EO
+              Unconditional        JMP       C3      CALL        CD        AET     C9
+
+
+                         ACCUMULATOR OPERATIONS
+
+                                Code                 Function
+                   XRA A           AF      Clear A and Clear Carry
+                   ORA A           87      Clear Carry
+                   eMe             31"     Complement Carry                                                                                                 USE OF THE A REGISTER BY
+                   eMA             21"     Complement Accumulator                                                                                     RIM AND SIM INSTRUCTIONS (8085 ONLY)
+                   STe             37      Set Carry
+                   RLe             07      Rotate Left
+                   RRe             OF      Rotate Right                                                                                                A REGISTER AFTER EXECUTING RIM
+                   RAL             17      Rotate left Thru Carry
+                   RAR             1F      Rotate Right Thru Carry
+                   DAA             27      DeCimal AdJust Accum
+
+
+                                   RESTART TABLE
+                         Name              Code          Restart Address
+                   RST 0                    e7               0000"
+                   RST 1                    eF               0008 ,6                                                                                   A REGISTER BEFORE EXECUTING SIM
+                   RST 2                    D7               0010 ,6
+                   RST 3                    OF               0018 ,6
+                   RST 4                    E7               (X)20'6                                                                               lso.1s0.1 JR7jMs~lM7iM63M5j
+                                                                                                                                                            X
+                   TRAP                  Hardware"           0024 , 6
+
+                   RST 5
+                                          Function
+                                            EF               0028,6                                                                                   11 11 r ~ "",MAS'    ~RST65M"SK
+
+                                                                                                                                                        I
+                                                                                                                                                                                    RST 75 MASK
+                   RST 55                Hardware"           002C'6
+
+                   RST 6
+                                         Fc",,",n
+                                            F7
+                                                     I       0030     ,6
+                                                                                                                                                                                    M'5<  50' ' ' ' ' ' '
+                                                                                                                                                                                    RESET RST 7 5
+                                                                                                                                                                                    UNDEFINED
+                   RST 65                Hardware"           0034 ,6                                                                                                                SOD ENABLE
+
+
+                   RST 7                 Fcn""n
+                                           FF        i       0038 ,6
+                                                                                                                                                                                    SERIAL OUTPUT DATA
+
+
+                   RST 75                Hardware"           OO3C'6
+                                          Function
+            "NOTE The hardware functions refer to the on·chlp Interrupt
+                  feature of the 8085 only
+
+
+                                                                                                REGISTER PAIR AND STACK OPERATIONS
+
+
+                                                                                Register Pair
+
+                                                           PSW             B         0            H
+                                                           (AI F)     (B/C)        (DIE)    (Hill        SP PC                             Function
+                                           INX                             03        13          23      33           I~crement Register Pair
+                                           DCX                             DB        1B          2B      38           Decrement Register Pair
+                                           LOAX                            OA        lA         7E(1 )                L}ad A Indirect (Reg Pair holds Adrs)
+                                           STAX                            02        12         77(2)                 Store A Indirect (Reg. Pair holds Adrs)
+                                           LHLD                                                  2A                   L.)ad H/L Direct (Bytes 2 and 3 hold Adrs)
+                                           SHLO                                                  22                   Store H/L Direct (Bytes 2 and 3 hold Adrs)
+                                           LXI                             01        11          21      31 C3(3)     L)ad Reg Pair Immediate (Bytes 2 and 3 hold immediate data)
+                                           PCHL                                                               E9      L~ad PC With H/L (Branch to Adrs In H/L)
+                                           XCHG                                            EB                         E(change Reg. Pairs DIE and H/L
+                                           DAD                             09        19          29      39           Add Reg_ Pair to H/L
+                                           PUSH             F5             C5        05          E5                   Push Reg Pa Ir on Stack
+                                           POP              Fl             C1        01          El                   P:;.p Reg Pair off Stack
+                                           XTHL                                                  E3                   hchange H/l With Top of Stack
+                                           SPHL                                                          F9           Load SP With H/L
+
+
+                                Notes 1 ThiS IS MOV A,M                    2 ThiS IS MOV M,A             3. This is JMP
+
+                                                                                                                                                  All mnemonics copyright ® Intel Corporation 1976
+
+
+                                   Table 8-1. 808518080 Assembly Language Reference (Continued)
+Appendix B
+Practical Microprocessors                                                                                                                                                                                                     367
+Instruction and Data Formats:                                                    Addressing Modes:
+
+
+## Page 394
+
+
+
+     Memory for the 8085 is organized into 8-bit                                      Often the data to be operated on is stored in
+quantities, called bytes. Each byte has a unique                                 memory. When multi-byte numeric data is used,
+16-bit binary address corresponding to its se-                                   the data, like instructions, is stored in succes-
+quential position in memory. The 8085 can                                        sive memory locations. The least significant
+directly address up to 65,536 bytes of memory,                                   byte is stored first, followed by increasingly
+which may consist of both read-only memory                                       significant bytes. The 8085 has four different
+(ROM) elements and random-access memory                                          modes for addressing data stored in memory or
+(RAM) elements (read/write memory).                                              in registers:
+     Data in the 8085 is stored in the form of
+8-bit binary integers:                                                                • Direct-Bytes 2 and 3 of the instruction
+                                                                                        contain the exact memory address of the
+                           DATA WORD
+                                                                                        data item. The low-order bits of the
+                  ' , , ,           I   ,      ,        I                               address are in byte 2, the high-order bits
+           I07 06 05 04 03 02 01                   Do                                   in byte 3.
+           MSB                                 LSB                                    • Register-The instruction specifies the
+                                                                                        register or register-pair in which the data
+                                                                                        is located.
+     When a register or data word contains a
+binary number, it is necessary to establish the                                       • Register Indirect-The instruction speci-
+order in which the bits of the number are                                               fies a register-pair which contains the
+written. In the Intel 8085, BIT a is referred to as                                     memory address where the data is lo-
+the least Significant Bit (lSB), and BIT 7 (of an                                       cated. The high-order bits of the address
+8 bit number) is referred to as the Most                                                are in the first register of the pair, the
+Significant Bit (MSB).                                                                  low-order bits in the second.
+
+     The 8085 program instructions may be one,                                        • Immediate-The instruction contains the
+two or three bytes in length. Multiple byte                                             data itself. This is either an 8-bit quantity
+instructions must be stored in successive mem-                                          or a 16-bit quantity (least significant byte
+ory locations. The address of the first byte is                                         first, most significant byte second).
+always used as the address of the instructions.                                       Unless directed by an interrupt or branch
+The exact instruction format depends on the                                      instruction, the execution of instructions pro-
+particular operation to be executed.                                             ceeds through consecutively increasing mem-
+                                                                                 ory locations. A branch instruction can specify
+                                                                                 the address of the next instruction to be
+                    Single Byte Instructions
+                                                                                 executed in one of two ways:
+           107 I            I   I   I   I               I
+                                               I Do Op Code
+                                                                                      • Direct-The branch instruction contains
+                                                                                        the address of the next instruction to be
+                                                                                        executed. Except for the 'RST' instruc-
+                     Two-Byte Instructions                                              tion, byte 2 contains the low-order ad-
+                                                                                        dress and byte 3 the high-order address.
+Byte One   1-10_7_1_ _ _ _ _ _ _ _ _1_0-,01 Op Code
+                                                                                      • Register Indirect-The branch instruc-
+           07 r                                , 071 Data or                            tion indicates a register-pair which con-
+Byte Two
+           I1-._ _ _ _ _ _ _ _ _ _-' Address                                            tains the address of the next instruction
+                                                                                        to be executed. The high-order bits of
+                                                                                        the address are in the first register of the
+                    Three-Byte Instructions                                             pair, the low-order bits in the second.
+                I      I    I   I   ,   ,      ,        I                             The RST instruction is a special one-byte
+Byte One
+           I
+           07                                      Do       Op Code
+                                                                                 call instruction (usually used during interrupt
+                                                                                 sequences). RST includes a three-bit field.
+Byte Two
+                 1
+           10-_7_ _ _ _ _ _ _ _ _ _' _0-Jo          I} Data                      Program control is transferred to the instruction
+                                                       or
+                                               , Do I Address
+                                                                                 whose address is eight times the contents of this
+Byte Three 107'
+                                                                                 three-bit field.
+                                                                           All mnemonics copyright ® Intel Corporation 1976
+                                                                                                                    Appendix B
+
+
+## Page 395
+
+
+
+
+Condition Flags:                                                      Symbols and Abbreviations:
+     There are five condition flags associated                            The following symbols and abbreviations
+with the execution of instructions on the 8085.                       are used in the subsequent description of the
+They are Zero, Sign, Parity, Carry, and Auxiliary                     8085 instructions:
+Carry, and are each represented by a 1-bit
+register in the CPU. A flag is "set" by forcing the
+bit to 1. It is "reset" by forcing the bit to O.
+                                                                      SYMBOLS       MEANING
+      Unless otherwise indicated, when an in-
+ struction affects a flag, it affects it in the follow-
+                                                                      accumulator   Register A
+ ing manner:
+                                                                      addr          16-bit address quantity
+                                                                      byte          8-bit data quantity
+                                                                      dble          16-bit data quantity
+        • Zero-If the result of an instruction has
+                                                                      byte 2         The second byte of the i nstruc-
+          the value 0, this flag is set. Otherwise, it is
+                                                                                    lion
+          reset.
+                                                                      byte 3        The third byte of the instruction
+                                                                      port          8-bit address of an I/O device
+                                                                      r, r1, r2     One of the registers A, B, C, 0, E,
+        • Sign-If the most significant bit of the                                   H, L
+          result of the operation has the value 1,
+          this flag is set. Otherwise, it is reset.                   DOD, SSS      The bit pattern designating one
+                                                                                    of the registers A, B, C, 0, E,
+                                                                                    H, L (DOD = destination, SSS =
+                                                                                    source):
+        • Parity-If the modulo 2 sum of the bits of
+          the result of the operation is 0, (i.e., if the
+          result has even parity), this flag is set.                                     DDD         REGISTER
+          Otherwise, it is reset (i.e., if the result has                               or SSS         NAME
+          odd parity).                                                                    111              A
+                                                                                          000              B
+                                                                                          001              C
+                                                                                          010              0
+                                                                                          011              E
+        • Carry-If the instruction resulted in a
+                                                                                          100              H
+          carry (from addition), or a borrow (from
+                                                                                          101              L
+          subtraction or a comparison) out of the
+          high-order bit, this flag is set. Otherwise,
+          it is reset.
+                                                                      rp            One of the register pairs:
+                                                                                    B represents the B, C pair with B
+    •     Auxiliary Carry-If the instruction                                        as the high-order register and C
+          caused a carry out of bit 3 and into bit4 of                              as the low-order register.
+          the resulting value, the auxiliary carry is
+          set. Otherwise, it is reset. This flag is
+                                                                                    o represents the 0, E pair with 0
+                                                                                    as the high-order register and E
+          affected by single precision additions,
+          subtractions, increments, decrements,                                     as the low-order register.
+          comparisons, and logical operations, but                                  H represents the H, L pair with H
+          is principally used with additions and                                    as the high-order register and L
+          increments preceding a DAA (Decimal                                       as the low-order register.
+          Adjust Accumulator) instruction.                                          SP represents the 16-bit stack
+                                                                                    pointer register.
+All mnemonics copyright ® Intel Corporation 1976
+
+Appendix B
+Practical Microprocessors                                                                                          369
+ SYMBOLS       MEANING (Continued)                            Description Format:
+
+
+## Page 396
+
+
+
+                                                                  The following pages provide a detailed
+ RP            The bit pattern designating one
+                                                              description of the instruction set of the 8085.
+               of the register pairs B, D, H, SP:
+                                                              Each instruction is described in the following
+                            REGISTER                          manner:
+                    RP        PAIR
+                   00           B-C
+                                                                   1. The instruction format consists of the
+                   01           D-E
+                                                                      instruction mnemonic and operand fields,
+                   10           H-l
+                                                                      and is printed in BOLDFACE on the left
+                   11           SP
+                                                                      side of the first line. Note that each entry
+ rh            The first (high-order) register of                     must be converted to hexadecimal be-
+               a designated register pair.                            fore you can enter it into the microlab.
+ rl            The second (low-order) register
+               of a designated register pair.
+ PC            16-bit program counter register                     2. The name of the instruction is enclosed
+               (PCH and PCl are used to refer                         in parenthesis on the right side of the
+               to the high-order and low-order                        first line.
+               8 bits respectively).
+ SP            16-bit stack pointer register (SPH
+               and SPl are used to refer to the                    3. The next line(s) contain a symbolic
+               high-order and low-order 8 bits                        description of the operation of the in-
+               respectively) .                                        struction.
+               Bit m of the register r (bits are
+               number 7 through a from left to
+               right) .
+                                                                   4. This is followed by a narrative descrip-
+Z, S, P, CY,   The condition flags:                                   tion of the operation of the instruction.
+AC                 Zero,
+                   Sign,
+                   Parity,
+                   Carry,                                          5. The following line(s) contain the binary
+                   and Auxiliary Carry,                               fields and patterns that comprise the
+                   respectively.                                      machine instruction.
+
+(      )       The contents of the memory lo-
+               cation or registers enclosed in
+               the parentheses.                                    6. The following lines contain the hexa-
+               "Is transferred to"                                    decimal format op code highlighted in
+                                                                      color.
+1\             logical AND
+J,f-           Exclusive OR
+V              Inclusive OR                                        7. The last four lines contain incidental
++              Addition                                               information about the execution of the
+               Two's complement subtraction                           instruction. The number of machine
+                                                                      cycles and states required to execute the
+               Multiplication
+*                                                                     instruction are listed first. If the instruc-
+               "Is exchanged with"                                    tion has two possible execution times, as
+               The one's complement (e.g., (A))                       in a Conditional Jump, both times will be
+                                                                      listed, separated by a slash. Next, any
+n              The restart number a through 7                         significant data addressing modes are
+NNN            The binary representation 000                          listed. The last line lists any of the five
+               through 111 for restart number a                       Flags that are affected by the execution
+               through 7 respectively.                                of the instruction.
+
+                                                        All mnemonics copyright ® Intel Corporation 1976
+                                                                                                  Appendix B
+370                                                                                 Practical Microprocessors
+
+
+## Page 397
+
+
+
+
+    Data Transfer Group:
+                                                                 MOV     E. A        SF
+        This group of instructions transfers data to             MOV     E, B        58
+    and from registers and memory. Condition flags               MOV     E. C        59
+    are not affected by any instruction in this                  MOV     E.O         5A
+    group.                                                       MOV     E. E        5B
+                                                                 MOV     E. H        5C
+    MOV r1, r2          (Move Register)                          MOV     E. L        50
+        (r1) -   (r2)
+                                                                 MOV     H. A        67
+        The content of register r2 is moved to                   MOV     H, B        60
+        register r1.                                             MOV     H, C        61
+                                                                 MOV     H. 0        62
+                                                                 MOV     H, E        63
+                                                                 MOV     H,H         64
+                                                                 MOV     H, L        65
+        Hexadecimal Format
+           MOV      A, A       7F
+                                                                 MOV     L, A       6F
+           MOV      A. B       78
+                                                                 MOV     L,8         68
+           MOV      A, C       79
+                                                                 MOV     L,C         69
+           MOV      A, 0       7A
+                                                                 MOV     L, 0        6A
+           MOV      A. E       78                                MOV     L. E        6B
+           MOV      A, H       7C                                MOV     L, H        6C
+           MOV      A. L       70                                MOV     L, L        60
+                                                                    Cycles:       1
+                                                                    States:       4
+          MOV       B, A       47                               Addressing:       register
+          MOV       B, B       40                                    Flags:       none
+          MOV       B. C       41
+          MOV       B,O        42
+          MOV       B, E       43                        MOV r, M         (Move from memory)
+          MOV       B, H       44                             (r) -   ({H) (L))
+          MOV       B. L       45
+                                                              The content of the memory location. whose
+                                                              address is in registers Hand L. is moved
+                                                              to register r.
+          MOV      C, A        4F
+          MOV
+          MOV
+                   C, B
+                   C. C
+                               48
+                               49
+                                                                      10'110'0'011'1'01
+          MOV      C,O         4A
+          MOV      C, E        4B                             Hexadecimal Format
+          MOV      C, H        4C                                MOV     A. M        7E
+          MOV      C, L        40                                MOV     B, M        46
+                                                                 MOV     C, M        4E
+                                                                 MOV     0, M        56
+          MOV      0, A        57                                MOV     E, M        5E
+          MOV      0, B        50                                MOV     H. M        66
+          MOV      0, C        51                                MOV     L, M        6E
+          MOV      0,0         52                                    Cycles:      2
+          MOV      0, E        53                                    States:      7
+          MOV      0, H        54                                Addressing:      register indirect
+          MOV      D. L        55                                     Flags:      none
+
+
+All mnemonics copyright ®Intel Corporation 197C
+
+Appendix B
+Pratical Microprocessors                                                                                  371
+      MOY M, r         (Move to memory)                      MYI M, byte         (Move to memory immediate)
+
+
+## Page 398
+
+
+
+          «H) (L)) -    (r)                                       «H) (L» -      (byte 2)
+          The content of register r is moved to the               The content of byte 2 of the instruction is
+          memory location whose address is in reg-                moved to the memory location whose ad-
+          isters Hand L.                                          dress is in registers Hand L.
+
+
+          Hexadecimal Format
+             MOV     M, A        77                               Hexadecimal Format
+             MOV     M, B        70
+                                                                     MVI    M. byte         36
+             MOV     M, C        71
+             MOV     M,D         72                                      Cycles:        3
+             MOV     M, E        73                                      States:        10
+             MOV     M, H        74                                  Addressing:        immediate/reg. indirect
+             MOV     M, L        75                                       Flags:        none
+                 Cycles:      2
+                 States:      7                              LXI rp, dble       (Load register pair immediate)
+             Addressing:      register indirect
+                                                                  (rh) - (byte 3),
+                  Flags:      none
+                                                                  (rl) - (byte 2)
+                                                                  Byte 3 of the instruction is moved into the
+                                                                  high-order register (rh) of the register pair
+                                                                  rp. Byte 2 of the instruction is moved into
+                                                                  the low-order register (rl) of the register
+      MYI r, byte      (Move Immediate)                           pair rp.
+          (r) -   (byte 2)
+          The content of byte 2 of the instruction is
+                                                                           o'olR'pJO'O'O'1
+          moved to register r.                                                    low-order data
+
+                                                                                  high-order data
+
+
+                                                                  Hexadecimal Format
+                                                                     LXI    B, db Ie       01       (load immediate
+          Hexadecimal Format                                                                          register pair
+             MVI    A, byte      3E                                                                   B and C)
+             MVI    S, byte      06                                  LXI    0, dble        11       (load immediate
+                                                                                                      reg ister pai r
+             MVI    C, byte      OE
+             MVI    0, byte       16                                                                  o and E)
+             MVI    E, byte       1E                                 LXI    H, dble        21       (load immediate
+             MVI    H, byte       26                                                                  register pair
+             MVI    L, byte       2E                                                                  Hand L)
+                                                                     LXI    SP, db Ie      31       (load immediate
+                Cycles:       2                                                                       stack pointer)
+                States:       7
+            Addressing:       immediate                                  Cycles:       3
+                 Flags:       none                                       States:       10
+                                                                     Addressing:       immediate
+                                                                          Flags:       none
+
+
+                                                           All mnemonics copyright ® Intel Corporation 1976
+                                                                                                        Appendix B
+
+
+## Page 399
+
+
+
+
+    LOA addr      (Load Accumulator direct)             LHLO addr         (Load Hand L direct)
+        (A) -   «byte 3)(byte 2»                             (L) -   «byte 3)(byte 2»
+        The content of the memory location, whose            (H) -   «byte 3)(byte 2)    + 1)
+        address is specified in byte 2 and byte 3 of         The content of the memory location, whose
+        the instruction, is moved to register A.             address is specified in byte 2 and byte 3 of
+                                                             the instruction, is moved to register l. The
+                                                             content of the memory location at the
+                                                             succeeding address is moved to register H.
+                        low-order addr
+
+                        high-order addr
+
+                                                                            low-order addr
+        Hexadecimal Format
+                                                                           high-order addr
+          LOA    addr        3A
+              Cycles:      4                                 Hexadecimal Format
+              States:      13
+          Addressing:      direct                               LHLO     addr      2A
+               Flags:      none                                     Cycles:     5
+                                                                    States:     16
+                                                                Addressing:     direct
+                                                                     Flags:     none
+
+
+   STA addr       (Store Accumulator direct)            SHLO addr         (Store Hand L direct)
+        «byte 3)(byte 2» -        (A)                        «byte 3)(byte 2» - (L)
+       The content of the accumulator is moved to            «byte 3)(byte 2)    +
+                                                                               1) - (H)
+       the memory location whose address is                  The content of register L is moved to the
+       specified in byte 2 and byte 3 of the                 memory location whose address is speci
+       instruction.                                          fied in byte 2 and byte 3. The content of
+                                                             register H is moved to the succeeding
+                                                             memory location.
+
+                        low-order addr
+
+                        high-order addr
+                                                                            low-order addr
+
+                                                                           high-order addr
+        Hexadecimal Format
+          STA    addr       32                               Hexadecimal Format
+
+             Cycles:       4                                    SHLO     addr      22
+             States:       13                                       Cycles:     5
+         Addressing:       direct                                   States:     16
+              Flags:       none                                 Addressing:     direct
+                                                                     Flags:     none
+
+
+All mnemonics copyright ® Intel Corporation 197C
+
+Appendix B
+Practical Microprocessors                                                                                   373
+      LDAX rp      (Load accumulator indirect)
+
+
+## Page 400
+
+
+
+         (A) -    «rp»
+         The content of the memory location, whose
+         address is in the register pair rp, is moved
+         to register A. Note: only register pairs rp =
+         B (registers B and C) or rp = 0 (registers 0
+         and E) may be specified.
+
+
+         Hexadecimal Format
+           LOAX     B     OA
+           LOAX     0     1A
+               Cycles:    2                                 XCHG        (Exchange Hand L with 0 and E)
+               States:    7                                     (H) -   (D)
+           Addressing:    register indirect                     (L) -   (E)
+                Flags:    none
+                                                                The contents of registers Hand L are
+                                                                exchanged with the contents of registers 0
+                                                                and E.
+
+
+                                                                Hexadecimal Format
+                                                                   XCHG       EB
+      STAX rp      (Store accumulator indirect)
+                                                                       Cycles:     1
+         «rp» -    (A)                                                 States:     4
+         The content of register A is moved to the                 Addressing:     register
+         memory location whose address is in the                        Flags;     none
+         register pair rp. Note: only register pairs rp
+         = B (registers Band C) or rp -= 0 (registers
+         o and E) may be specified.
+
+
+         Hexadecimal Format
+           STAX     B     02
+           STAX     0     12
+               Cycles:    2
+               States:    7
+           Addressing:    register indirect
+                Flags:    none
+
+
+                                                          All mnemonics copyright ® I ntel Corporation 1976
+
+                                                                                                     Appendix B
+
+
+## Page 401
+
+
+
+
