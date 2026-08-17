@@ -12,6 +12,7 @@ PAGE_END="${PAGE_END:-}"
 OUTPUT_NAME="${OUTPUT_NAME:-practical-microprocessors}"
 SKIP_IMAGES="${SKIP_IMAGES:-0}"
 OCR_DIR="$OUT_DIR/reference/ocr"
+PAGE_CLEANUP_PLAN="$TMP_DIR/practical-page-cleanup.tsv"
 
 normalize_manual_text() {
   awk '
@@ -185,37 +186,128 @@ render_page_images() {
   fi
 }
 
+write_page_cleanup_plan() {
+  local raw_text="$1"
+  local out_plan="$2"
+
+  python3 - "$raw_text" "$out_plan" <<'PY'
+from pathlib import Path
+import re
+import sys
+
+raw_path = Path(sys.argv[1])
+out_path = Path(sys.argv[2])
+text = raw_path.read_text(errors="ignore")
+parts = re.split(r"(?m)^## Page (\d+)\n\n", text)
+
+artek_tokens = (
+    "artek",
+    "manuals@artekmedia.com",
+    "welch, mn",
+    "obsolete technical manuals",
+    "=> 2012",
+    "www.artekmedia.com",
+    "hewlett packard manual scans",
+    "out of print",
+    "digitaly remastered",
+    "scans by artekmedia",
+)
+
+blank_tokens = {"this", "page", "left", "blank"}
+
+def is_artek_line(line: str) -> bool:
+    low = line.lower()
+    return any(token in low for token in artek_tokens)
+
+rows = []
+for i in range(1, len(parts), 2):
+    page = int(parts[i])
+    nonempty = [ln.strip() for ln in parts[i + 1].splitlines() if ln.strip()]
+    if not nonempty:
+      rows.append((page, "keep"))
+      continue
+
+    manual_lines = [ln for ln in nonempty if not is_artek_line(ln)]
+    normalized_manual = {
+        re.sub(r"[^a-z]", "", ln.lower())
+        for ln in manual_lines
+        if re.sub(r"[^a-z]", "", ln.lower())
+    }
+
+    is_scan_insert = (
+        any("manuals@artekmedia.com" in ln.lower() for ln in nonempty)
+        or any("all hewlett packard manauls are reproduced by permission" in ln.lower() for ln in nonempty)
+        or (
+            all(is_artek_line(ln) for ln in nonempty)
+            and any("out of print" in ln.lower() for ln in nonempty)
+        )
+    )
+    is_blank_insert = (
+        normalized_manual
+        and normalized_manual.issubset(blank_tokens)
+        and any(is_artek_line(ln) for ln in nonempty)
+    )
+
+    if is_scan_insert or is_blank_insert:
+        rows.append((page, "drop"))
+    elif any(is_artek_line(ln) for ln in nonempty):
+        rows.append((page, "scrub-top" if page % 2 == 1 else "scrub-bottom"))
+    else:
+        rows.append((page, "keep"))
+
+out_path.write_text("".join(f"{page}\t{action}\n" for page, action in rows))
+PY
+}
+
 scrub_page_images() {
   local figures_dir="$1"
+  local plan_file="$2"
+  local page
+  local action
   local image
-  local top_band=90
-  local bottom_band=90
 
-  find "$figures_dir" -maxdepth 1 -type f -name 'page-*.png' ! -name 'page-002.png' | while read -r image; do
-    magick "$image" \
-      -fill white \
-      -draw "rectangle 0,0 99999,${top_band}" \
-      -draw "rectangle 0,%[fx:h-${bottom_band}] 99999,99999" \
-      "$image"
-  done
+  while IFS=$'\t' read -r page action; do
+    printf -v image '%s/page-%03d.png' "$figures_dir" "$page"
+    [[ -f "$image" ]] || continue
 
-  rm -f "$figures_dir/page-002.png"
+    case "$action" in
+      drop)
+        rm -f "$image"
+        ;;
+      scrub-top)
+        magick "$image" \
+          -fill white \
+          -draw "rectangle %[fx:w*0.28],0 %[fx:w*0.72],96" \
+          "$image"
+        ;;
+      scrub-bottom)
+        magick "$image" \
+          -fill white \
+          -draw "rectangle %[fx:w*0.34],%[fx:h-82] %[fx:w*0.66],%[fx:h]" \
+          "$image"
+        ;;
+    esac
+  done < "$plan_file"
 }
 
 compact_page_sequence() {
   local figures_dir="$1"
-  local max_page="$2"
-  local page
-  local old
-  local new
+  python3 - "$figures_dir" <<'PY'
+from pathlib import Path
+import sys
 
-  for ((page=3; page<=max_page; page++)); do
-    printf -v old '%s/page-%03d.png' "$figures_dir" "$page"
-    printf -v new '%s/page-%03d.png' "$figures_dir" "$((page - 1))"
-    if [[ -f "$old" ]]; then
-      mv "$old" "$new"
-    fi
-  done
+figures_dir = Path(sys.argv[1])
+files = sorted(figures_dir.glob("page-*.png"))
+temp_files = []
+
+for index, path in enumerate(files, start=1):
+    temp_path = figures_dir / f".page-seq-{index:03d}.png"
+    path.rename(temp_path)
+    temp_files.append(temp_path)
+
+for index, path in enumerate(temp_files, start=1):
+    path.rename(figures_dir / f"page-{index:03d}.png")
+PY
 }
 
 write_text_with_page_markers() {
@@ -377,6 +469,7 @@ OUT="$OUT_DIR/reference/${OUTPUT_NAME}.md"
 RAW_TEXT="$TMP_DIR/practical-raw-text.txt"
 CLEANED_TEXT="$TMP_DIR/practical-cleaned-text.txt"
 FIGURES_DIR="${OUT%.md}/figures"
+FIGURES_STAGING_DIR="$TMP_DIR/practical-figures"
 RAW_OCR_OUT="$OCR_DIR/${OUTPUT_NAME}.raw-ocr.txt"
 CLEANED_OCR_OUT="$OCR_DIR/${OUTPUT_NAME}.cleaned-ocr.txt"
 TOTAL_PAGES="$(pdfinfo "$SRC" | awk -F': *' '/^Pages:/ {print $2}')"
@@ -424,6 +517,7 @@ mkdir -p "$OCR_DIR"
 } > "$OUT"
 
 write_text_with_page_markers "$SRC" "$RAW_TEXT"
+write_page_cleanup_plan "$RAW_TEXT" "$PAGE_CLEANUP_PLAN"
 normalize_manual_text "$RAW_TEXT" "$CLEANED_TEXT"
 cp "$RAW_TEXT" "$RAW_OCR_OUT"
 cp "$CLEANED_TEXT" "$CLEANED_OCR_OUT"
@@ -432,13 +526,14 @@ drop_placeholder_pages "$OUT"
 if [[ "$SKIP_IMAGES" == "1" ]]; then
   :
 else
-  render_page_images "$SRC" "$FIGURES_DIR" 135
-  scrub_page_images "$FIGURES_DIR"
-  if [[ -n "$PAGE_START" && -n "$PAGE_END" ]]; then
-    compact_page_sequence "$FIGURES_DIR" "$PAGE_END"
-  else
-    compact_page_sequence "$FIGURES_DIR" "$TOTAL_PAGES"
+  render_page_images "$SRC" "$FIGURES_STAGING_DIR" 135
+  scrub_page_images "$FIGURES_STAGING_DIR" "$PAGE_CLEANUP_PLAN"
+  compact_page_sequence "$FIGURES_STAGING_DIR"
+  mkdir -p "$(dirname "$FIGURES_DIR")"
+  if [[ -d "$FIGURES_DIR" ]]; then
+    mv "$FIGURES_DIR" "$TMP_DIR/practical-figures.previous"
   fi
+  mv "$FIGURES_STAGING_DIR" "$FIGURES_DIR"
 fi
 if [[ "$OUTPUT_NAME" == "practical-microprocessors" ]]; then
   write_practical_microprocessors_index_block "$OUT_DIR/index.md"
