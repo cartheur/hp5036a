@@ -1,0 +1,1903 @@
+# Practical Microprocessors
+
+- Source PDF: `docs/Practical Microprocessors.pdf`
+- Category: `microprocessor-lab-handbook`
+- Printed: `March 1979`
+- Pages: `81-120 of 484`
+- Conversion: `pdftotext` with page markers
+- Figures: `docs-classified/reference/practical-microprocessors-p081-120/figures`
+- Diagnostic Scope: `Reference and teaching handbook for the HP 5036A uLab / Microprocessor Lab, covering fundamentals, 8085 programming, lab experiments, hardware, interfacing, logic-probe troubleshooting, and signature analysis.`
+- Notes: `The file name says Practical Microprocessors, and the scanned text confirms it is the 1979 Hewlett-Packard handbook by Michael Slater and Barry Bronson. OCR is usable for search but figure-heavy and lab-diagram pages still need image verification.`
+
+## Agent Notes
+
+Use this handbook for explanation, training, experiment context, programming examples, and subsystem reasoning. Use the service manual when the task is part replacement, formal troubleshooting flow, or exact service signatures.
+
+## Recommended Use
+
+- Reach for this document first when the user needs conceptual background: bus behavior, memory mapping, addressing, timing, I/O, peripherals, interrupts, or 8085 programming patterns.
+- Reach for the service manual first when the user is diagnosing a live hardware fault and needs official test setup, switch positions, chip-level service references, or repair workflow.
+- Use this handbook as the interpretation layer behind the service manual when a symptom needs architectural explanation.
+
+## High-Value Navigation
+
+- `Table of Contents` begins at `## Page 5`
+- `Section I: Microprocessor Fundamentals` begins near `## Page 9`
+- `Section II: Introduction to Programming` begins near `## Page 16`
+- `Section III: Microprocessor System Hardware` begins near `## Page 24`
+- `Section IV: Microprocessor Systems` begins near `## Page 34`
+- `Section V: Microcomputer Programming` begins near `## Page 56`
+- `Section VI: Troubleshooting Techniques` begins near `## Page 66`
+- `Lesson 16`: logic probe, logic pulser, and current tracer troubleshooting
+- `Lesson 17`: signature analysis and fault-isolation workflow
+
+## Trust Notes
+
+- Repeated scan-insert pages and footer clutter were removed where possible.
+- OCR is strong enough for lesson discovery and concept lookup, but formulas, figures, code listings, and tabular values should be checked against the matching page image when quoted or used diagnostically.
+- Use the service-manual verified companion and structured signature tables for exact `5036A` service signatures; this handbook is better for understanding why those signatures matter.
+
+## Extracted Text
+
+## Page 81
+
+
+
+
+
+                                                                                     Executing Programs
+
+
+   CONCEPT
+   The J,LLab has three modes for executing a program: the usual RUN function, which runs the program
+   at full speed, and two different single-step modes, which enable you to execute the program one
+   instruction (or part of an instruction) at a time. RESET is used to halt the execution of the program and
+   to exit the hardware step mode.
+
+   PROCEDURE
+   I. Executing the Program Using Instruction Step
+
+       A) Press F:;~~   8088.                 Verify that the data at this location is the same as that shown
+           in the first line of Table 4-1.
+
+       B) Press S:NOC",,' • Check the data at this location.
+
+       C) Repeat step B until you have verified that the program shown in Table 4-1 is stored in the
+          memory. If it is not, repeat Experiment 4-1, Part II.
+
+       D) Press F:;~~   80 88                to set the address back to the beginning of the program (0800).
+           (Alternatively, you can use [::) to get the display to show address 0800).
+
+       E) Press '~;;: . This causes the instruction shown in the display to be executed, and the display
+
+           now shows the next instruction. Note that although this key may appear to act like S:NOCRR' ,
+
+           its function is very different. When using S:NOCRR' , you are simply examining the contents of
+
+           memory. With     '~;;:   you are causing the contents of the displayed memory location to be
+           interpreted as an instruction, which is executed by the microprocessor.
+
+           When instructing the J,LLab to execute an instruction (or a program) by pressing '~i;:              ,[~),
+           or   B'   the display must show a location that contains an opcode. The location at which
+           execution begins must not contain data or an address. For example, the program in Table 4-1
+           may begin execution at 0800 or 0801, but not at 0802 or 0803.
+
+       F) Now the jump instruction, C3, is shown in the display. Press                  '~;;:   . Since this is a jump
+           instruction, the address jumps to 0800. Note that the memory locations containing the jump
+           address are never shown, because when you press                 '~;;:   , the J,LLab executes the entire
+           instruction, which includes reading the two jump address bytes.
+
+
+Lesson 4
+Practical Microprocessors                                                                                                55
+EXPERIMENT 4-2 _ _ _ _ _ _ _ _ __
+
+
+## Page 82
+
+
+
+( Continued)
+
+
+        G) Press   I~;::   repeatedly to watch the loop repeat.
+
+
+     II. Executing the Program Using Hardware Step
+
+        A) Press   F:;~;   G 0 88 .           This sets the address to the beginning of the program.
+
+        S) Press (~). The display goes blank because the hardware step key completely stops the
+
+            processor after an instruction is executed. '~i:: , on the other hand, executes an instruction
+            and then returns control to the monitor program.
+        C) Look at the sixteen LEOs labeled ADDRESS. These are connected directly to the address
+           bus. They show 0000 1000 0000 0000. Using the binary-hex table on the PC board (to the right
+           of the address LEOs), convert this to hex. It should be the address you specified in step A.
+        D) Look at the eight LEOs labeled DATA. These are connected to the data bus and show the
+           data (00) stored at address 0800.
+        E) Look at the six LEOs labeled STATUS. These indicate whether a read or a write is being
+           performed and whether it is to ROM, RAM, the input port, or the output port. The READ and
+           RAM LEOs are on, indicating that information is being read from the RAM.
+
+         F) Press (~) . The address increments and the data and status LEOs show the information
+
+            corresponding to the new address. Just as with '~i::      , the instruction is executed.
+        G) The data LEOs now show the jump opcode C3 (1100 0011). Press (~). Note that the address
+            is incremented, and the jump is not performed. This points out a fundamental difference
+            between the two step modes: (~~~:) steps one memory location at a time, whereas '~i;: steps
+
+            one instruction at a time (even if the instruction uses several memory locations). With [~),
+            the instruction is not executed until all the parts have been read (e.g., a three-byte instruction
+            does not begin execution until the third step).
+
+        H) Press [~) (~~~:) . This completes the jump instruction. The address LEOs now show 0800. The
+           jump instruction has been executed.
+
+         I) Press (~~~:) repeatedly and watch the program repeat.
+
+         J) Press (RESET) . This brings the system back to normal operation. When (~) is pressed, the
+            instruction waiting to be executed (as shown in the data LEOs) is executed. The display then
+            shows the next instruction.
+
+
+                                                                                                     Lesson 4
+56                                                                                  Practical Microprocessors
+
+
+## Page 83
+
+
+
+
+_ _ _ _ _ _ _ _ _ EXPERIMENT 4-2
+                                                                                                ( Continued)
+
+
+   III. Running the Program
+
+                   0000.
+       A) Press F:~~~                         This sets the address.
+
+
+       B) Press   B.        The program is now running at full speed (approximately 2 microseconds per
+           instruction ).
+
+       C) Look at the address LEOs. They appear to show 0803 (0000 10000000 0011). They are in fact
+          counting from 0800 to 0803 and then going back to 0800. This is the same program sequence
+          you stepped through previously. Now, however, the LEOs are changing so fast that they always
+          appear to be on.
+
+       0) Look at the status LEOs. They indicate a read from RAM, the same as during the hardware step
+          mode. Since all the instructions light the same status LEOs (this program reads only from the
+          RAM), the fact that the program is running at full speed does not cause an ambiguous display
+          (more than one set of LEOs lighted at a time).
+
+       E) Look at the data LEOs. For reasons that will be explained later, these all appear to be on when
+          you are running a program. They are useful only in the hardware step mode.
+
+       F) Press [::) . This halts your program and returns control to the monitor. The display shows the
+
+           instruction that was about to be executed when you pressed (RESET) .
+
+       G) The }.LLab monitor will not let you run a program if you are in the process of entering data. To
+          observe this control, press F:~~~   0000                   and then key in the data   8 0.      The
+          decimal point goes on, indicating that the }.LLab is in a data-entering mode.
+
+       H) Press   B.        The }.LLab does not respond because it is in a data-entering mode.
+
+        I) Suppose you now realize that you did not want to change the data but wanted only to start the
+          program running. Press       E)   to get out of the data-entering mode, and then press S~N°c": to go
+
+          back to address 0800. Alternatively, you could press F:~~~        0000.                Note that the
+          decimal point is now off.
+
+       J) Press   B.        Now the program runs.
+
+
+       K) Press [RESET) to return control to the monitor.
+
+
+Lesson 4
+Practical Microprocessors                                                                                        57
+EXPERIf'v~ENT 4-2 _ _ _ _ _ _ _ _ __
+
+
+## Page 84
+
+
+
+
+Continued
+
+
+     SUMMARY
+
+     This experiment demonstrated the three modes for executing a program: instruction step, hardware
+     step, and run. The function of the keys is as follows:
+
+           lNSTR
+                   causes the instruction shown in the display to be executed. The J,LLab then returns to the
+           STEP
+                   monitor program.
+
+          [HOWR) first causes the microprocessor to jump to the address shown in the display and then stop.
+            STEP
+                   Subsequent presses cause the byte shown in the binary bus LEOs to be read, and when
+                   an entire instruction has been read, it is executed. The microprocessor halts until HOWR
+                   STEP is pressed again (or RESET is pressed).
+
+                   causes the microprocessor to start executing instructions at the address shown in the
+          B        display and continue executing instructions in sequence.
+
+          E)       causes the J,LLab to return to the "wait for command" mode. It is used for exiting the RUN
+                   or hardware step modes. It does not affect the contents of the memory or registers.
+
+     There are two important differences between the two step modes. First, in the hardware step mode, the
+     microprocessor is stopped, the display is blank, and the binary LEOs on the address, data, and status
+     lines indicate the state of the buses. They provide more information than the display, but are more
+     difficult to interpret. They are an exact indication of what is going on in the J,LLab hardware. In the
+     instruction step mode the display is on, but the binary address and data LEOs are meaningless.
+
+ The second difference is that each press of HOWR STEP fetches only a single byte, regardless of how
+ many bytes it takes to complete the instruction. The instruction is executed only after all parts of
+ the instruction have been stepped through. On the other hand, each time the INSTR STEP key is
+ pressed, the instruction shown in the display is executed. If the instruction consists of multiple bytes,
+ the entire instruction is executed (including reading the second and third bytes) and the second and
+ third bytes never appear in the display. Instruction step is therefore more convenient for following
+ general program flow, while hardware step allows the detailed operation of each instruction to be
+ observed.
+
+ Note that the HOWR STEP key actually has two functions. When the J,LLab is not in the hardware step
+ mode, the first press of the key puts it into that mode. Then, once it is in this mode, the key causes one
+ step to occur. The RESET key is used to return to normal operation.
+
+     In the RUN mode it is difficult to obtain much information about what is going on. It is used for
+     programs that do something, as opposed to this "do-nothing" program.
+
+
+                                                                                                       Lesson 4
+58                                                                                    Practical Microprocessors
+
+
+## Page 85
+
+
+> [!note]
+> This page contains structured educational or figure-referenced content. Use the page image when exact labels, code, or tabular alignment matters.
+
+
+
+The MLab has an input port with eight miniature slide switches to set the data at
+its inputs. The microprocessor can then read this data from the switches. The MLab   .• f   i
+
+
+also has an output port with an LED on each of the eight output lines. This
+enables the microprocessor to control the LEOs. These ports were used in the
+AND gate experiment in Lesson 3.
+
+
+                                  (      Port Demo
+                                                        )
+
+
+                                         Read Data
+                                      from Input Port
+
+
+                                        Write Data
+                                      to Output Port
+
+
+    Figure 4-3. Flowchart for Program to Copy Oata from Input to Output Port
+
+
+Figure 4-3 shows the flowchart for a program that demonstrates the use of these
+ports. This program reads the data from the input port and writes it to the output
+port. The program listing is shown in Table 4-2.
+
+
+   Address       Contents        Label           Instruction         Comments
+    0900              3A        START:        LOA 2000            ;Read input port
+    0901              00
+    0902              20
+    0903              32                      STA 3000            ;Write data to
+    0904              00                                           output port
+    0905              30
+    0906              C3                      JMP START           ;Loop back
+    0907              00
+    0908              09
+
+
+         Table 4-2.   Program to Copy Oata from Input Port to Output Port
+
+
+The first instruction is LOA 2000, which means load the accumulator with the
+contents of location 2000. Like memory locations, input and output ports also
+have addresses. The address of the MLab's input port is 2000 (as shown in the
+Memory Map in Figure 4-1). This instruction therefore loads the accumulator with
+the data from the input port.
+
+
+Lesson 4
+Practical Microprocessors                                                                       59
+The second instruction, STA 3000, means store the contents of the accumulator
+
+
+## Page 86
+
+
+
+at address 3000. 3000 is the address of the output port. This instruction therefore
+takes the contents of the accumulator, which was just read from the input port,
+and sends it to the output port. The program thus transfers data from the input
+port to the output port.
+
+The last instruction is a jump. It causes the program to jump back to the
+beginning and creates a loop that is executed indefinitely. The data at the output
+port will therefore follow the data at the input port while the program is running.
+
+All three of these instructions have the same machine code format: an opcode
+followed by two bytes of address information. For example, 3A is the opcode for
+the LOA instruction. The next two bytes, 00 and 20, specify the address 2000.
+
+
+                                                                                                       Lesson 4
+60                                                                                    Practical Microprocessors
+
+
+## Page 87
+
+
+
+
+_______________ EXPEHi:\/\(\iT L+- 3
+                                                   Using the Input and Output Ports
+
+
+   CONCEPT
+   The program to transfer data from the input port to the output port is entered and run. The switches at
+   the input port may then be set to any desired position, and the same data will appear in the output
+   port LEOs.
+
+   PROCEDURE
+       A) Press F:;~~GJ 0 GJ G .
+       B) Press   0 0 S~N°c": .   This stores the first byte of the program shown in Table 4-2.
+
+       C) Press   GJ S~N°c": .
+                             This stores the second byte of the program, 00, in location 0901.
+
+       D) Continue storing the data from Table 4-2 until the entire program is entered.
+
+       E) Verify that the program is correctly stored.
+
+       F) Run the program by pressing F:~~~     GJ 0 GJ G B·
+       G) Set the input port switches to any position. Up corresponds to a one, down to a zero.
+
+       H) Look at the output port LEOs. They show the same data as that indicated by the input port
+          switches. Note that the output port LEOs indicate negative logic (Le., they are on for a zero, and
+          off for a one). They are connected this way because the TTL gate used to drive them cannot
+          output very much current, but it can sink (input) a substantial amount of current. LEOs are
+          commonly connected this way.
+
+        I) Change the input port switches. The output port data should change correspondingly.
+
+       J) Press [RESET] . The program stops, and control returns to the monitor.
+
+
+       K) Change the input port switches. Does the output port data change? Since the program you
+          entered is no longer running, the input port is not being read.
+
+       L) The instruction CMA (Complement Accumulator, code 2F) causes the value in the accumu-
+          lator to be complemented (inverted). Each one bit becomes a zero bit, and each zero bit
+          becomes a one bit. Add this instruction at the appropriate place in the program so that the data
+          read from the input port is complemented before it is written to the output port. Do not forget
+          to move the necessary instructions to make room for the new one. Also note that each
+          instruction in the program is three bytes long and that the three bytes must remain together.
+          (The answer is in Table 4-3 at the end of the experiment.)
+
+
+Lesson 4
+Practical Microprocessors                                                                                      61
+EXPERIMENT 4-3 _ _ _ _ _ _ _ __
+
+
+## Page 88
+
+
+
+(Continued)
+
+
+         M) Run the modified program, and check to see that it performs as expected. An up switch
+            should now correspond to an on LED.
+
+         N) Press (~) to halt the program.
+
+
+     SUMMARY
+
+     Data was read from the input port and sent to the output port. As long as the program was running, the
+     data in the output port LEOs followed the setting of the input port switches. Since the output port LEOs
+     indicate negative logic, an up switch corresponded to an off LED. To change this, an instruction
+     was added to complement the contents of the accumulator. This is an example of the flexibility of a
+     microprocessor-based system. If the switches were connected directly to the LEOs, eight inverter
+     circuits would be required to make this change. But since they are connected via a microprocessor, a
+     small change in the software is all that is needed to produce the desired effect.
+
+
+                Address       Contents    Labels    Instructions          Comments
+                  0900            3A     START:     LOA 2000         ;Read input port
+                  0901            00
+                  0902            20
+                  0903            2F                CMA              ;Complement data
+                  0904            32                STA 3000         ;Write data to output port
+                  0905            00
+                  0906            30
+                  0907            C3                JMP START        ;Loop back
+                  0908            00
+                  0909            09
+
+
+                                Table 4-3. Program Modified to Complement Data
+
+
+                                                                                                     Lesson 4
+
+
+## Page 89
+
+
+
+
+_ _ _ _ _ _ _ _ _ _ _ _ REVIEW
+                                                                                    Lesson 4
+
+
+The MLab has keys to allow you to easily examine and change the contents of the
+memory, run a program, or single-step through a program in either of two modes.
+The instruction step mode allows you to easily follow the program flow, while the
+hardware step mode allows you to see the detailed operation of the address and
+data buses.
+
+Keep in mind that these key functions are defined by the monitor program in the
+ROM and the circuits of the MLab, and not by the microprocessor. The functions
+of the machine language instructions, on the other hand, are defined by the
+microprocessor itself.
+
+
+Lesson 4
+Practical Microprocessors                                                                 63
+QUIZ
+
+
+## Page 90
+
+
+
+Lesson 4
+
+
+           1. To examine the contents of memory location 0803, you would press
+              _ _ _ _ _ _ _ 0803.
+
+           2. Suppose the display shows address 0803. To see the contents of location 0802,
+              you could press             or _ _ _ _ _ _ _ _ __
+
+           3. One difference between instruction step and hardware step is that:
+             a. hardware step allows the state of the buses to be observed.
+             b. hardware step allows the program to be followed on the display.
+             c. instruction step steps one memory location at a time.
+             d. instruction step causes the program to run at full speed.
+
+           4. Input and output ports are identified by _ _ _ _ _ , just like memory
+              locations.
+
+           5. The functions of the keys on the j.(Lab are determined by:
+             a. the microprocessor design.
+             b. the monitor program stored in the ROM.
+             c. the contents of the RAM.
+             d. all of the above.
+
+
+                                                                                Lesson 4
+
+
+## Page 91
+
+
+> [!note]
+> This page contains structured educational or figure-referenced content. Use the page image when exact labels, code, or tabular alignment matters.
+
+
+
+ _ _ _ _ _ _ LESSON 5
+                                                          Basic Software Concepts
+
+
+The previous lesson described the basic functions of the ~Lab . Using the keys          INTRODUCTION
+described in that lesson, you can store a program , check it, single-step through it,
+or run it. These are the essential features of the ~Lab . In this lesson, programming
+techniques and some of the more advanced features of the ~Lab are described.
+
+
+The 8085 microprocessor Ie contains a number of internal registers that are             THE
+used for various purposes. Some, such as the accumulator, are used for storing          MICROPROCESSOR'S
+and manipulating data. For example, in Lesson 3 the accumulator was used to
+                                                                                        REGISTERS
+store the number of counts in the "count to ten " program . The contents of the
+accumulator can also be modified (in this case, it was incremented). These
+registers are different from regular memory locations in that they are inside the
+microprocessor and are not selected by the address bus, as shown in Figure 5-1.
+
+
+                                           Control
+                                            Logic
+
+                                                      I
+                                                      I
+                                            ___ .J
+
+
+Figure 5-1 .Registers and Memory. Registers such as the accumulator are selected
+            directly by the control logie, whereas memory locations must be accessed
+            via the address and data buses.
+
+
+Lesson 5
+Practical Microprocessors                                                                              65
+                      Instead, they are selected directly by a particular instruction (e.g., MVI A selects
+
+
+## Page 92
+
+
+
+                      the accumulator). The control logic within the processor controls the registers
+                      directly (without using the buses). Thus, they are more convenient for temporary
+                      or intermediate data storage.
+
+
+                      Some registers in the microprocessor are not used for general-purpose data
+                      storage but have a very specific function. The Program Counter (PC) is the
+                      most important of these. It is a sixteen-bit register that keeps track of which
+                      instruction is being executed. It always contains the address of the next instruc-
+                      tion to be executed. When an instruction is read from the memory, the contents
+                      of the program counter are placed on the address bus. The addressed instruction
+                      will then appear on the data bus. After the microprocessor reads the instruction,
+                      the program counter is incremented. The contents 0f the PC are again placed on
+                      the address bus, and the next instruction is read. This process continues unless
+                      a jump instruction is executed. A jump instruction causes the PC to be loaded
+                      with the jump address.
+
+
+                      A number of other registers in the microprocessor will be introduced as the
+                      course progresses.
+
+
+      MONITORING      To follow the step-by-step operation of a program using the J,LLab, it is useful to
+   PROGRAM FLOW       be able to look at the contents of the microprocessor's registers. Since they are
+                      internal to the microprocessor and have no addresses, you cannot use the
+                      FETCH ADRS key to access them. A special key, FETCH REG (Fetch Register)
+                      is used for this purpose. There is also a key called FETCH PC (Fetch Program
+                      Counter), which enables you to easily return to a program that has been halted.
+
+
+       THE J-LLAB's   The J,LLab's ROM contains the monitor program, which reads the keyboard,
+MONITOR PROGRAM       performs the indicated operation, and controls the display. The J,LLab runs the
+                      monitor program at all times except when the J,LLab is executing a user program
+                      or is in the hardware step mode. Any time that the display is totally off, it can be
+                      assumed that the monitor is not running.
+
+
+                      When the RUN key is pressed, the monitor program directs the microprocessor
+                      to jump to the address specified on the J,LLab display. When RESET is pressed, the
+                      J,LLab is forced to return to the monitor program.
+
+
+                      The monitor program also allows you to examine the contents of the registers as
+                      your program left them. When you exit a program by pressing RESET (and also
+                      after each instruction step), the monitor program stores the contents of the
+                      registers in special RAM locations. Then when you press FETCH REG, the moni-
+                      tor displays the contents of the memory location in which it stored the contents of
+                      the register. Similarly, the monitor stores the contents of the PC in RAM and
+                      recalls this value when you press FETCH PC. Thus, although it appears that you
+                      are actually examining the contents of the registers, you are really examining the
+                      contents of the memory locations in which the monitor has stored the register
+                      contents. This is necessary because the monitor program also uses the registers.
+
+
+                                                                                              Lesson 5
+
+
+## Page 93
+
+
+> [!note]
+> This page contains structured educational or figure-referenced content. Use the page image when exact labels, code, or tabular alignment matters.
+
+
+
+To demonstrate the use of these keys, another demonstration program is needed.          A COUNTER
+Figure 5-2 shows the flowchart for a program that causes the output port to             PROGRAM
+count, in binary, from 0 to 255 and then repeat. First, one register (the accumu-
+lator, or A register, in this case) is set to zero. The contents of the accumulator
+are then written to the output port, and the accumulator is incremented. Finally,
+the program jumps back to the "output" program step.
+
+
+                                     (        Count          )
+
+
+                                          Set Accumulator
+                                              to Zero
+
+
+                                         Write Accumulator
+                                          to Output Port
+
+
+                                             Increment
+                                            Accumulator
+
+
+            Figure 5-2. Program to Make Output Port Count in Binary
+
+Table 5-1 shows the program listing. The program starts at address 0804 instead
+of 0800 so that you can later add some instructions at the beginning. (In the
+/-LLab, 0800 is the first location of the RAM, so user programs cannot go before it.)
+The first instruction is MVI A,O. It causes the accumulator to be loaded with the
+value zero. The next instruction, STA 3000 (store accumulator at location 3000),
+transfers the contents of the accumulator to the output port (address 3000). The
+opcode 32 at address 0806 specifies that it is an STA instruction. When the micro-
+processor sees this opcode, it knows that the next two bytes (addresses 0807 and
+0808) contain the address at which the contents of the accumulator are to be
+stored (3000 in this case). Remember that the two address bytes are stored in
+reverse order. Note that this instruction does not change the contents of the
+accumulator; it simply copies the data to the port.
+
+
+Lesson 5
+Practical Microprocessors                                                                           67
+     The STA instruction is followed by a NOP to reserve space for later use. The
+
+
+## Page 94
+
+
+
+     next instruction is INR A, which increments the value in the accumulator. When
+     the maximum count (11111111 binary, FF hex, or 255 decimal) is reached, the
+     value "wraps around" and the next count is zero. This is the same way a standard
+     binary counter IC, such as a 74163, behaves. A special flip-flop in the micro-
+     processor called the carry flag is set to indicate that the count has overflowed.
+     The carry flag is discussed in Lesson 12.
+
+     The last instruction is a jump. This instruction causes the program to jump back
+     to the STA instruction, address 0806.
+
+
+            Address    Contents     Label       Instruction         Comments
+             0804         3E                 MVI A,O           ;Set A to zero
+             0805         00
+             0806         32       LOOP: STA 3000              ;Output A to port
+             0807         00
+             0808         30
+             0809         00                 NOP               ;For later addition
+             080A         3C                 INR A             ;Increment A
+             0808         C3                 JMP LOOP          ;Loop back
+             080C         06
+             0800         08
+
+
+                             Table 5-1.   Counter Program Listing
+
+
+                                                                               Lesson 5
+68                                                            Practical Microprocessors
+
+
+## Page 95
+
+
+
+
+_ _ _ _ _ _ _ _ _ EXPERIMENT 5-1
+                                                                     Running the Counter Program
+
+
+  CONCEPT
+  In this experiment you will enter and step through the program just described. FETCH REG (fetch
+  register) is used to examine the registers used in the program. FETCH PC (fetch program counter)
+  makes it easier to return to the program after it has been stopped.
+
+  PROCEDURE
+  I. Entering the Program
+
+      A) Press F:;~~     80 G 0·
+      B) Press   00               R
+                             SiN°c :   •   This stores the opcode 3E (the MVI A instruction) in location 0804.
+
+                 Iol
+      C) Press L:.J STORE
+                     INCR
+                             •   This stores 00 in location 0805.
+
+      0) Continue entering the appropriate data (as shown in Table 5-1) until the entire program has
+          been stored.
+
+      E) Press (:~) . This allows you to check the previous location.
+
+      F) Repeat step E until you have verified that the entire program is correctly stored.
+
+  II. Stepping Through the Program Using Instruction Step
+
+      A) Press F:;~~     80 G 0                   (you do not have to do this if the display already shows 0804).
+         The MVI A instruction (opcode 3E) appears in the display.
+
+      B) Press   '~;;:   to execute the MVI A instruction (opcode 3E).
+
+     C) The opcode for the STA instruction (32) now appears in the display. Press '~;;: . What hap-
+         pened? The instruction sent all zeroes to the output port. The reason that the LEOs all came on
+         is that they indicate negative logic. They are on for a zero and off for a one.
+
+      0) Press   '~;;:   three times. This executes the NOP, INR A and JMP instructions.
+
+      E) The STA opcode (32) now appears in the display again. The value in the accumulator has been
+         incremented. The new value will be shown in the output port LEOs when this instruction is
+         executed again. To see this happen, press '~;;: .
+
+
+Lesson 5
+Practical Microprocessors                                                                                           69
+EXPERIMENT 5-1 _ _ _ _ _ _ _ _ __
+
+
+## Page 96
+
+
+
+Continued
+
+
+     F) Press '~;:: repeatedly to see the loop repeat. If you remember that off means a one and on
+        means a zero, you will see the output port LEOs count in binary.
+
+     G) Stop stepping when the NOP instruction (address 0809, opcode 00) appears in the display
+        again. Press [~). This allows you to examine the processor's registers. The display shows an
+
+        "A" and then a particular value. The data shown is the value that is in the accumulator (A-
+        register) after the last program step. The data (when converted to binary) corresponds to the
+        number shown in the output port LEOs. This is true because the data was just sent from the
+        accumulator to the output port, and the display shows the contents of the accumulator. (When
+        comparing the LEOs with the accumulator, do not forget that they indicate negative logic.)
+
+
+     H) Press S:NOCRR' • The display now shows the flag register (described in Lesson 12).
+
+
+      I) Press s:NoCR: repeatedly until the display shows PCH. This is the high-order half of the program
+        counter (08).
+
+
+     J) Press S:.,"c~' . This is the low-order half of the PC (09). The other registers you saw while stepping
+        up to the PC are described in Lesson 11.
+
+
+     K) To continue stepping through the program, press (F~TgH). This recalls the last value of the pro-
+
+        gram counter, which contains the address of the next instruction to be executed. The display
+        now shows this address (0809). The monitor program saves (in the memory) the value of the
+
+        program counter after each step,as described earlier in this lesson,and ther~TgH)key retrieves
+        it.
+
+
+     L) Press   '~;::   . Now you have resumed stepping through the program.
+
+
+     M) Step through the loop once more (using          '~;::   ) and stop at the same point (address 0809).
+
+        Press r~~~H). The value in the accumulator has incremented, as has the value shown in the out-
+        put port LEOs.
+
+
+     N) Press (F~T~H) and repeat step M to see the values increment again.
+
+
+                                                                                                        Lesson 5
+
+
+## Page 97
+
+
+
+
+_ _ _ _ _ _ _ _ _ _ EXPERIMENT 5-1
+                                                                                                    Continued
+
+
+   III. Stepping Through the Program Using Hardware Step
+
+      A) You can also step through the program and examine registers using                    (~)   instead of
+            INSTR
+             STEP   •
+                                    G;lr;l
+                        Press FETCH U
+                               ADRS          u
+                                       LJ G;I r:;I
+                                              L..:.J (HOWR)
+                                                        STEP   •
+                                                                   The display goes blank since you are in the
+          hardware step mode.1he address 0804 now appears on the binary address LEOs. The data
+          at that location, the opcode 3E, appears on the binary data LEOs. The opcode 3E specifies
+          that this is an MVI A instruction. Remember that whenever you are using the hardware step
+          mode, you must refer to the binary address and data LEOs.
+
+      B) Press      §) . This gets the second byte of the instruction, the data 00.
+      C) Press (~~~:) . The instruction is now executed.
+
+      0) The STA opcode (32) now appears in the data LEOs. Press (~). This gets the second byte of
+          the instruction, the lower half of the port address (00).
+
+       E) Press     (§). The upper half of the port address (30) now appears in the data LEOs.
+       F) Press     (§). The entire instruction has been read from the memory, and now an extra step is
+          needed to execute the instruction. The address LEOs show 3000, the port address, and the
+          data LEOs show 00, the data to be sent to the port.
+
+      G) Press (~~~:). The instruction is now executed, and the output port LEOs are all on.
+
+      H) The program is now at the NOP instruction (00) which is the point at which you examined the
+          accumulator in part II of this experiment. Press (RE~) to return to the monitor. The NOP instruc-
+          tion is executed, and the display shows the address of the next instruction (080A).
+
+       I) Press r~~~H) to view the contents of the accumulator.
+
+       J) To return to the program, press        hTz (§) .
+                                                   H
+                                                    )
+
+
+      K) Press      [§) repeatedly to go through the loop again, stopping at the same place (address 0809).
+       L) Repeat steps H, I, J, and K several times to see the accumulator increment. The value in the
+          accumulator corresponds to that shown in the output port LEOs.
+
+      M) Press (:::) to return the J..LLab to normal operation.
+
+
+Lesson 5
+Practical Microprocessors                                                                                        71
+EXPERIMENT 5-1 _ _ _ _ _ _ _ _ __
+
+
+## Page 98
+
+
+
+Continued
+
+
+     SUMMARY
+
+     In this experiment the program to make the output port LEOs count in binary was loaded into the
+     memory. Then you stepped through the program using both of the step modes. The FETCH REG key
+     allowed you to examine the contents of the accumulator. The FETCH PC key was used to get back to
+     the address at which stepping was interrupted. You could then continue stepping through the program.
+     When using hardware step, you had to press RESET to get back to the monitor before the FETCH REG
+     (or any other) key could be used.
+
+     Note that when using the hardware step mode, the STA instruction required an extra step to execute
+     the instruction. One hardware step is required for each reference to memory or 1/0 ports. Thus, the
+     STA instruction required three steps to read the three bytes of the instruction and a fourth step to write
+     the data to the output port.
+
+
+                                                                                                      Lesson 5
+
+
+## Page 99
+
+
+> [!note]
+> This page contains structured educational or figure-referenced content. Use the page image when exact labels, code, or tabular alignment matters.
+
+
+
+Most microprocessor applications consist of a number of tasks. For example, a        PROGRAM
+microprocessor-based voltmeter must read the input voltage and send data to the      ORGANIZATION
+display. The processor needs to manipulate the data for ohms conversion and
+automatic zeroing. A sophisticated meter may have a keyboard for the user to
+enter specific requests, which the processor must read and interpret. For auto-
+ranging, the processor may have to set an attenuator. Each of these tasks is
+basically independent, and each can be performed by a relatively simple pro-
+gram. One main program can then coordinate all of the specialized programs
+without having to deal with the details of each task.
+
+As an analogy, consider the structure of a large company. The president cannot
+do all the work, but he can make all of the major decisions. He does not need to
+worry about what is being served for lunch or what kind of mop the janitor
+should use, because other people can make these decisions. There may be
+several vice-presidents, each of whom has responsibility for a certain aspect of
+the company's operation. These people may have managers working for them,
+who in turn supervise the other employees.
+
+Everyone in the company has a task to do, and the lower you are on the ladder,
+the more you are involved with the details. The president has the time to make
+the important decisions because he can calion other people to implement his
+decisions. They in turn call on others, who can call on additional people if
+required. Then each person reports to his or her supervisor, and eventually the
+president receives a response.
+
+This is very similar to the operation of a microprocessor system. Because the
+tasks can be so varied and complex, there are usually many programs rather
+than just one. One program (often called the executive) acts as the president. The
+executive has other programs working for it, and they may in turn have other
+programs working for them.
+
+Programs that work for other programs are called subroutines (or simply
+routines). Subroutines may have other subroutines working for them, like the
+multiple levels of a company.
+
+
+Figure 5-3 shows a simple program that uses subroutines to flash the output port     AN EXAMPLE
+LEOs on and off repeatedly. One subroutine is used to turn them on, and another
+is used to tu rn them off.
+
+                                                            Subroutines
+
+
+          Main Program                                     ON: MVI A,O
+                                                               STA 3000
+                                                                RET
+      FLASH: CALL ON
+
+              CALL OFF
+
+              JMP FLASH
+                                                          OFF: MVI A, FF
+                                                               STA 3000
+                                                                RET
+
+
+          Figure 5-3. Using Subroutines to Flash the Output Port LEOs
+
+
+Lesson 5
+Practical Microprocessors                                                                           73
+     The main program contains only three instructions: one to call the routine ON,
+
+
+## Page 100
+
+
+
+     one to call the routine OFF, and one to jump back to the beginning. The main
+     program determines the overall function of the program, but it does not need to
+     know that the port LEOs indicate negative logic, or even at which address the port
+     is located. These details are handled by the subroutines.
+
+
+     The CALL instruction directs the microprocessor to jump to a subroutine. The
+     label ON identifies the subroutine and is replaced with an actual address when
+     the assembly language is converted to machine code. This program turns the
+     LEOs on and then off and then repeats.
+
+
+     The first two instructions in each of the subroutines should be familiar to you.
+     The last instruction, RET (Return), identifies the end of the subroutine and causes
+     the microprocessor to jump back to the main program.
+
+     Table 5-2 shows the complete program with the machine code added. The CALL
+     instruction consists of the opcode CD, followed by the subroutine address. The
+     subroutine address is stored in the same way as a jump address. The RET
+     instruction consists only of the opcode e9. No address is included in the
+     instruction.
+
+       MAIN PROGRAM
+      Address Contents        Labels       Instruction              Comments
+        0800       CD         FLASH:      CALL ON         ;Turn on LEOs
+        0801       09
+        0802       08
+        0803       CD                     CALL OFF        ;Turn off LEOs
+        0804       OF
+        0805       08
+        0806       C3                     JMP FLASH       ;Repeat
+        0807       00
+        0808       08
+
+       SUBROUTINE TO TURN LEOS ON
+
+        0809        3E        ON:         MVI A,OO        ;Set accumulator to zero
+        080A        00
+        0808        32                    STA 3000        ;Write accumulator con-
+        080C        00                                     tents to output port
+        0800        30
+        080E        C9                    RET             ;Return
+
+       SUBROUTINE TO TURN LEOS OFF
+
+        080F       3E         OFF:        MVI A,FF        ;8et accumulator to all
+        0810       FF                                      ones
+        0811       32                     STA 3000        ;Write accumulator con-
+        0812       00                                      tents to output port
+        0813       30
+        0814       C9                     RET             ;Return
+
+
+                         Table 5-2.   LED Flasher Using Subroutines
+
+
+                                                                             Lesson 5
+74
+
+
+## Page 101
+
+
+
+
+ You may be wondering how the microprocessor knows where to jump back to
+ when it encounters the return instruction at the end of a subroutine. When a
+ CALL instruction is executed, the return address (the address of the next instruc-
+ tionafter the call) is stored in a special place in memory called the stack. When
+ a return instruction is encountered at the end of the subroutine, the microproces-
+ sor gets the return address from the stack. The program flow then returns to
+ the main program. The details of how the stack works and why it is used are
+ described in Lesson 12. Fortunately, the operation of the stack is almost entirely
+ automatic.
+
+
+Lesson 5
+Practical Microprocessors                                                             75
+EXPERIMENT 5-2 _ _ _ _ _ _ _ _ __
+
+
+## Page 102
+
+
+
+Subroutines
+
+
+ CONCEPT
+ The LED flasher program just described is entered into the j.LLab and executed. You will see the pro-
+ gram flow jump from the main program to the subroutines and then back to the main program.
+
+ PROCEDURE
+     A) Key in the program in Table 5-2.
+     B) Verify that the program is correctly stored.
+
+     C) Press F:;~~      0000.                The display shows the first CALL instruction (opcode CD).
+
+     D) Press    '~i;:   . The CALL instruction is executed and the address jumps to OB09 (the start of
+        subroutine ON).
+
+     E) Press    '~i;:    '~i;:. The output port LEOs go on, and the RET instruction (address OBOE, opcode
+
+        C9) appears in the display.
+
+     F) Press    '~i;:   . The return is performed, and the address jumps back to the main program. The
+        second CALL instruction (address OB03, opcode CD) appears in the display.
+
+     G) Press    '~i;: . The CALL instruction is executed and the display shows address OBOF (the start of
+
+        subroutine OFF).
+
+     H) Press '~i::       '~i::. The LEOs go off and the RET instruction (address OB14, opcode C9) is shown
+
+        in the display.
+
+      I) Press   '~i;:   . The return is performed and the display shows the last instruction of the main
+        program (address OB06, opcode C3).
+
+     J) Press '~i:: . The program jumps back to the beginning (address OBOO).
+
+
+     K) Press    '~i;:    repeated Iy to see the program repeat.
+
+ SUMMARY
+ The three parts of the LED flasher program were entered into the j.LLab: the main program, the sub-
+ routine to turn the LEOs on, and the subroutine to turn the LEOs off. By stepping through the main
+ program, you saw the CALL instruction cause the jump to the subroutine and the RET instruction
+ cause the program flow to return to the main program. Even though the return instruction does not
+ specify an address, the microprocessor knows that it must return to the instruction following the
+ previous CALL.
+
+
+                                                                                                      Lesson 5
+
+
+## Page 103
+
+
+
+
+ Sometimes the microprocessor system must react to events that are very in-            INTERRUPTS
+ frequent and unpredictable. Returning for a moment to the company analogy, a
+ company may expect certain events to happen, but the exact time that they will
+ occur may be unknown. For example, everybody may be interrupted by a fire
+ alarm and a planned course of action must be taken. After the fire is put out and
+ the damage repaired, the people return to work and the old routine continues.
+
+
+ The same type of event may occur in a microprocessor system. For example,
+ consider a microprocessor-based voltmeter with a "calibrate" button on the front
+ panel. When this key is pressed, the microprocessor stops whatever it is doing
+ and jumps to a calibration subroutine. After the calibration is performed, control
+ returns to the program that was interrupted.
+
+
+ These types of actions are called interrupts. The microprocessor chip has an
+ input that causes an interrupt. A high signal on this pin causes the micro-
+ processor to stop whatever it is doing and jump to a special interrupt subroutine.
+ This subroutine performs the task required by the interrupting device. A return
+ instruction at the end of the interrupt routine causes the program flow to return
+ to the interrupted program. There are five interrupt inputs on the 8085 to allow
+ for many different interrupts. These are described in Lesson 10.
+
+
+The INTRPT key on the J..LLab is connected to one of these interrupt inputs.
+Pressing this key causes the microprocessor to jump from whatever it is doing to
+a predefined location in RAM, where the interrupt subroutine (often called the
+interrupt service routine) is stored.
+
+
+Because you sometimes want the microprocessor to ignore interrupts, they may
+be disabled by the program. For example, the interrupt generated by the INTRPT
+key is normally disabled by the system monitor program, since you would not
+want it to cause a jump to RAM if you had not stored a program there that tells it
+what to do.
+
+
+To illustrate this process, the counter program that appeared earlier in this lesson   USING THE
+can be interrupted by the INTRPT key. To do so, instructions must be added to          /-lLAB'S INTERRUPT
+the beginning of the program to enable this interrupt input. Table 5-3 shows the
+listing of the interrupt enable routine.
+                                                                                       KEY
+
+
+     Address       Contents         Instructions              Comments
+      0800            3E           MVI A,OD            ;Put value for interrupt
+      0801            OD                                 mask in accumulator
+      0802            30           SIM                 ;Move accumulator to
+                                                         interrupt mask
+      0803            FB           EI                  ;Enable interrupts
+
+
+                      Table 5-3.   Interrupt Enable Routine
+
+
+Lesson 5
+Practical Microprocessors                                                                            77
+     The interrupt mask is a special register in the microprocessor that determines
+
+
+## Page 104
+
+
+> [!note]
+> This page contains structured educational or figure-referenced content. Use the page image when exact labels, code, or tabular alignment matters.
+
+
+     which interrupts should be enabled. (The interrupt mask is described in Appen-
+     dix B under the 81M instruction.) For now, you should realize that when the inter-
+     rupt mask register is set to the hex value 00, it causes the INTRPT key to be
+     enabled. The program first puts this value into the accumulator, using the familiar
+     MVI A instruction. Then the 81M (8et Interrupt Mask) instruction moves the con-
+     tents of the accumulator into the interrupt mask register. The contents of the
+     interrupt mask register tell the processor which interrupts should be enabled.
+     Then, the next instruction, EI (Enable Interrupts), causes them to be enabled.
+
+     Once the interrupts have been enabled, an interrupt service routine is required.
+     The monitor contains a subroutine that causes the speaker to generate a beep.
+     Table 5-4 shows the listing of an interrupt service routine that calls the beep
+     subroutine (located at address 0010).
+
+
+          Address       Contents            Instructions               Comments
+           OAFC               CO           CALL BEEP          ;Jump to beep routine
+           OAFO               10
+           OAFE               00
+           OAFF               FB           EI                 ;Re-enable interrupts
+           OBOO               C9           RET                ;Return to counter
+                                                                program
+
+
+                              Table 5-4.   Interrupt Service Routine
+
+
+     The beep subroutine turns the speaker on and off at approximately 1 kHz,
+     causing a beep to be generated. The beep routine ends with a return instruction,
+     so that after a short beep, the program returns to the interrupt service routine.
+     Figure 5-4 shows the sequence of events when an interrupt occurs. Figure 5-5
+     shows the detailed program flow.
+
+
+                    Counter                                             Beep
+                    Program                                            Program
+                                                              RET
+
+
+      Figure 5-4 Simplified Sequence of Events When Counter Program is Interrupted
+
+
+     The EI instruction in this program is necessary because the microprocessor auto-
+     matically disables interrupts when one is acknowledged. If the EI instruction were
+     excluded, a beep would occur the very first time you pressed INTRPT, but after
+     that the interrupt would be disabled.
+
+     The interrupt service routine ends with a return instruction. Therefore, after a
+     beep is generated, control returns to the program that was interrupted.
+
+
+                                                                                 Lesson 5
+78                                                              Practical Microprocessors
+
+
+## Page 105
+
+
+> [!note]
+> This page contains structured educational or figure-referenced content. Use the page image when exact labels, code, or tabular alignment matters.
+
+
+
+                       0010        Beep Program
+                                                          ...
+               r       0032         JMP OAFC
+                                                          ....
+                                                          ~
+
+
+                                        ROM
+
+                                                                    1
+                                                            Interrupt
+
+
+                                                                            3
+           4       2
+
+
+                                                                    ./
+                       0800      Counter Program          ...       '\
+
+
+                                                                        5
+                                        RAM
+
+
+                   ~OAFC      Interrupt Service Routine
+
+
+    Figure 5-5. Detailed Program Flow When Counter Program is Interrupted
+
+
+The address OAFC (at which the interrupt service routine starts) is not arbitrary
+as are the locations of other user programs. The interrupt key forces the micro-
+processor to jump to address 0034. This address is specified by the design of the
+8085 microprocessor and cannot be changed. This location (which is a ROM
+location in the J.LLab) contains the instruction JMP OAFC. The address OAFC is
+the RAM location at which the interrupt service routine is stored. You can verify
+that address 0034 contains this jump instruction by examining the contents of
+locations 0034, 0035, and 0036.
+
+
+Lesson 5
+Practical Microprocessors                                                           79
+EXPERIMENT 5-3 _ _ _ _ _ _ _ _ __
+
+
+## Page 106
+
+
+
+Interrupts
+
+
+     CONCEPT
+
+     The counter program is run with the instructions added to enable the INTRPT key. An interrupt service
+     routine is entered which calls the monitor's BEEP program. The counter program may then be inter-
+     rupted to generate a beep by pressing the INTRPT key.
+
+     PROCEDURE
+
+         A) Key in the program in Table 5-1.
+
+         B) Key in the four instructions in Table 5-3 to enable the interrupts.
+
+         C) Key in the interrupt service routine in Table 5-4.
+
+         D) Verify that the routines are correctly stored.
+
+         E) Press F:~~~   0000 B.                This starts the counter program running. The output port
+            is actually counting continuously, but it is going so fast that the output port LEDs all appear
+            to be on.
+
+         F) Press tNTR~T) . The fLLab leaves the counter program and executes the Beep routine as long as
+            the f::T) key remains pressed.     The output port LEDs stay at their most recent state, since
+            the counter program is not running (the interrupt service routine is). When   F:'T) is released, the
+            counter program continues.
+
+        G) Press   t=) again. Since the counter program is stopped at a random point, the port LEDs
+            should contain a different value. The value shown in the LEDs is whatever value the output port
+            contained at the moment    8     was pressed.
+
+        H) Repeat step G a few times to see that it really is random.
+
+         I) Press (~E~) to stop the counter program.
+
+
+ SUMMARY
+
+ This experiment demonstrated the use of interrupts. When INTRPT was pressed, an interrupt was
+ generated and the microprocessor jumped from the counter program to the interrupt service routine,
+ which in turn called the beep routine in the ROM. As long as INTRPT was pressed, the beep routine
+ was repeatedly executed. When the key was released, the microprocessor returned to the counter
+ program.
+
+
+                                                                                                     Lesson 5
+80
+
+
+## Page 107
+
+
+
+
+_ _ _ _ _ _ _ _ _ _ _ _ REVIEW
+                                                                                      Lesson 5
+
+
+The microprocessor chip contains several registers. Some, such as the accumu-
+lator, are used for data storage. Others, such as the program counter (PC),
+provide specific control functions. The PC keeps track of which instruction is
+being executed.
+
+The FETCH REG key on the J.LLab enables you to view the contents of the regis-
+ters. Later in the course you will see how it can be used to change the contents
+of the registers.
+
+The FETCH PC key restores the address in the display to the previous value of
+the program counter. It is useful for returning to a program after it has been
+stopped.
+
+Subroutines are programs that are used by other programs. They allow the
+system to be divided into small, modular units. A CALL instruction is used to
+jump to a subroutine, and a RET instruction ends the subroutine. When a RET
+instruction is executed, the program flow returns to the program that called the
+subroutine. This allows the same subroutine to be used by different programs or
+at different places in one program.
+
+Interrupts are used to service unpredictable events that require a quick response.
+When the interrupts are enabled, they allow hardware external to the micro-
+processor to request immediate action. When the microprocessor receives an
+interrupt signal, it stops whatever program it is executing and jumps to an
+interrupt service routine. When that routine is finished, it returns to the program
+that was interrupted.
+
+
+Lesson 5
+Practical Microprocessors                                                                    81
+QUIZ _ _ _ _ _ _ _ _ _ _ _ __
+
+
+## Page 108
+
+
+
+Lesson 5
+
+
+           1. The accumulator's main purpose is:
+              a. temporary data storage.
+              b. keeping track of the next instruction to be executed.
+              c. selecting which interrupts should be enabled.
+              d. storing instructions.
+
+
+           2. The program counter is used for:
+              a. data storage.
+              b. instruction storage.
+              c. storing the address of the instruction waiting tv be executed.
+              d. counting programs.
+
+
+           3. The FETCH REG key allows you to see the contents of the - - - - - -
+
+
+           4. To jump to a subroutine, you use a _ _ _ _ instruction.
+
+
+           5. To end a subroutine, you use a _ _ _ _ instruction.
+
+
+           6. Interrupts are used primarily for:
+             a. breaking a program into modular segments.
+             b. responding quickly to unpredictable events.
+             c. speeding up program execution.
+             d. halting the system.
+
+
+           7. When an interrupt occurs, the microprocessor will:
+              a. jump to the interrupt service routine.
+              b. halt until another request is made.
+              c. continue executing the main program.
+              d. complete the current program and then stop.
+
+
+                                                                                Lesson 5
+82
+
+
+## Page 109
+
+
+> [!note]
+> This page contains structured educational or figure-referenced content. Use the page image when exact labels, code, or tabular alignment matters.
+
+
+
+-------LESSON 6
+                                                    Inside the Microprocessor
+
+
+For most of this course, the microprocessor is treated as a black box: a device   INTRODUCTION
+with known characteristics whose internal structure is of no concern . However,
+some knowledge of the internal operation of the microprocessor is helpful in
+obtaining a clear understanding of the system's operation . This lesson takes a
+brief look inside the microprocessor to see how programs are executed .
+
+
+Figure 6-1 shows a simplified block diagram of the 8085 microprocessor. The       INSIDE THE 808SA
+accumulator connects to the data bus and the Arithmetic and Logic Unit (ALU) .
+The ALU performs all data manipulation, such as incrementing a number or
+adding two numbers.
+
+
+                   Figure 6-1 . Simplified 8085 Block Diagram
+
+
+Lesson 6
+Practical Microprocessors                                                                        83
+                  The temporary register feeds the ALU 's other input. This register is invisible to
+
+
+## Page 110
+
+
+> [!note]
+> This page contains structured educational or figure-referenced content. Use the page image when exact labels, code, or tabular alignment matters.
+
+
+                  the programmer. It is controlled automatically by the microprocessor's control
+                  circuitry.
+
+                  The flags are a collection of flip-flops that indicate certain characteristics of the
+                  result of the most recent operation performed by the ALU. For example, the zero
+                  flag is set if the result of an operation is zero. The zero flag is tested by the
+                  JZ instruction.
+
+
+                  The instruction register, instruction decoder, program counter (PC) , and control
+                  and timing logic are used for fetching instructions from memory and directing
+                  their execution. For example, suppose that an instruction is about to be read
+                  from location 0200. First the opcode must be read from memory; this is the
+                  instruction fetch, as shown in Figure 6-2. The PC, which contains the address
+                  0200, is output to the address bus and causes memory location 0200 to be
+                  selected. The ROM will then place the contents of location 0200 (presumably an
+                  opcode) on the data bus, and the microprocessor will store the opcode in the
+                  Instruction Register.
+
+
+                          Figure 6-2. Reading the Opcode from Memory for a MVI A Instruction
+
+
+THE INSTRUCTION   The instruction register feeds the instruction decoder, which recognizes the
+          CYCLE   opcode and provides control Signals to the timing and control circuitry. The
+                  timing and control circuits are like a processor within the processor. A ROM
+                  within the microprocessor IC contains the microcode (or microprogram), which
+                  tells the processor exactly what to do to execute each machine language instruc-
+                  tion . The microcode, which is part of the design of the microprocessor and
+                  generally cannot be changed, defines the microprocessor's machine language.
+                  Writing microcode (which is usually done by the microprocessor manufacturer)
+                  is called microprogramming and should not be confused with writing programs
+                  to be executed by the microprocessor.
+
+
+                                                                                           Lesson 6
+ 84                                                                       Practical Microprocessors
+
+
+## Page 111
+
+
+> [!note]
+> This page contains structured educational or figure-referenced content. Use the page image when exact labels, code, or tabular alignment matters.
+
+
+
+For example, for a MVI A instruction , the control and timing logic first reads the
+opcode 3E, and then increments the address in the PC. The instruction decoder
+determines that this opcode is followed by a byte of data, so the contents of
+the memory location pOinted to by the PC are read into the accumulator
+(see Figure 6-3) .
+
+
+     8085A Microprocessor
+     1 -- -- - - - - - - ---- -- - ---------------1
+
+
+                                                                             D.'00.
+
+
+     L _ _______________ ________ ________                            ~
+
+
+                  Figure 6-3. Reading the Data for the MVI A Instructio n
+
+
+The microprogram will now indicate to the control logic that the instruction is
+completed. The PC is incremented , and the next byte of the program (the next
+opcode) is read into the instruction register. The execution of this instruction
+then begins.
+
+This repetitive sequence performed by the microprocessor is called the fetch-
+execute cycle.
+
+
+In the execute phase of the instruction the real work is done. There are four         INSTRUCTION
+basic types of operations that can be performed by the 8085 :                         EXECUTION
+    1. Read data from memory or an input port.
+    2. Write data to memory or an output port.
+    3. Do an operation internal to the microprocessor.
+    4. Transfer control to another memory location.
+
+The first two types are self-explanatory. The third, internal operations, involves
+manipulating the registers (such as the accumulator) without accessing the
+memory or I/ O ports. For example, the contents of one register may be moved to
+another register, or the contents of a register may be incremented or decre-
+mented. The fourth group includes instructions such as JMP, CALL, and RET.
+
+
+Lesson 6
+Practical Microprocessors                                                                           85
+                    Photomicrograph of 8085 Microprocessor. The chip is approximately 0.2 inches
+
+
+## Page 112
+
+
+
+                    square, but contains over 20,000 transistors.
+
+
+   MACHINE CYCLES   The fetching and execution of instructions is divided into machine cycles. The
+                    first machine cycle of every instruction is the opcode fetch . An additional
+                    machine cycle is then required for each memory or I/ O reference to provide time
+                    for the data transfer. A machine cycle consists of setting the address on the
+                    address bus and then transferring information over the data bus. Most operations
+                    internal to the microprocessor (such as incrementing the accumulator) are
+                    completed in the same machine cycle as the opcode fetch. A simple instruction
+                    such as INR A thus requires only one machine cycle, while STA requires four
+                    cycles : three to read the instruction and one to write the accumulator to memory.
+
+                    The J..LLab's hardware step key causes one machine cycle to occur each time it is
+                    pressed . An extra step (after reading all bytes of an instruction) is required for
+                    executing instructions that access the memory or I/O ports. This step is needed
+                    by the microprocessor to set up the address bus and transfer data over the data
+                    bus. Internal operations, which are executed in the same step as the instruction
+                    fetch , do not require this extra step for the execute phase.
+
+
+PROGRAM EXECUTION   In general , the microprocessor keeps reading sequentially through the memory,
+                    one location after another, performing the indicated operations. Exceptions to
+                    this occur when a jump, call , or return instruction is executed. Another exception
+                    is the occurrence of an interrupt. Any of these events will cause the micro-
+                    processor to interrupt the sequential flow and begin executing instructions from
+                    another address.
+
+
+                                                                                            Lesson 6
+   86                                                                      Practical Microprocessors
+
+
+## Page 113
+
+
+
+
+Note that opcodes and data are intermixed in memory. One address might
+contain an opcode, the next two a jump address, the next one an opcode, and the
+next one a piece of data. It is the programmer's responsibility to be sure that the
+memory contains a valid sequence of opcodes and data. The microprocessor can
+distinguish between them only by their context. The opcodes, jump addresses,
+and data are all simply bit patterns stored in the memory. All such information
+is read in exactly the same way, and it all travels over the same data bus. The
+microprocessor must always keep track of whether it is reading an opcode or
+data and treat each appropriately. The processor assumes that the first location it
+reads contains an opcode and goes from there. If the opcode requires a byte of
+data, the microprocessor "knows" (from the instruction decoder) that the
+next byte is data and treats it accordingly. It then assumes that the byte following
+the data is the next opcode. If data is misinterpreted as an opcode, the system
+usually goes completely out of control (crashes).
+
+
+Lesson 6
+Practical Microprocessors                                                              87
+EXPERIMENT 6-1 _ _ _ _ _ _ _ _ __
+
+
+## Page 114
+
+
+
+Bus Operation
+
+
+     CONCEPT
+     The program used in Experiment 4-3, which reads data from the input port and writes it to the output
+     port, is entered and then stepped through using the hardware step mode. This enables you to follow
+     the fetch-execute cycle for each instruction and see the operation of the buses using the individual
+     LEOs on the address bus, data bus, and status lines. At each step, you will enter the information from
+     the LEOs into a table. This table will then show the step-by-step execution of the program.
+
+
+     PROCEDURE
+         A) Key in the following program:
+
+                       Address       Contents        Label        Instruction         Comments
+                          0900          3A         START:       LOA 2OQO            ;Read input port
+                          0901          00
+                          0902          20
+                          0903          32                      STA 3000            ;Send data to
+                          0904          00                                           output port
+                          0905          30
+                          0906          C3                      JMP START           ;Loop back
+                          0907          00
+                          0908          09
+
+
+         B) Verify that the program is correctly stored.
+
+         C) Press F:~~~   00 00 (~).                This puts the tLLab into the hardware step mode at the
+            beginning of the program.
+
+         D) The address LEOs now indicate the first address of the program (0900), and the data LEOs
+            show the first opcode (3A). The status LEOs indicate that a READ from the RAM is occurring.
+            Note that the information from the three sets of LEOs appears in the first line of Table 6-1, and
+            the following line contains the same information converted to hexadecimal.
+
+         E) Press   §). The second byte of the LOA instruction (the low-order half of the port address, (0)
+            is read from the RAM. Enter the information from the three sets of LEOs into the third line of
+            Table 6-1. Convert the address and data to hex, and enter the hex numbers on the following line.
+
+         F) Press (~~~:). The last byte of the LOA instruction (the high order half of the port address ,20) is
+            now read. Enter the information in Table 6-1.
+
+
+                                                                                                       Lesson 6
+
+
+## Page 115
+
+
+
+
+_ _ _ _ _ _ _ _ _ _ EXPERIMENT 6-1
+                                                                                             Continued
+
+
+                                                                                        t:   0
+                                                                                        o a..
+                                     Address                  Data      ~~~~ a.. _
+                                                                        G> ... 0 «
+                      1514131211 10 9 8 7 6 5 4 3 2 1 0 7 6 5 4 3 2 1 0 a:3ta:a: _ c 0
+                                                                                     '"
+
+             Binary   0 0 0 0 1 0 0   1 0 0 0 0 0 0 0 0 0 0 1 1 1 0 1 0 1 0 0 1 0 0
+
+             He.         0        8        0          0         3      A       Re.d from RAM
+
+             Binary
+
+             He.
+
+             Binary
+
+             He.
+
+             Binary
+
+             He.
+
+             Binary
+
+             He.
+
+             Binary
+
+             He.
+
+             Binary
+
+             He.
+
+             Binary
+
+             He.
+
+             Binary
+
+             He.
+
+             Binary
+
+             He.
+
+             Binary
+
+             He.
+
+
+                        Table 6-1. Program Sequence Table for Experiment 6-1
+
+
+Lesson 6
+Practical Microprocessors                                                                            89
+EXPERIMENT 6-1 _ _ _ _ _ _ _ _ __
+
+
+## Page 116
+
+
+
+Continued
+
+
+        G) Press (~~~~) . This is the execute phase of the LOA instruction. The address LEOs indicate the
+            port address 2000. Set the input port switches to any position. Since the port is being read, the
+            data from the switches appears on the data bus LEOs. Note that the status LEOs indicate that
+            a REAO from the INPUT port is occurring. Make the entry into Table 6-1.
+
+        H) press(~~) . Enter the address, data, and status into Table 6-1.
+
+          I) Repeat step H until the program jumps back to the beginning (address 0900). Follow the
+             operation of the program in the binary LEOs, noting the execute phase of the STA instruction.
+
+         J) If you want to verify the information in the table, repeat the procedure. Study the informa-
+            tion in Table 6-1 to identify the fetch-execute sequence for each instruction. Which instruc-
+            tion does not require an extra cycle for execution?
+
+        K) pressG F:;;~      8088.
+         L) Now press '~i;: repeatedly to step through the program. Note that all parts of each instruction
+            are read from memory and executed in one step. The binary address, data, and status LEOs are
+            not meaningful in this mode. Compare the sequence of addresses shown in the display with
+            those in Table 6-1.
+
+
+     SUMMARY
+
+     By following the address, data, and status LEOs while using the hardware step mode, you can see the
+     detailed execution of the program. You should be able to correlate the data you entered into Table 6-1
+     with the program listing in step A. Each instruction requires a machine cycle for each byte of the
+     instruction. The STA and LOA instructions also have a separate execute cycle. Other instructions, such
+     as the JMp, are executed in the same cycle as the reading of the instruction. The hardware step mode
+     allows you to see each of these cycles. The instruction step mode combines all the machine cycles of
+     an instruction into one step. Also, note that the data bus is used for data transfer in both directions, and
+     the address bus is used for both memory addresses and port addresses.
+
+
+                                                                                                         Lesson 6
+
+
+## Page 117
+
+
+
+
+_______________ RE'JIEW
+                                                                                       Lesson 6
+
+
+Programs are stored in memory as a sequence of binary numbers. The micro-
+processor executes the program by reading the first memory location and
+interpreting it as an opcode. If the opcode implies that the next one or two bytes
+contain data or an address, then the microprocessor reads the information from
+those locations. After all the bytes of the instruction are read, the microprocessor
+executes the instruction. The byte in the next memory location is then read and
+interpreted as an opcode, and the process repeats. This is the instruction cycle,
+also called the fetch-execute cycle. The ,uLab's instruction step mode steps an
+entire instruction cycle at a time and is used for following the overall flow of the
+program. The hardware step mode is used for observing the operation of each
+instruction in detail and shows each machine cycle.
+
+The operations that can be performed by the 8085 microprocessor consist of
+transferring data between the microprocessor's registers and the memory or
+I/O ports, or modifying the contents of the registers in the processor. Thus, data
+is generally brought into the microprocessor from memory or I/O, manipulated
+within the microprocessor, and then sent back to memory or 110.
+
+
+Lesson 6
+Practical Microprocessors                                                                    91
+QUIZ _ _ _ _ _ _ _ _ _ _ _ _ __
+
+
+## Page 118
+
+
+
+Lesson 6
+
+
+           1. Reading an opcode from memory is called the instruction _______
+
+           2. The microprocessor knows which bytes to interpret as opcodes because:
+              a. every byte is an opcode.
+              b. every third byte is an opcode.
+              c. each opcode implies the number of information bytes that follow it.
+              d. the programmer must specify which bytes are opcodes.
+
+           3. To see the detailed operation of each instruction, you would use the _ _ __
+              step mode.
+
+           4. How many "hardware steps" (machine cycles) are required to execute an
+              instruction?
+             a. The number of bytes in the instruction.
+             b. The number of bytes in the instruction plus three.
+             c. The number of bytes in the instruction plus the number of memory or I/O
+                references required to execute the instruction.
+             d. Three steps are always required.
+
+           5. The purpose of the ALU is to:
+             a. interpret the opcodes.
+             b. perform arithmetic and logical operations.
+             c. control the address bus.
+             d. calculate the number of machine cycles required.
+
+
+                                                                               Lesson 6
+
+
+## Page 119
+
+
+
+
+                                                                           III
+_ _ _ _ MiCROPROCESSOR
+       SYSTEM HARDWARE
+
+     This section discusses microprocessor hardware in some detail. The first lesson
+     introduces basic microprocessor circuitry and is recommended reading for all
+     students. Subsequent lessons elaborate on the hardware concepts of address
+     decoding, memories, peripherals, system control, and electrical considerations.
+     Although the MLab design is used as the center of discussion, alternative designs
+     are also described.
+
+
+                                                                                    93
+    THIS
+
+
+## Page 120
+
+
+
+    PAGE
+    LEFT
+   BLANK
+
+    By
+
+
+
+
+## Page 121
+
+
+
+

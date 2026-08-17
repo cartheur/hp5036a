@@ -528,7 +528,9 @@ if [[ "$SKIP_IMAGES" == "1" ]]; then
 else
   render_page_images "$SRC" "$FIGURES_STAGING_DIR" 135
   scrub_page_images "$FIGURES_STAGING_DIR" "$PAGE_CLEANUP_PLAN"
-  compact_page_sequence "$FIGURES_STAGING_DIR"
+  if [[ -z "$PAGE_START" || -z "$PAGE_END" ]]; then
+    compact_page_sequence "$FIGURES_STAGING_DIR"
+  fi
   mkdir -p "$(dirname "$FIGURES_DIR")"
   if [[ -d "$FIGURES_DIR" ]]; then
     mv "$FIGURES_DIR" "$TMP_DIR/practical-figures.previous"

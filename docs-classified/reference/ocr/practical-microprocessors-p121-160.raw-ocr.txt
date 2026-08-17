@@ -1,0 +1,2386 @@
+## Page 121
+
+                                                Scans by Artekmedia => 2012
+
+
+
+
+_ _ _ _ _ _ _ LESSON 7
+                                                        Basic Hardware Concepts
+
+
+
+
+This lesson describes basic microprocessor system hardware. Bus structures and          INTRODUCTION
+address decoding are discussed . The emphasis is on understanding the funda-
+mental parts of a typical system , rather than considering a variety of design possi-
+bilities. Subsequent lessons describe actual microprocessor system circuitry in
+greater detai I.
+
+
+Microprocessor systems are designed around buses, which are not usually found           THE BUS
+in traditional random logic designs. In a microprocessor system many devices            CONCEPT
+must exchange data with the processor. Figure 7-1 shows how this can be done
+using traditional design techniques. The processor must have a set of data
+outputs for each device and a multiplexer to select a particular device for data
+input. This method very quickly gets unwieldly as more and more devices are
+added . The data paths commonly carry eight bits of data, so each path requires
+
+
+
+
+     Data
+      Out
+
+
+             Processor             Memory            Memory               110
+                                     A                  B
+
+
+
+
+             Multiplexer
+
+
+
+
+            Figure 7-1 .   Data Exchange Using Traditional Design Techniques
+
+
+
+Lesson 7
+Practical Microprocessors                                                                              95
+                  eight lines. Therefore , for the simple three-device system shown, 48 lines are
+
+## Page 122
+
+                  required : 24 for data input and 24 for data output. A more complicated system
+                  might have dozens of memory devices and I/ O ports and require hundreds of
+                  interconnecting lines.
+
+                  A solution to this interconnection problem is the use of a bus, as shown in Figure
+                  7-2. Note how much simpler the interconnections are. A single set of eight lines is
+                  used to interconnect all the devices, and the same set of lines is used for data
+                  traveling into or out of the processor. This structure can be expanded indefinitely
+                  with little increase in interconnection complexity. A consequence of this tech-
+                  nique is that, since all devices share the same data lines, only one may supply
+                  data at any given time. The address and control lines (driven by the micro-
+                  processor) provide the necessary control to select a particular device.
+
+                                                         Memory               Memory                    110
+                          Microprocessor
+                                                               A                B                      Ports
+
+
+
+
+                  Figure 7-2.     Data Exchange Using a Bus to Reduce the Number of Interconnecting Lines
+
+     THE THREE-   The three-state driver makes the shared data bus possible . Forthe sake of sim-
+      STATE BUS   plicity, a single-line bus is discussed first. However, the concept is exactly the
+                  same regardless of the number of lines in the bus. (A typical data bus has eight
+                  lines.)
+                  The three-state bus is like a telephone party line. The bus can have many talkers
+                  and many listeners connected to it. Figure 7-3 shows a digital circuit bus with four
+                  talkers (three-state drivers) and two listeners (ordinary gates) . The control logic
+
+
+
+
+                                                     Control
+                                                      Logic
+
+
+
+
+                                Data In 0                                                     Data Strobe A
+
+                                                                                              Data Out A
+
+                                Data In 1
+
+
+
+
+                                Data In 2                                                     Data Strobe B
+
+                                                                                              Data Out B
+
+                                Data In 3
+
+                                 Talkers                           Bus Line                Listeners
+
+
+
+                      Figure 7-3.       Three-State Single-Line Bus with Four Talkers and Two Listeners
+
+
+
+                                                                                                        Lesson 7
+96                                          Scans by ArtekMedia => 2012                Practical Microprocessors
+                                                          Scans by Artekmedia => 2012
+
+## Page 123
+
+
+
+
+
+chooses only one driver (talker ) to be active at any g iven time . If more than one
+talker were enabled , the tJata on the bus would be meaningless. When a driver
+is enabled , the data at its input is placed on the bus. All of the other drivers are
+disabled. Their outputs are in a high-impedance (floating ) state, so they have
+no effect on the logic state of the bus. (For an explanation of the symbology
+used in this course , refer to Appendix D.)
+
+There can be many listeners on the bus. Since all they do is listen, more than one
+of them can be enabled at the same time . In general, however, the data on the bus
+is intended for one of them in particular. The control logic generates signals (data
+strobes) to tell selected listeners that the data on the bus is intended for them. A
+data strobe can be used , for example, to clock the data from the bus into a flip-
+flop. The inputs to the control logic are the address and control buses coming
+from the microprocessor, (see Figure 7-4.)
+
+
+
+                                                              1 - - - - _ Data Strobe A
+
+                                                              1--- - - _ Data Strobe B
+                                                Control
+                                                 Logic
+                                                              1 - - - - - _ Data Strobe C
+
+                                                              1 - - - - _ Data Strobe 0
+
+
+
+       Figure 7-4.     Control Logic Selects Device to be Involved in Data Transfer
+
+The devices just described are unidirectional. They are either talkers or listeners,
+but not both . Bidirectional devices also exist, which are both talkers and listeners.
+Figure 7-5 shows a bus with two talker/ listeners. For the sake of simplicity, only
+two have been shown, but there could be many more. Each talker/ listener is
+provided with two control signals : the output enable signal for the three-state
+driver and the data strobe for the input. An example of a bidirectional device is a
+RAM, which can read and write data.
+
+As an example of how this process works , suppose device A in Figure 7-5 must
+send a piece of data to device B. The control logic sets output enable A true
+
+
+                                            Microprocessor
+
+
+
+                       Data Strobe A                                 Data Strobe B
+                                                Control
+                         Output Enable A        Logic         Output Enable B
+
+
+
+
+            Data                       Enable              Enable                  Data
+            Strobe     Data                                                Data  Strobe
+          Talkerl      out                                                 out Talkerl
+          LIstener A   Data                                                Data Listener B
+                       In                                                  in
+
+
+                                                Bus Line
+
+
+          Figure 7-5.      Bidirectional Talker/ Listeners Connected to Bus Line
+
+
+
+Lesson 7
+Practical Microprocessors                                                                    97
+                    , (enabled ) and output enable B false (not enabled ). Then, after enough settling
+
+## Page 124
+
+                      time has elapsed for the data to reach device B's data input, the controller
+                      sends a pulse on the data strobe B line . This causes device B to read the data
+                      from the bus, which was supplied by device A. Note that many other devices
+                      can be connected to the bus. As long as their enables are false, they have no
+                      effect.
+
+     THE DATA BUS   The microprocessor system's data bus is a bidirectional , three-state bus. It is the
+                    same as a single-line bus except that there are eight lines instead of just one. To
+                    util ize all the data bus lines, each talker must have eight drivers (one for each line)
+                    and each listener must have eight inputs. The microprocessor and RAM are talk-
+                    er/ listeners. Input ports are talkers that take inputs from outside the system and
+                    put them on the bus. Output ports are listeners that take data off the bus and send
+                    it outside the system. The ROM is only a talker.
+
+                    Figure 7-6 shows how these devices communicate with the data bus. The micro-
+                    processor, ROM, RAM , and input ports contain three-state drivers on their
+                    outputs. The Chip Select (CS) inputs enable the drivers and cause the data from
+                    the selected device to appear on the data bus.
+
+
+
+
+                                                                                 Input        Output
+                          Microprocessor          RAM             ROM
+                                                                                 Ports        Ports
+                                                                                  cs
+
+
+
+                                                                     CONTROL LOGIC
+
+
+
+
+                       Figure 7-6.   Devices with Three-State Outputs Communicate with Microprocessor
+                                     Through Data Bus
+
+                    The microprocessor acts as the controller for the system. It ensures that no more
+                    than one device is trying to use the bus at any given time. If the microprocessor
+                    wants to read data from the ROM, it first disables its own data outputs and then
+                    generates the control signals required to enable the ROM. The ROM's outputs
+                    then appear on the data bus, and the microprocessor reads the data. Reading the
+                    RAM or the input port is done in a similar manner.
+                    To write data to a device (such as the RAM or output port), the microprocessor
+                    fi rst places the data to be written onto the data bus. It then generates control
+                    signals that send a write pulse to the appropriate device. The write pulse causes
+                    that device to internally latch the data.
+                    In general, data flows through the microprocessor. For example, to transfer data
+                    from the input port to the RAM, the microprocessor first reads the data from the
+                    input port and then writes it to the RAM. Because data cannot be transferred
+                    directly from the input port to the RAM, it must be temporarily stored within the
+                    microprocessor.
+
+
+                                                                                                   Lesson 7
+98                                         Scans by ArtekMedia => 2012            Practical Microprocessors
+                                                   Scans by Artekmedia => 2012
+
+## Page 125
+
+
+
+
+
+To summarize, the data bus is used for all transfers of data within the micro-
+processor system. AII , devices share the same bus. The control logic, operating
+from signals generated by the microprocessor, directs each device as to when it
+should place data on the bus or read data from the bus.
+There are eight data bus lines in the ,uLab. The 8085 (the microprocessor in the
+,uLab) is capable of handling eight bits of data at a time and is therefore called an
+eight-bit processor. Other microprocessors exist that handle more or less data.
+Many of the early microprocessors used a four-bit data bus and some of the
+newer devices use a sixteen-bit data bus.
+When no devices are enabled , the data bus floats high and the data bus LEDs on
+the ,uLab will light up. The data bus LEDs appear to be on most of the time
+(whenever a program or the ,uLab monitor is running) because the data bus
+spends much of its time in the high impedance state.
+
+You have seen how the data bus is used by many devices to exchange data. Now              THE ADDRESS
+a method is needed by which the microprocessor can select the particular device           BUS
+that communicates with the data bus. The address bus (in conjunction with the
+control bus) provides this function.
+Since the address bus is unidirectional , its operation is simpler than the data bus.
+Every memory location (and 1/0 port) has a unique address. Before any data
+transfer can take place (via the data bus) , the microprocessor must output an
+address. The address specifies the exact memory location (or I/O port) which the
+processor wishes to access. In this way the microprocessor can select any part of
+the system with which it must communicate.
+The 8085 's address bus has sixteen lines, allowing direct addressing of 2 16 = 65,536
+memory locations and 1/0 ports. These lines are referred to as AO, A1, A2 , . . . A15 ,
+with AO being the least significant bit.
+
+The address decoder is a part of the control logic. It generates device select            ADDRESS
+signals when a certain address (or range of addresses) is present on the address          DECODERS
+bus. For example, Figure 7-7 shows an address decoder for address 3000 Hex
+
+
+               0      A1S
+                                                ,..
+               0      A14
+                                     J'.,..
+        31            A1 3
+                      A1 2   ----{>_V           -
+                                                '"'
+                                                ,...,
+               0      Al1
+                                                ,.,      \...       PORT SELECT
+                                                ,.,      ./        Address 3000 Hex
+               0      A10
+               0       A9                       ,...
+                       As                       ,..
+               0
+               0       A7
+               0       A6                      1"'
+  000
+               0
+               0
+                       As
+                       A4
+                                                --
+                                                1"
+
+
+
+
+                                                --
+               0       A3
+               0       A2
+               0       A1                       ,..,
+                                                ,..,
+               0       Ao
+
+ Figure 7-7.       Address Decoder Configured to Control Port Assigned to Address 3000
+
+
+
+Lesson 7
+Practical Microprocessors                                                                               99
+                    (0011 0000 0000 0000 binary). The output of this decoder is true (logic 0) only
+
+## Page 126
+
+                    when this exact address is present on the address bus. This output is then used to
+                    enable the port that is assigned address 3000.
+
+      THE CONTROL   You have seen how the address bus is used to select a particular memory location
+                    or I/O port and how the data bus carries the data. The entire process is
+              BUS
+                    coordinated by the control bus, consisting of a number of control signals, most of
+                    which are generated by the microprocessor (a few are inputs to the processor) . In
+                    this lesson only the signals that control the reading and writing of I/ O ports and
+                    memory are discussed . Other control signals, used for accommodating inter-
+                    rupts, slow memories, and direct memory access, are discussed in Lesson 10.
+
+                    The two main control signals generated by the 8085 are READ and WRITE. If
+                    READ is low, it indicates that a read operation is in progress, and the micra-
+                    processor signals the addressed device to place data on the data bus. If WRITE is
+                    low, then a write operation is in progress, and the microprocessor puts data on
+                    the data bus and signals the addressed device to store this data. The READ and
+                    WRITE status LEOs on the J.LLab are connected to these signals. The LEOs are on
+                    when the corresponding signal is true (low) .
+                    The major difference between the control bus and the address and data buses is
+                    that each wire in the control bus has a unique function. For the address and data
+                    buses, each line carries the same type of information (one bit of the address or
+                    data) .
+                    Keep in mind that we are describing the 8085's control signals and that other
+                    microprocessors may differ. The data transfers are the same, but they can be
+                    achieved in different ways. Refer to Lesson 20 for a description of other micro-
+                    processors' control signals.
+
+  OUTPUT PORTS      Figure 7-8 shows an output port latch with an assigned address of 3000. The latch
+                    is clocked whenever address 3000 is present on the address bus (as indicated by
+                    the address decoder) and a low-ta-high transition occurs on the WRITE control
+                    signal. When the latch is clocked , the data from the data bus is stored in it. The
+                    microprocessor can therefore cause data specified by a program to appear at the
+                    output of the latch by writing the data to address 3000.
+
+
+
+
+                    Figure 7-8.   Data from Data Bus Stored in Latch Whenever Microprocessor Write s to
+                                  Address 3000
+
+
+                                                                                            Lesson 7
+100                                   Scans by ArtekMedia => 2012          Practical Microprocessors
+                                                   Scans by Artekmedia => 2012
+
+## Page 127
+
+
+
+
+
+Input ports are connected in a similar manner, as shown in Figure 7-9. The output          INPUT PORTS
+of the address decoder is ANDed with READ instead of WRITE to generate the
+port enable. The input port is an eight-line three-state driver which places the
+input signals on the data bus when enabled. The microprocessor can read the
+input signals by performing the read operation from the appropriate address. The
+processor then stores this data in one of its internal registers.
+
+
+
+
+Figure 7-9.    Input Data Placed on Data Bus Whenever Microprocessor Reads Address
+               Assigned to Three-State Driver
+Suppose that an address decoder is required to control eight I/O ports instead of          ADDRESS
+just one. Eight address decoders similar to the one in Figure 7-7 could be used,           DECODING
+but there is a simpler method . Figure 7-10 shows an address decoder which
+generates select signals for addresses 3000,3001 , 3002, . . . 3007. For these eight
+                                                                                           FOR -MULTIPLE
+addresses, only the three low-order address bits (AO, A1, and A2) of the 16-bit            DEVICES
+address are changed. The upper thirteen bits can therefore be decoded by a
+common circuit similar to the one in Figure 7-7. The output of this circuit is used
+ to enable a decoder such as a 74LS138. This decoder then generates eight
+separate outputs, one for each possible combination of AO , A 1, and A2. The
+decoder is disabled (all outputs are false ) if the upper thirteen address bits
+
+
+                                                   Enable   C    B        A   Low Oulput
+                                                     0      0    0        0
+                                                     0      0    0        1
+
+
+           ~~
+                                                     0      0    1        0
+                                                     0      0    1
+                                                     0      1    0                 4
+                                                     0      1    0        1        5
+                                                     0      1    1        0        6
+                                                     0      1    1        1        7
+                                                     1      X    X        X       None
+
+                                                    0                Address 3000 Select
+                                    L-c   Enable    1                Address 3001 Select
+                                                    2                Address 3002 Select
+                                            74LSI38 3                Address 3003 Select
+                                                    4                Address 3004 Select
+                                                    5                Address 3005 Select
+                                                                     Address 3006 Select
+                                          : !Select 6
+                                                    7                Address 3007 Select
+
+
+
+Figure 7-10.   Decoder IC Provides Simple Way of Extending Number of Devices That Can
+               Be Selected
+
+
+Lesson 7
+Practical Microprocessors                                                                                  101
+                     are not of the specified value . In most cases, you do not need to decode the
+
+## Page 128
+
+                     entire sixteen bits of the address to select a specific device. All sixteen bits are
+                     shown in the examples to emphasize that the system does have this amount of
+                     addressing capability if required .
+
+
+       ADDRESS      Address decoding for memories is similar to that used for a group of I/ O ports.
+      DECODING      For example, think of a ROM as a device with hundreds of eight-bit input ports on
+                    a single chip, with one port for each memory location. When the ROM is pro-
+  FOR MEMORIES
+                    grammed, the ROM memory locations are permanently set to a desired pattern of
+                    ones and zeroes. For a RAM, each memory location can be thought of as having
+                    both an input and an output port tied together.
+
+                    Suppose an address decoder is required for a small ROM containing 256 bytes.
+                    Figure 7-11 shows a circuit that accomplishes this. The low-order eight bits of the
+                    address bus connect directly to the ROM . The ROM has an internal address
+                    decoder that selects one of the 28 =256 locations. The high-order eight bits of the
+                    address bus are decoded by an external address decoder to enable the ROM
+                    when its particular range of addresses is present on the upper half of the address
+                    bus. Notice that all sixteen address bits are decoded : half by the address decoder
+                    in the ROM and half by the external address decoder. The READ signal is ANDed
+                    with the address decoder output to generate the ROM enable. This is identical to
+                    the technique used for input ports.
+
+
+
+
+                      Figure 7-11 .   Internal Address Decoder in ROM Reduces Number of Address Lines
+                                      Needed by External Address Decoder.
+
+      CONTROLLING   Because most microprocessor systems use more than one memory chip, they
+                    need a more complex address decoder. Suppose that four of these 256 byte
+         MULTIPLE
+                    ROMs were connected with the addresses assigned to each chip as shown in
+          MEMORY    Figure 7-12a.
+          DEVICES
+                    The address lines must now indicate which memory chip should be selected and
+                    which word within that chip should be addressed. Figure 7-12b shows the
+                    addresses in binary, so that you can see how to deal with each individual bit. The
+                    lower eight bits of address specify the location within each chip, and the upper
+                    eight bits specify which chip is being addressed.
+
+
+                                                                                            Lesson 7
+102                                                                        Practical Microprocessors
+                                        Scans by ArtekMedia => 2012
+                                                                 Scans by Artekmedia => 2012
+
+## Page 129
+
+
+
+
+
+  ;-a~                      /
+                                                                                    b
+                                                                                                                                          \
+                                                                 ROM NUMBER                                LOCATION WITHIN ROM
+
+  Address
+     0
+                                 Address BIt:
+                                         0
+                                                   15 14 13 12
+                                                   0        0    0   0
+                                                                           11
+                                                                            0
+                                                                                10
+                                                                                0
+                                                                                         9
+                                                                                         0
+                                                                                              •
+                                                                                              0
+                                                                                                       7
+                                                                                                       0
+                                                                                                           6
+                                                                                                           0
+                                                                                                                5
+                                                                                                                0
+                                                                                                                    4
+                                                                                                                    0
+                                                                                                                          3
+                                                                                                                          0   0
+                                                                                                                               2    1
+
+                                                                                                                                    0
+                                                                                                                                         0
+                                                                                                                                         0
+     1                                   1         0        0    0   0      0   0        0    0        0   0    0   0     0   0     0    1
+     2                                   2         0        0    0   0      0   0        0    0        0   0    0   0     0   0     1    0
+            ROM 0
+
+    255
+                            'OM'I       255        0        0    0   0     0    0        0    0        1   1    1   1     1   1     1    1
+    256                                 256        0        0    0   0      0   0        0             0   0    0   0     0   0     0    0
+    257                                 257        0        0    0   0      0   0        0             0   0    0   0     0   0     0    1
+            ROM 1
+
+    511                    'OM'I
+                                    I
+                                        511        0        0    0   0      0   0        0    1        1   1    1   1     1   1     1    1
+    512                                512         0        0    0   0     0    0             0        0   0    0   0     0   0     0    0
+    513                                513         0        0    0   0     0    0             0        0   0    0   0     0   0     0    1
+            ROM 2
+                           '0.'
+    766                                766         0        0    0   0     0    0       1    0         1   1    1   1     1   1     1    l'
+    767                                767         0        0    0   0     0    0                      0   0    0   0     0   0     0    0
+    768                                768         0        0    0   0     0    0                      0   0    0   0     0   0     0    1
+            ROM 3
+
+   1023                    'OM'I       1023        0        0    0   0     0    0       1    1         1   1    1   1     1   1     1    1
+
+
+
+               Figures 7-12 a and b. Addresses Assigned to Each of Four
+                                     256 Byte ROMs in a System
+
+Observe that only bits A8 and A9 vary in decoding one chip from another. The
+reason that only these two address bits vary is that it takes exactly 10 bits to
+decode 1024 addresses (2 1°=1024) . A9 is the tenth bit. The four possible combina-
+tions of A8 and A9 therefore specify one of four blocks of 256 addresses each (the
+size of each ROM) . The full 16-bit address bus is shown because the micro-
+processor has the capability of addressing up to 64K locations. However, this full
+capability is seldom used.
+
+Figure 7-13 shows how this addressing is implemented. The lower eight bits of
+address go directly to the address lines of all four ROMs, since these bits specify
+the location within the chip. The address decoder then looks at the upper eight
+bits of address and generates the chip selects. The two least significant bits (of
+the upper half) , A8 and A9, are used for the binary inputs to the decoder. The rest
+of the high-order address bits are used to enable the decoder only when they are
+
+                      ,        0 0·255
+                                    256-511
+                    : } SeI8Ct 1 512·766
+                    C          2
+     ~                         3 p..m.1023
+                    DECODER 4
+     ~
+            )-      EN         5~
+                                ~
+                               6
+     ~
+
+              r     EN         7
+
+
+                                    CS                             CS                             cs                       CS
+                                 258 Byte                       258 Byte                     256 Byt.                    256 Byte
+                                  ROM 3                          ROM 2                        ROM 1                       ROM 0
+                           Ao                 A7       Ao                  A7       Ao                     A7       Ao              A7
+
+
+                            1                          11                            11                             II
+
+
+   Figure 7-13.     Address Decoding for Four 256 Byte ROM Example in Figure 7-12
+
+
+
+Lesson 7
+Practical Microprocessors                                                                                                                     103
+                all low. Study this diagram and the address-mapping table in Figure 7-12b; you
+
+## Page 130
+
+                should be able to see how they correspond. Notice that the READ control signal
+                is used as a decoder enable. This is equivalent to ANDing this signal with each of
+                the decoder's outputs.
+                Although there are numerous variations to this approach, this is a complete and
+                straightforward address decoding technique. It serves to illustrate the basic prin-
+                ciple: the low-order address bits are sent directly to the memory's address lines,
+                and the high-order bits are decoded to generate the chip selects. No more than
+                one chip can be selected at any given time. Other designs vary in the number of
+                bits fed directly to the memory devices (a function of the number of words in each
+                memory chip) and in the way the high-order bits are decoded to generate the
+                chip selects.
+
+  RAM CONTROL   RAMs are decoded in a manner similar to ROMs, but with some extra control
+                circuits to write (input to the RAM) as well as read (output from the RAM) . RAMs
+                have a WRITE input in addition to the CS (chip select) input. Figure 7-14 shows
+                the truth table for the RAM control. CS must be low for either a read or write to
+                take place. If WRITE is high (not true) when CS is low, the RAM outputs data to
+                the data bus so that the processor can read it. To do this, CS enables the RAM's
+                three-state output drivers. If WRITE is low, CS does not turn on the RAM's output
+                drivers. Instead, the data on the data bus is stored in (written into) the memory at
+                the location specified by the address bus.
+
+
+                                   -cs      -WR    FUNCTION
+                                                                         0= LOW
+                                    0        0     WRITE
+                                                                         1 = HIGH
+                                             1     READ                  X = DON'T CARE
+                                    0
+
+                                    1        X     NO OPERATION
+
+
+
+                                   Figure 7-14.    Truth Table for Controlling RAM
+
+
+
+
+                                         ADDRESS                  P----<1CS
+                                         DECODER                                  1K Byte
+                                                                                   RAM
+                                                                    ....---ctWR
+
+
+
+
+                 Figure 7-15. Address Decoding and Control for 1 K Byte RAM Using Truth Table
+                               in Figure 7-14
+
+
+                                                                                          Lesson 7
+104                                                                      Practical Microprocessors
+                                  Scans by ArtekMedia => 2012
+                                                Scans by Artekmedia => 2012
+
+## Page 131
+
+
+
+
+
+    A circuit to perform the desired gating is shown in Figure 7-15. CS is low if the
+    RAM address select and either READ or WRITE are low. The WRITE line is
+    connected directly to the RAM's WRITE input. The WRITE input is internally
+    gated with the CS input, so that it is ignored unless CS is low.
+
+    Figure 7-16 is a block diagram of the J..LLab. It shows the major portions of the
+    system and the communication paths between them that were discussed in this
+    lesson.
+
+
+
+
+    )
+                                                                      Decode/
+
+I                                                                     Control
+
+
+
+
+                                                                     -----
+                                                                   Device Selects
+
+
+
+
+                          Figure 7-16.   Block Diagram of !J.Lab
+
+
+
+
+    Lesson 7
+    Practical Microprocessors                                                           105
+ REVIEW _ _ _ _ _ _ _ _ _ _ __
+
+## Page 132
+
+ Lesson 7
+
+
+
+            Microprocessor systems are designed around a bus structure. The micro-
+            processor generates addresses and control signals. In addition, it connects to a
+            bidirectional data bus on which it can send or receive data. ROMs, RAMs, and I/O
+            ports all use the data bus for data transfers to or from the microprocessor. The
+            address bus specifies the particular memory chip or I/O port that is selected, as
+            well as the location within the memory chip. Address decoding circuits decode
+            the state of the bus and generate an address-select signal for each device in the
+            system. The READ and WRITE control signals determine whether a processor
+            read or write operation is taking place and control the timing of the data transfer.
+            In th is way the microprocessor controls the operation of the system and allows all
+            devices to share the same data and address buses.
+
+
+
+
+                                                                                    Lesson 7
+106                           Scans by ArtekMedia => 2012          Practical Microprocessors
+                                            Scans by Artekmedia => 2012
+
+## Page 133
+
+
+
+
+
+ _ _ _ _ _ _ _ _ _ _ _ _ QUIZ
+                                                                                  Lesson 7
+
+
+
+1. All data travels on the           bus, and the                 and _ _ _ __
+   buses select the device that the processor is accessing.
+
+
+
+2. The data bus is:
+   a. unidirectional and three-state.
+   b. bidirectional and three-state.
+   c. unidirectional and bidirectional.
+   d. none of the above.
+
+
+
+3. In a system using several 1K byte memory devices, which address lines are
+   connected to the memory chip?
+   a. AO-A9
+   b. A10-A15
+   c. AO-A15
+   d. AO-A7
+
+
+
+4. In a system with a 16-bit address bus, what is the maximum number of 1K byte
+   memory devices it could contain?
+   a. 16
+   b.64
+   c. 256
+   d. 65,536
+
+
+
+5. When the READ line goes low (true):
+   a. the microprocessor has just finished reading data.
+   b. a memory or I/O device has just finished reading data.
+   c. the microprocessor is reading data.
+   d. a memory or I/O device is reading data.
+
+
+
+6. The circuit in Figure 7-17 generates a chip select signal for a:
+   a. ROM.
+   b. RAM.
+   c. input port.
+   d. output port.
+
+
+Lesson 7
+Practical Microprocessors                                                               107
+QUIZ _ _ _ _ _ _ _ _ _ _ __
+
+## Page 134
+
+(Continued)
+
+
+
+              7. The device selected in Figure 7-17 is at address:
+                a. A03C.
+                b. 430A.
+                c. 5FCC.
+                d. A034.
+
+
+              8. To convert the circuit of Figure7-17 to work with an output port, one of the
+                 74LS138's enable inputs would connectto               instead of _ _ __
+
+
+                       - ()
+                       -~
+                        V
+
+                                           }-
+                                                                         0
+                                                              } Enable
+                                                                         1
+
+                       -[)~                                            2
+                                                               74lS138 3
+                                                                         4         DEVICE SELECT
+                                                                         5
+                                                              : } SeI8Ct 6
+                                                                         7
+
+                READ
+
+
+                        Figure 7-17.   Address Decoder Circuit for Questions 6, 7, and 8
+
+
+
+
+                                                                                          Lesson 7
+108                             Scans by ArtekMedia => 2012              Practical Microprocessors
+                                              Scans by Artekmedia => 2012
+
+## Page 135
+
+
+
+
+
+_ _ _ _ _ _ _ LESSON 8
+                                                                        Address Decoding
+
+
+
+
+All devices that communicate with the microprocessor have specific addresses            INTRODUCTION
+assigned to them. The address decoding circuits ensure that the correct device is
+on the bus when it is addressed by the microprocessor.
+
+This lesson describes the features and characteristics of the /lLab's address
+decoding circuit. Other types of address decoding circuits are also discussed.
+
+
+
+
+In most microprocessor-based systems, the data and control buses are used in a          ADDRESSING
+straightforward manner with few alternatives available. The address bus, on the         STRUCTURES
+other hand, can be decoded in many different ways.
+
+
+
+
+The /lLab uses a technique called memory mapped I/O. The I/O ports are treated          THE
+as addressable devices within the memory space. From a software viewpoint, this         MICRO PROCESSOR
+means that reading and writing the ports may be done using any of the memory
+                                                                                        LAB'S ADDRESSING
+reference instructions: "MOV A,M", "MOV M,A", "STA" , "LDA", and a number of
+others. (These instructions are described in Lesson 11.) An alternative technique,      STRUCTURE
+called I/O Mapped Decoding, is discussed later in this lesson.
+
+Figure 8-1 shows an address map for the /lLab. Only the first one-fourth of the
+64K byte address space is used. Therefore, address bits 14 and 15 are always
+zero. This address space is then divided into eight equal sections of 2K locations
+each (0800 hex x 2,048 decimal). The ROM occupies the first 2K addresses, and
+the RAM is assigned to the next 2K addresses. Even though the RAM contains
+only 1 K bytes, it is allocated 2K bytes of address space. The extra 1 K of available
+addresses are not used.
+
+
+Lesson 8
+Practical Microprocessors                                                                            109
+                                                      r--
+
+## Page 136
+
+                      Upper half of address                   AdcIresI       Device
+                            in binary                          in hex
+        Bit: 15   14    13   12    11   10    9   8
+
+             0    0     0    0     0    0     0   0       0    0   0     0
+
+                                                                             ROM
+
+             0    0     0    0     0    1     1   1       0    7   F     F
+                                                                                               Memory
+             0    0     0    0     1    0     0   0       0    8   0     0
+
+                                                                             RAM
+
+             0    0     0    0     1    1     1   1       0   F    F     F
+
+             0    0     0    1     0    0     0   0       1    0   0     0
+
+                                                                             CONTROL
+
+             0    0     0    1     0    1     1   1       1    7   F     F
+
+             0    0     0    1     1    0     0   0       1    8   0     0
+
+                                                                             KEY DATA
+
+             0    0     0    1     1    1     1   1       1    F   F     F
+
+             0    0     1    0     0    0     0   0       2    0   0     0
+                                                                             INPUT
+                                                                             PORT
+             0    0     1    0     0    1     1   1       2    7   F     F
+                                                                                               I/O
+             0    0     1    0     1    0     0   0       2    8   0     0
+                                                                             SCAN
+                                                                             (Kbd + Display)
+
+             0    0     1    0     1    1     1   1       2   F    F     F
+
+             0    0     1    1     0    0     0   0       3    0   0     0
+                                                                             OUTPUT
+                                                                             PORT
+             0    0     1    1     0    1     1   1       3   7    F     F
+             0    0     1    1     1    0     0   0       3    8   0     0
+                                                                             DISPLAY
+                                                                             SEGMENTS
+             0
+             0
+                  0
+                  1
+                        1
+                        0
+                             1
+                             0
+                                   1
+                                   0
+                                        1
+                                        0
+                                              1
+                                              0
+                                                  1
+                                                  0
+                                                      I   3
+                                                          4
+                                                              F
+                                                               0
+                                                                   F
+                                                                   0
+                                                                         F
+                                                                         0
+
+                                                                             NOT
+                                                                             USED
+
+
+            1     1     1    1     1    1     1   1       F   F    F     F
+
+
+
+
+                             Figure 8-1.      Sys tem Address Map for }lLab
+
+
+
+
+      The six 2K byte address blocks following the RAM are used for I/O ports. The
+      control port is used by the monitor program to provide some special functions,
+      described in Lesson 10. The key input, scan, and display segment ports control
+      the keyboard and display. The input and output ports are used for the switches
+      and the LEOs.
+
+
+                                                                                                Lesson 8
+110                          Scans by ArtekMedia => 2012                       Practical Microprocessors
+                                                Scans by Artekmedia => 2012
+
+## Page 137
+
+
+
+
+Each of these ports sends or receives only a single byte of data and therefore
+requires only one address. Yet each is assigned 2,048 addresses. Each port
+responds to anyone of its 2K addresses. This means that there are 2,047
+redundant addresses allocated to each port.
+Why use an addressing technique that appears to waste so many addresses? The
+reason is that it simplifies the hardware and there is much more address space
+available than the system needs. The J.LLab uses 16K addresses for its 2K ROM , 1K
+RAM , and six I/ O ports. This leaves 48K addresses for system expansion . The
+J.LLab could have used only 2,048 + 1,024 + 6 = 3,078 addresses, but at the
+expense of a much more complicated address decoding circuit. This addressing
+philosophy is commonly practiced in small and medium-sized systems.
+
+
+An examination of the hardware used to implement the address decod ing will                             THE DECODING
+show why this approach has simplified the circu its. Figure 8-2 shows the address                       HARDWARE
+decoding and control circuits used in the J.LLab. Look at the binary addresses
+listed in Figure 8-1. Notice that the A11 , A12 , and A131ines specify which of eight
+sections is addressed . These three lines are used to provide the binary select
+inputs to the 74LS138 binary to one-of-eight decoder. This device provides eight
+separate outputs, one for each of the 2K blocks the system uses. This method
+results in a relatively simple address decoding circuit. The simplicity is a direct
+consequence of the fact that each device is assigned a block of addresses of
+equal length .
+
+                                                      ,------------+~
+                                                        , -- - - , ; - - - - - - -.... CTL
+    An - - - - - - - - - - --.<i
+    A12 _---------~
+    A13 _---------~
+                                                                                              Device
+                                                                                     K'lRfj   Selects
+  WRITE ---------....:::""
+  READ - - -- -.---"<l                                             iN
+                                                          L..f.-f----           _
+    A14 - - - - - + - - - - - - : < 1                         .... SCAN
+                                                        L-~r_---
+                                                      L-~~---__ ~
+    A15 -----+-----~
+                                                    L----r+-------.... DSP
+
+
+     As
+     AS
+  PROT _ - L . . - - - - - --     -'
+
+
+
+                   Fig ure 8-2.   Address Decoding Circ ui t of }lLa b
+
+The 74LS138 has three enable inputs: two active low and one active high . All
+three must be true to allow any of the outputs to be true. The A14 and A15 lines
+(connected to the two active low enables) prevent any of the outputs from being
+true unless both A14 and A15 are low. This restricts the jiLab's devices to the
+lower 16K of the 64K address field .
+Connecting the READ and WRITE lines to decoder enable inputs ensures that
+the bus devices can be enabled only during a read or write operation . This
+eliminates the need to gate the READ or WRITE lines directly into many of the
+device select signals. For this reason the decoder's third enable input is con-
+nected to a gate that generates the OR of READ and WRITE. This allows the
+device select outputs to be true only when either a read or a write is in progress.
+The address bus contains meaningful information only during these periods.
+Enabling the device select outputs only at these times prevents the devices from
+reading or writing data at the wrong time. Some microprocessor-based systems
+may not require this type of enabling to be done.
+
+
+Lesson 8
+Practical Microprocessors                                                                                          111
+                  Additionally, the ROM and the input ports must be selected only if a read is being
+
+## Page 138
+
+                  performed. If they responded to either a read or a write, a bus conflict could
+                  occur. For example, if a write to the ROM is performed, the microprocessor
+                  places data on the data bus. A write to a ROM is impossible. So if the ROM is
+                  enabled during the write operation, it will also try to put data on the data bus.
+                  This is an unacceptable situation which could even result in electrical circuit
+                  damage.
+
+                  To solve this problem the READ signal must be ANDed with the ROM device
+                  select. This is implemented by connecting READ to one of the ROM's enables.
+                  The ROM and the input port chips in the ,uLab each have two enable pins. One is
+                  used for the device select and the other for READ. Using the two enable pins in
+                  this way is equivalent to ANDing the READ signal and the device select. (See
+                  the complete schematic fold-out at the rear of the book.!
+
+                  Figure 8-2 shows how this is done for the keyboard input port (KYRD). Since the
+                  keyboard port does not have an extra device select pin, IC11 C is used to per-
+                  form the logical AND function.
+
+                  For the output ports, the situation is slightly different. Consider the OUT line in
+                  Figure 8-2. Since the output port controlled by this line can be enabled by either
+                  a READ or a WRITE signal, a write enable to the port would occur for either
+                  command. If an attempt is made to read the output port (which is not a meaning-
+                  ful operation), a write is performed instead of a read, loading the port with
+                  undefined data. This operation is acceptable because it does not cause a hard-
+                  ware conflict (i .e., it does not make any difference from an electrical stand-
+                  point.) Therefore, it is not necessary to AND the WRITE signal with the device
+                  selects for the output ports.
+
+
+
+     RAM WRITE    The RAM's device select is somewhat different. It must be true when either a
+                  read or a write to the RAM's address space is in progress. The gate (IC11 A Ion
+PROTECT CIRCUIT
+                  the RAM's device select line is for the write protect circuit, which is described
+                  in the following section.
+
+                  The write protect circuit helps prevent the RAM's contents from being acciden-
+                  tally destroyed. Occasionally, a relatively simple programming error causes the
+                  microprocessor to run amuck (usually by interpreting data as instructions). This
+                  error often results in the storing of garbage data into the entire RAM, which
+                  could erase the program just entered.
+
+
+                  To prevent this problem, the ,uLab contains a latch called memory protect. The
+                  output of this latch provides the PROT input to the circuit in Figure 8-2. When
+                  the latch is set, the RAM is protected. In this mode, the RAM can be read but not
+                  written to. The monitor automatically sets the protect latch whenever you run a
+                  program. Otherwise, it is reset to allow you to enter data or modify programs.
+
+                  Because you may want to use the RAM to store data during program execution,
+                  only the first three-fourths of the RAM is protected. Address lines A8 and A9
+                  determine which fourth of the RAM is addressed. When they are both high, the
+                  last quarter of RAM is addressed and therefore not protected. The A8 and A9
+                  lines are ANDed together, and the result is then ORed with READ and ORed
+                  with PROT. This output produces the RAM enable Signal.
+
+
+                                                                                         Lesson 8
+112                                  Scans by ArtekMedia => 2012        Practical Microprocessors
+                                             Scans by Artekmedia => 2012
+
+## Page 139
+
+
+
+
+The following experiment (and the others in this section) uses an oscilloscope to
+show some of the signals in the j.lLab. The oscilloscope must have at least a
+10 MHz bandwidth and be dual trace. All of the scope displays are shown as
+figures, so that you may verify that the set-up is correct. In addition, the figures
+enable you to understand the experiment even if you do not have an oscilloscope
+available.
+
+In the discussions that follow, IC pin numbers are separated from the IC number
+by a hyphen. For example, pin 18 of IC13 is shown as IC13-18. IC numbers are
+printed on the circuit board.
+
+
+
+
+Lesson 8
+Practical Microprocessors                                                              113
+EXPERIMENT 8-1 _ _ _ _ _ _ _ __
+
+## Page 140
+
+The Address Decoder
+
+
+
+      CONCEPT
+      In this experiment you will enter and then run a program that will sequentially enable each of the
+      addressable devices in the JlLab. You will observe the device select signals with an oscilloscope.
+
+  PROCEDURE
+
+       A) Key in the following program:
+
+                   Address      Contents       Label        Instruction        Comments
+                    0800           3A         LOOP:         LOA 0000         ;ROM
+                    0801           00
+                    0802           00
+                    0803           32                      STA 1000          ;CONTROL PORT
+                    0804           00
+                    0805           10
+                    0806           3A                       LOA 1800         ;KEY PORT
+                    0807           00
+                    0808           18
+                    0809           3A                       LOA 2000         ;INPUT PORT
+                    080A           00
+                    080B           20
+                    080C           32                      STA 2800          ;SCAN PORT
+                    0800           00
+                    080E           28
+                    080F           32                       STA 3000         ;OUTPUT PORT
+                    0810           00
+                    0811           30
+                    0812           32                       STA 3800         ;OISPLAY PORT
+                    0813           00
+                    0814           38
+                    0815           C3                      JMP LOOP          ;REPEAT
+                    0816           00
+                    0817           08
+
+
+       B) Connect the scope's channel A probe to the ROM select slot (labeled ROM) below the address
+          bus LEDs on the JlLab.
+
+       C) Connect channel B to the RAM select line (lC7-14). Be careful not to short IC pins or your
+          program may be destroyed. An IC test clip on IC7 is useful.
+
+       D) Set both inputs to 2 V/div. Set the sweep speed to 10 Jlsldiv and trigger on channel A.
+
+
+
+
+                                                                                                     Lesson 8
+114                                            Scans by ArtekMedia => 2012          Practical Microprocessors
+                                           Scans by Artekmedia => 2012
+
+## Page 141
+
+
+
+
+
+_ _ _ _ _ _ _ _ _ _ EXPERIMENT 8-1
+                                                                                               ( Continued)
+
+
+
+    E) Run the program entered in step A. The display should be similar to Figure 8-3. The ROM is
+       enabled once during each loop (loop time is about 50 j.ls). The RAM is enabled every time an
+       instruction byte is read. Notice that the RAM is not enabled (RAM select not low) when the ROM
+       select is low. Also notice that there are six other periods during the loop that the RAM Is not
+       enabled. These correspond to periods when the other six devices are selected .
+
+
+
+
+           ROM SELECT
+                                                                                      2V/div
+             (IC7-15 )
+
+
+
+
+           RAM SELECT
+                                                                                     2V/ div
+             (IC7-14 )
+
+
+
+
+                                                   10 J.l.s / div
+
+        Figure 8-3.   RAM Enabled (goes low) Every Time Instruction Byte Is Read for This Program Loop
+
+
+
+
+    F) Move channel B to the other enable pins on le7 and observe from Figures 8-4 to 8-9 that the
+       order in which they are enabled follows the instruction sequence of the program. At no time are
+       any two devices (including the RAM) enabled at the same time.
+
+
+
+
+Lesson 8
+Practical Microprocessors                                                                                115
+EXPERIMENT 8-1 _ _ _ _ _ _ _ __
+
+## Page 142
+
+( Continued)
+
+
+
+
+      ROM SELECT
+                                                                              2V/ div
+        ( IC7- 1S )
+
+
+
+       CTL SELECT
+                                                                              2V/ div
+         (IC7-13 )
+
+
+
+
+                                             70 p.s/ div
+
+                                            Figure 8-4.
+
+
+
+
+      ROM SELECT
+                                                                              2V/div
+        ( IC7-1S )
+
+
+
+
+      KYRD SELECT                                                             2V/ div
+        (IC7-12 )
+
+
+
+
+                                             70 p.s/ div
+                                            Figure 8-5.
+
+
+        Figures 8-4 to 8-9. Order of Device Enables Follows Instruction Sequence of Program
+
+
+
+
+                                                                                             Lesson 8
+116                                     Scans by ArtekMedia => 2012         Practical Microprocessors
+                            Scans by Artekmedia => 2012
+
+## Page 143
+
+
+
+
+
+_ _ _ _ _ _ _ _ _ _ EXPERIMENT 8-1
+                                                                    ( Continued)
+
+
+
+
+          ROM SELECT
+                                                          2Vl div
+            ( IC7-15 )
+
+
+
+
+            IN SELECT
+                                                          2Vl div
+              (IC7-11 )
+
+
+
+
+                                    10 J.L 5/ div
+
+                                   Figure 8-6.
+
+
+
+
+          ROM SELECT                                      2Vl div
+            ( IC7-15 )
+
+
+
+
+         SCAN SELECT                                      2Vldiv
+           (IC7-10 )
+
+
+
+
+                                    10 J.Lsldiv
+
+                                   Figure 8-7.
+
+
+
+
+Lesson 8
+Practical Microprocessors                                                    117
+EXPERIMENT 8-1 _ _ _ _ _ _ _ _ __
+
+## Page 144
+
+(Continued)
+
+
+
+
+          ROM SELECT                                                          2V/ div
+            ( IC7-15 )
+
+
+
+
+          OUT SELECT                                                          2V/ div
+            (IC7-9 )
+
+
+
+
+                                               10 J.l.s / div
+
+                                             Figure 8-8.
+
+
+
+
+          ROM SELECT                                                          2V/ div
+            (IC7-15 )
+
+
+
+
+          DSP SELECT                                                          2V/ div
+            (IC7-7 )
+
+
+
+
+                                               10 J.l.s /div
+
+                                              Figure 8-9.
+
+  SUMMARY
+  All eight device selects were examined while running a short exercise program. The control of the
+  device enable lines by the program instruction sequence could be readily observed.
+
+
+
+
+                                                                                             Lesson 8
+118                                     Scans by ArtekMedia => 2012         Practical Microprocessors
+                                             Scans by Artekmedia => 2012
+
+## Page 145
+
+
+
+
+
+There are a number of other techniques for performing address decoding. The           OTHER DECODING
+technique used for a particular application depends on many factors, including        TECHNIQUES
+the amount of memory, the number of peripherals, the need for expandability,
+and the types of memory and 1/0 devices used. In some cases these devices
+have enable pins on them that can be used as part of the address decoding.
+
+
+Linear select, the simplest of all decoding techniques, uses no address decoding      LINEAR SELECT
+logic. The high-order address bits act directly as chip selects. Figure 8-10 shows    DECODING
+an example of linear select decoding. The RAM is selected whenever A15 is high.
+This corresponds to all addresses from 8000 to FFFF. The ROM is selected when-
+ever A14 is high. This is true for addresses 4000 to 7FFF.
+
+
+
+
+       WR
+        RD
+
+
+
+                                                                RAM Select
+       A15
+
+
+
+                                                                ROM Select
+       A14
+
+
+
+                                                                Input Port Select
+       A13
+
+
+
+                                                                Output Port Select
+       A12
+
+
+
+
+                        Figure 8-10.   Linear Select Decoder
+
+
+
+
+Notice that the ROM is also selected if A14 and A15 are high, corresponding to
+addresses COOO through FFFF. This overlaps the RAM's space. Both devices are
+enabled if an attempt is made to read from any of these addresses and will
+cause a bus conflict. This is one disadvantage of linear select decoding.
+Because of this potential problem, the software must never read any address
+in which more than one of the two most significant bits are true. Another dis-
+advantage of this method is that it wastes a large amount of address space.
+The technique is therefore limited to small systems.
+
+
+One of the most straightforward and flexible techniques, logic comparator
+                                                                                      LOGIC COMPARATOR
+decoding, selects a single portion of 2N possible address fields from N address       DECODING
+inputs. Figure 8-11 shows a circuit that generates a Single device select from
+the six high-order address bits of a system. Each comparator A input is com-
+pared to its respective B input. When they all match (all six input pairs are coin-
+cident), the comparator output goes low. The switches are used to set the logic
+level at the B inputs to the comparator. This technique is particularly useful on
+memory and peripheral boards where there are switches or jumpers that set
+the address of each board in a system. Exclusive-or gates can also be used to
+accomplish the comparator function.
+
+
+Lesson 8
+Practical Microprocessors                                                                         119
+                     A15.-----------------------------~
+
+## Page 146
+
+
+                     A14~--------------------------~
+                     A13~----------------------~
+                     A12.-------------------~
+
+                     A11 ~--------------~
+                     A1D .-----------..,
+
+
+
+
+                                                       Logic Comparator     A = 8 0 - -..... Device Select
+
+
+
+
+                             Addre.. Salact
+
+
+
+
+                                       Figure 8-11.     Logic Comparator Decoder
+
+
+
+
+ COMBINATIONAL   In systems with very limited decoding requirements, standard logic gates are
+                 often used. Figure 8-12 shows a four-input NAND gate preceded by inverters
+LOGIC DECODING
+                 which decodes addresses 9000 through 9FFF. The output goes low whenever the
+                 A15 to A12 address lines are in the state 1,0,0,1. By complementing or not
+                 complementing the address inputs to the gate, anyone of sixteen (24) devices
+                 can be enabled.
+
+
+
+
+                                                             A15
+                      A15
+
+                                                             A1.
+                      A14
+                                                                                        Device SaIact
+                                                             A13
+                      An
+                                                             Au
+                      A12
+
+
+
+
+                                              Figure 8-12.    Logic Gate Decoder
+
+
+
+                                   Scans by ArtekMedia => 2012
+                                                                                              Lesson 8
+120                                                                          Practical Microprocessors
+                                            Scans by Artekmedia => 2012
+
+## Page 147
+
+
+
+
+
+A few microprocessors (including the 8080 and 8085) use an extra control line          1/0 MAPPED
+to specify that the address is for either I/ O or memory. In the 8085, this line is    DECODING
+called 10/ M (see Figure 8-13) . The instruction being executed controls this line.
+During all memory transfers, 10/ M is low. When one of the two I/O instructions
+(IN or OUT) is executed, 10/ M goes high, enabling the I/ O ports. When
+10/M is low the memory is enabled. By using this method, memory and I/O
+have separate address spaces, increasing the total addressable space in a system
+(by 28 = 256 bytes) and permitting a greater degree of decoder design flexibility.
+Also, IN and OUT are two-byte instructions (specifying one of 256 I/ O ports).
+This saves one byte of program memory for each I/ O transfer, as compared to
+using three-byte memory instructions such as "LOA" and "STA."
+
+
+
+
+   . 101M - -__- - - - - - - - 1 EN
+
+                                              1/0
+                                           DECODER               I"'"'    .RECT•
+
+
+
+
+                  ~-------~EN
+
+
+                                           MEMORY
+                                           DECODER
+
+
+
+
+   Figure 8-13.   I/O Mapped Decoding Increases Total Address Space by 256 Bytes
+
+
+Because the J.lLab does not use 110 mapping for its I/O ports, the 10/ M line is not
+used. Instead, the J.lLab uses memory mapped 110, as discussed previously in this
+lesson.
+
+
+
+
+Lesson 8
+Practical Microprocessors                                                                           121
+REVIEW _ _ _ _ _ _ _ _ _ _ __
+
+## Page 148
+
+Lesson 8
+
+
+
+
+           Microprocessor-based systems employ many techniques for address decoding.
+           Decoder ICs, comparators, and gates are often used for these circuits. In small
+           systems, the address decoder tends to be simpler but more wasteful of the avail-
+           able address space. Memory mapped I/O is a commonly used decoding tech-
+           nique which addresses I/O ports as memory.
+
+
+
+
+                             Scans by ArtekMedia => 2012                        Lesson 8
+122                                                            Practical Microprocessors
+                                            Scans by Artekmedia => 2012
+
+## Page 149
+
+
+
+
+
+_ _ _ _ _ _ _ _ _ _ _ _ QUIZ
+                                                                             Lesson 8
+
+
+
+
+1. Devices in a microprocessor system:
+  a. have specific addresses assigned to them.
+  b. always respond to only a single address.
+  c. are always controlled by an address decoder circuit.
+  d. are all of the above.
+
+
+2. Memory mapped 1/0:
+  a. treats 1/0 ports as memory locations.
+  b. tends to be more wasteful of address space than 1/0 mapped decoding.
+  c. is used in the IlLab.
+  d. is all of the above.
+
+
+3. A bus conflict will occur when:
+  a. an output port is enabled by a READ signal.
+  b. more than one device is reading from the data bus.
+  c. more than one device is writing to the data bus.
+  d. MOS and TTL devices are both used on the data bus.
+
+
+4. The decoding technique that tends to be the most wasteful of available
+   address space is:
+  a. decoder I Cs (as used in the IlLab).
+  b. linear select.
+  c. logic comparator.
+  d. combinatorial logic.
+
+
+5. If devices are enabled when neither a READ nor a WRITE is in progress:
+  a. bus conflicts may occur.
+  b. data in the ROM may be lost.
+  c. no problems occur because this is a normal state.
+  d. none of these is true.
+
+
+6. The greatest number of memory and 1/0 locations can be addressed by the
+   following decoding technique:
+  a. linear select.
+  b. memory mapped 1/0.
+  c. 1/0 mapped decoding.
+  d. logic comparator decoding.
+
+
+
+Lesson 8
+Practical Microprocessors                                                          123
+    THIS
+
+## Page 150
+
+    PAGE
+    LEFT
+   BLANK
+
+  SCANS
+    By
+ArtekMedia
+
+
+
+
+Scans by ArtekMedia => 2012
+                                              Scans by Artekmedia => 2012
+
+## Page 151
+
+
+
+
+
+_ _ _ _ _ _ _ LESSON 9
+                                                    Memories and Peripherals
+
+
+
+
+If you think of the microprocessor as the heart of the system, then the data bus is      INTRODUCTION
+the bloodstream, and the memories and peripherals are the organs. This lesson
+discusses the memories and peripherals used in the MLab and other systems
+as well.
+
+
+
+Semiconductor memories are available in two fundamentally different types:               MEMORIES
+RAMs and ROMs. Within each of these categories, there are many varieties.
+Some of the more commonly used memory devices are discussed in this section.
+
+
+
+RAMs are used for the user "programmable" memory and the data storage in                 RAMS
+nearly all microcomputer systems. There are two different types of RAMs: static
+and dynamic. Static RAMs use a flip-flop for each memory element. A 1K RAM Ie
+therefore has 1024 flip-flops in it. Each flip-flop can be set to store a one or reset
+to store a zero. Address decoding circuits inside the RAM chip select the particu-
+lar flip-flop specified by the address lines. The state of the flip-flop does not
+change unless new data is stored in it or power to the RAM is interrupted.
+
+
+Dynamic RAMs use an on-chip capacitor for each storage element. In general, a
+charge is stored on the capacitor to indicate a one; no charge indicates a zero.
+This technique simplifies the storage cell, permitting denser memory chips. There
+is a problem, however: the charge leaks off the capacitor and, after a few milli-
+seconds, a one can become a zero. They must therefore be refreshed. Refresh-
+ing consists of reading a sequence of RAM address locations within a specified
+time. In the process of reading the data, the RAM chip automatically re-writes the
+same data back into the location read. As a result, all the one bits are restored to
+full charge and the zero bits to no charge. Dynamic memories are typically
+refreshed at least every two milliseconds.
+
+
+Lesson 9
+Practical Microprocessors                                                                           125
+      Because dynamic memories must be continually refreshed, special circuits are
+
+## Page 152
+
+      added to do this, resulting in a more complex system. Small systems tend to use
+      the simpler static memories because of this factor. However, dynamic memories
+      have a number of advantages. They are less expensive than static RAMs of the
+      same size and usually consume less power. The largest RAMs (greatest number
+      of bits) are often available only in the dynamic type. Systems with large amounts
+      of memory often use the cheaper, lower-power dynamic memories. Dynamic
+      memories are almost always one bit wide. Some microprocessors contain on-
+      chip refresh circuits to simplify the use of dynamic RAMs.
+
+      The Microprocessor Lab's RAM
+      The J..LLab uses 4K-bit static RAMs (2114 or 4045). They are organized 1K x 4. Two
+      of them are used to get an eight-bit word. Two 1K x 4 chips therefore provide
+      1K bytes (1 K x 8) of RAM.
+
+      Figure 9-1 shows the J..LLab's RAM circuit. The address and control pins of both
+      chips are bused together. IC5 connects to data lines 0-3, and IC6 connects to
+      lines 4-7. The two chips thus act as 1K bytes of memory.
+
+
+           AO
+           A1
+           A2
+           A3
+           A4
+           AS
+           A6
+           A7
+           AS
+           Ag
+
+                              5                                              5
+                                  Ao                                           AD
+                          ~ A1         ICS   CS    8                        ~ A1           IC6     CS   S
+                         ~ A2                                              ~ A2
+                         ~3 A3           WR
+                                               10
+                                                                           ~3 A3                  WR
+                                                                                                        10
+                                A4 2114                                        A4          2114
+                              2 AS RAM                                       2             RAM
+                                                                                      AS
+                              1
+                                        1101 ~                                    1
+                                                                                      As
+                                                                                                        ~
+                                A6                                                                1101
+                             17 A7      1/02 ~                                   17 A7            1/0 2
+                             16
+                                As
+                             15 AS
+                                        1/0 3
+                                        1/0 4 11
+                                                  ¥.-                            16
+                                                                                 15
+                                                                                    As            1/0 3 ~
+                                                                                                  1/0 4 11
+                                                                                      As
+
+
+
+
+                                  Figure 9-1.           RAM Circuit for J.lLab
+
+      Other Memory Configurations
+      Many common memory chips are only one bit wide. The 2102 was the first
+      inexpensive static memory and is organized 1K x 1. Since each chip reads or
+      writes only one bit at a time, eight chips are required to read and write 1K bytes
+      of data.
+
+      Figure 9-2 shows a 1K x 8 memory using 2102s. As with the 2114 circuit, all the
+      address and control lines are bused together. Each chip takes care of one bit of
+      the data bus. The 2102 has separate data in and data out pins which are useful in
+      special systems that do not use a bidirectional data bus. For most microprocessor
+      applications, these pins are simply tied together. This circuit is functionally
+      equivalent to Figure 9-1, but requires eight ICs instead of two. This is representa-
+      tive of the ever-increasing density of memory chips.
+
+
+                                                                                          Lesson 9
+126                     Scans by ArtekMedia => 2012                      Practical Microprocessors
+                                                                     Scans by Artekmedia => 2012
+
+## Page 153
+
+
+
+
+
+    RAM S E L - - - - - - - - - , - t - - - - - - - , - - - - - l r - -
+
+
+
+          AO
+          A1
+          A2
+          A3
+          A4
+          AS
+          A~
+          A7
+          AS
+          Ag
+
+
+
+
+                                           DO                                          D6
+
+
+
+
+                    Figure 9-2. 1K x B Memory Using 2102 (1 Kx1) RAMs
+
+
+Other common memory chips are the 2141 (4K X 1 static), the 2104 (4K x 1
+dynamic), and the 2116 (16K x 1 dynamic). Eight 2116s will provide 16K bytes of
+memory, which would require 128 2102s!
+
+
+Read-only memories (ROMs) provide a means of permanently storing programs                          READ-ONLY
+and data. The J..tLab's monitor program is stored in a ROM so that it will always be               MEMORIES
+available. Since RAMs lose their contents when power is removed, they are not
+very useful for storing permanent programs. Most ROMs intended for use with
+microprocessors are eight bits wide.
+
+There are four different types of ROMs. Mask-programmed ROMs are pro-
+grammed by the IC manufacturer by customizing the actual chip. There is usually
+a one-time charge to generate the mask for a particular program, but thereafter,
+the ROMs are relatively inexpensive. Mask-programmed ROMs are often used in
+reasonably high-volume products because they are the least expensive and the
+highest in bit density.
+
+The second type is the Programmable Read Only Memory (PROM). The user
+programs the ROMs electrically utilizing a special device called a PROM pro-
+grammer. Once they are programmed, however, they cannot be changed.
+
+The Erasable Programmable Read-Only Memory (EPROM) is similar to a PROM,
+except that it can be erased and reprogrammed. Programmed bits are stored as
+charge on a near-zero-Ieakage capacitor. Erasing is performed by shining ultra-
+violet light through a clear window in the IC package. These devices are most
+useful for prototypes or small-volume production runs. During the development
+of the J..tLab, an EPROM (2716) was used.
+
+The newest ROM type is the Electrically Alterable Read-Only Memory (EAROM).
+The EAROM can be erased electrically while in the circuit. One advantage of this
+type over the EPROM is that small sections of the EAROM can be erased,
+whereas EPROMs must be completely erased. But EAR OMs are not yet as easy
+to use as EPROMs and are more expensive. Many systems that require data to be
+stored for a long period of time, but which must change this data occasionally,
+use EAROMs. Typical applications include digital TV tuners, calibrated trans-
+ducers, and automatic telephone dialers.
+
+
+Lesson 9
+Practical Microprocessors                                                                                      127
+                     The Microprocessor Lab's ROM
+
+## Page 154
+
+                     The J,LLab uses the 2316E ROM, shown in Figure 9-3. It contains 2K bytes and is
+                     mask-programmed. The ROM drives the data bus only if the ROM select is true
+                     and the operation is a read. The two chip selects must both be true to enable the
+                     three-state output drivers. The low-order eleven address lines are used to specify
+                     the address.
+
+
+
+
+                                                                        120 (
+                                                                           18
+                                                               8 Ao CS CS DO 9
+                                                               7 A1         01 10
+                                                  ..                        02 11
+                                                                                                --'"
+
+                                                               6 A2
+                                                               S A3    IC4  03 13
+                                                                               14
+                                                                                                 ..    Data
+                                                               4 A4   2316 04                          Bus
+                                     Address                   3 AS         DS 1S
+                                      Bus
+                                                               2 A6         06 16
+                                                               1 A7         07 17
+                                                              23 AS
+                                                              22 A9
+                                                              19 A10
+
+
+
+                                               Figure 9-3.         ROM Circuit for /lLab
+
+MICROCOMPUTER        For a microprocessor system to be of any use, there must be some way for it to
+    PERIPHERALS      interact with the outside world. It must have at least one input and one output
+                     device, which connect to the microprocessor system through I/O ports. Since
+                     they are not directly involved in the operation of the microprocessor, they are
+                     called peripherals.
+            INPUTS   The J,LLab has two simple peripherals: the input port slide switches and the
+      AND OUTPUTS    output port LEDs. Figures 9-4a and 9-4b show how they are connected. The
+                     ports and control circuits are exactly as described earlier. The switches at the
+                     inputs of the input port cause the corresponding input to be low if a switch is
+                     closed. If a switch is open, the resistor pulls the input high.
+
+
+
+
+                                         o--~t_+-+-_+_-+-+-f__IIN                            OUTi----.
+
+
+
+
+                                                                                  Three-Slale     1------'... Oala
+                                                                                    Driver        t---. Bus
+
+
+
+
+                                                                      TIlIli------..J
+                                                                                      I(
+                                                                   REAli 110__------'
+
+                                                       Input Port with Switches
+
+
+                                                 Figure 9-4a. /lLab Input Port
+
+
+
+                                                                                                              Lesson 9
+                                      Scans by ArtekMedia => 2012
+128                                                                                          Practical Microprocessors
+                                                  Scans by Artekmedia => 2012
+
+## Page 155
+
+
+
+
+
+                                                                                    + SV
+
+
+                     ...----IIN
+
+
+
+              Data                 latch
+              Bus
+
+
+
+
+                                   elK
+
+               OUT   ...---------'
+
+
+
+
+                                           Output Port with LEOs
+
+
+
+                             Figure 9-4b. }1Lab Output Port
+
+Each output from the output port simply drives an LED. Resistors limit the cur-
+rent. When the output is low, current is drawn through the LED and it lights up.
+
+Although the switches and LEOs are simple and functional , many applications                        KEYBOARD
+require something easier for the operator to use . Two very common micro-                           AND DISPLAY
+processor system peripherals are keyboards and displays , both of which are
+used in the J-tLab . The following section describes the basic operation of
+these peripherals.
+The Keyboard
+Scanning, an important hardware technique, is used in both of these peripher-
+als. The J-tLab keyboard has twenty-six keys. To connect each key to an input
+port bit would require four input ports (eight bits each). With the use of a
+scanning technique, however, up to 256 keys can be interfaced using only two
+eight-bit ports.
+Figure 9-5 shows a keyboard interface. The keys are arranged in a matrix, inter-
+connecting column lines and row lines. An output port drives the columns, and an
+
+
+
+                                                                   Row
+                                                                   o
+
+                                                                         In
+                                                                   2          Input EN     Port A
+                                                                               Port        Select
+                                                                   3
+
+
+
+                                                                              Out
+
+
+
+  Port B
+  Select
+
+
+
+
+           Figure 9-5.   Keyboard Interface Similar to That Used in }1Lab
+
+
+
+Lesson 9
+Practical Microprocessors                                                                                         129
+       input port reads the rows. Figure 9-6 shows an example of how a key is detected.
+
+## Page 156
+
+       A program is required to scan the keyboard. The output port is set so that one
+       line is low and all the others are high, and then the input port is read. If any of
+       the keys in the column whose line is low are pressed, then the row line of that
+       key is forced low causing that input port bit to go low. The program then knows
+       which column the key is in (from which output port bit it set low) and which row
+       it is in (from which input port bit is low). This uniquely identifies the key pressed.
+
+
+
+
+                           Output Port          Input Port
+             State          Column                 Row
+                       0 1 2 345 6 7            o1 2 3
+               0       0 1 1 1 1 1 1 1          1 1 1 1
+               1       1 0 1 1 1 1 1 1          111 1
+               2
+               3
+                       1 1 o 1 1 1 1 1
+                       1 1 1 0 1 1 1 1
+                                                1 0 1 1
+                                                1 1 1 1
+                                                             -...      Key Pressed is in
+                                                                       Row 1, Column 2
+               4       1 1 1 1 0 1 1 1          1 1 1 1
+               5       1 1 1 1 1 0 1 1          111 1
+               6       1 1 1 1 1 1 0 1          111 1
+               7       1 1 1 1 1 1 1 0          111 1
+
+
+
+
+                     Figure 9-6.   Scan Data for Pressed Key of Figure 9-5
+
+
+
+
+      In order to check all the keys, each output port bit is in turn set low and the keys
+      are scanned. At each step only four keys are checked. The process is so fast,
+      however, that the entire keyboard can be checked, four keys at a time, in much
+      less time than the fastest possible rate of operator key depression.
+
+      The Display
+      The display also uses a scanning technique. Although the MLab display has six
+      digits, only one is actually on at any instant. Each is turned on in sequence, but
+      the process happens so rapidly that they all appear to be on at the same time.
+
+      Each display digit consists of seven LED segments plus a decimal point. There is
+      a connection to each of these eight LEDs plus a common connection. A character
+      is displayed by putting a low level on the common connection and a high level on
+      the segment connections that correspond to the segments you wish to light.
+      Current is limited by resistors in series with the segments.
+
+
+      To interface the displays without using an inordinate number of output port lines
+      and current-limiting resistors, the segment connections for each display are
+      bused together (see Figure 9-7). One eight-bit output port then supplies segment
+      information to all of the displays. Another output port drives the commons of
+      each display and specifies which digit to light.
+
+
+
+                           Scans by ArtekMedia => 2012
+                                                                                     Lesson 9
+130                                                                 Practical Microprocessors
+                                                             Scans by Artekmedia => 2012
+
+## Page 157
+
+
+
+
+
+   /1                                  A    ln
+                                                 Output Port/Driver
+                                                   for Segments              Port A Select
+
+                                       -V              Out
+
+
+
+
+       !                           I                                             1                 I
+
+                                                                        ,:,,-,
+       III
+       :I        abcdefg
+       &                 .L.
+                    f I..! I   b                   1-/                                       1-'
+                    -/.:1.1    c                  1:1                                        1:1
+                        COM
+
+
+
+
+                                                                Out
+                                                  ~ In Output  Port/Driver
+                                                           for Digits      f . - Port B Select
+                                                 -V
+      l)--
+             Figure 9-7.       Display Interface Similar to That Used in IlLab
+
+
+
+Some software is, of course , required to run the display. First the segment
+information for digit zero is sent to the segment port where it is latched. Then
+the digit port 's latch is set to activate only digit zero. After digit zero is on for a
+given amount of time (controlled by a timing loop in the program ), it is turned
+off (via the digit port ). Then the segment information for digit one is sent to the
+segment port, and digit one is enabled by the digit port. This process is re-
+peated indefinitely, with each digit lighted in turn .
+
+This provides an excellent example of how software is used to replace hardware.
+Traditionally, each digit had its own drive circuit requiring many more control and
+drive components. Another task performed by the software is to determine which
+of the segments to light to generate a given character. Previously, a seven-
+segment decoder was used for each digit. An advantage of the software tech-
+nique (besides the elimination of the decoder) is that new characters can be
+made up at will. Anything you want to display that uses seven segments can be
+generated by the software in the system's memory. This capability makes
+possible the display patterns generated by some of the demonstration programs
+in the j.lLab's ROM .
+
+These circuits are very similar to the ones actually used in the j.lLab. The main
+difference is that in the j.lLab's circuits the scan port is shared between the key
+column port and the display digi t port (a technique often used to reduce
+hardware ).
+
+
+Lesson 9
+Practical Microprocessors                                                                              131
+        THE SERIAL   The serial output port drives the MLab's speaker and is, in effect, a one-bit output
+
+## Page 158
+
+      OUTPUT PORT    port controlled by a special instruction in the microprocessor (SIM). Figure 9-8
+                     shows how the speaker is connected. The 8085's SOD (serial output data) output
+                     is buffered and sent to the edge connector for use by external hardware. It is
+                     then buffered again to drive the speaker. The speaker draws so much current that
+                     the signal at the edge connector would not have valid logic levels if a separate
+                     speaker buffer were not used. A 100 ohm resistor in series with the speaker limits
+                     the current to a level that does not damage the buffer and permits suitable
+                     speaker volume. Notice that the other end of the speaker is connected to +5 V,
+                     not to ground, because the TTL buffer can sink more current than it can
+                     source.
+
+
+                                                                                      +5
+
+
+
+
+                                  le3
+                                 8085
+                                        SODI-"4_-=-t
+
+                                MPU
+
+                                                              L..--------.-.Edge connector
+
+
+
+
+                                             Figure 9-8.   Serial Output Circuit of J.l.Lab
+
+
+                     The software controls the tone generation. The "BEEP" program in the ROM
+                     turns the serial output on and off several hundred times a second, driving the
+                     speaker with a square wave.
+
+
+
+
+                                                                                                    Lesson 9
+132                                       Scans by ArtekMedia => 2012              Practical Microprocessors
+                                           Scans by Artekmedia => 2012
+
+## Page 159
+
+
+
+
+
+_ _ _ _ _ _ _ _ _ EXPERIMENT 9-1
+                                                                              Program Execution
+
+
+
+  CONCEPT
+  In performing this experiment, you examine the outputs of the address decoder with an oscilloscope
+  while the JLLab is running a short program. This enables you to see the sequence of operations. You
+  also examine these signals while a long program is running.
+
+
+
+
+  PROCEDURE
+    A) Key in the following program:
+
+
+
+
+          Address    Contents     Label        Instruction                   Comments
+
+           0800          32       LOOP:        STA    3000       ;Write Accumulator to Output Port
+           0801          00
+           0802          30
+           0803          C3                    JMP    LOOP       ;Repeat
+           0804          00
+           0805          08
+
+
+
+
+   B) Connect the oscilloscope's channel A probe to the output port select on the address decoder
+      (IC7-9). Be careful not to short pins or your program may be destroyed.
+
+   C) Connect channel B to the RAM select (IC7-14).
+
+   D) Set both inputs to 2 Vldiv. Set the sweep speed to 2 JLs/div and trigger off channel A.
+
+    E) Run the program entered in step A. Verify that the display is similar to Figure 9-9. Remember
+       that both signals are active low. The RAM select goes low for each memory reference, which
+       (for this program) is each time another byte of the program is read. Notice that the RAM is
+       selected six times ( corresponding to the six bytes in the program). Then the port is selected once
+       (when the program writes the data to the port).
+
+
+
+
+Lesson 9
+Practical Microprocessors                                                                                    133
+EXPERIMENT 9-1 _ _ _ _ _ _ _ _ __
+
+## Page 160
+
+(Continued)
+
+
+
+
+                                      -                                                -
+
+
+ OUTPUT PORT SELECT
+                                            "    -                              -             - -
+                                                                                                               2V/ div
+       (IC7-9 )                        ~                         -              - 1- -
+                                     It~_                                'ri'
+
+
+                                                                                       - - ..,
+                                     I= - G-;
+                                                     I,   ~                                   ---41
+                                                                                                      ~ .1
+                                                              " "
+             RAM SELECT
+               (IC7-14l                         ill Ul~ ..:::.. L · P=..        .;;;   _l!:   c:!! t:..l       2V/ div
+
+                                     k L: ,,',                                                           j
+
+
+
+
+                                                                 2 JJ.s/div
+
+                       Figure 9-9,      Ch ip Select Signals with Short Loop Program Running
+
+
+
+
+      F) How long does it take for the program loop to be executed once? (Answer: 11.5 J.ls.)
+
+
+
+      G) Notice that the two devices (the RAM and the output port) are never selected at the same time.
+         Examine the other device select pins on IC7. Since no other devices are used by the program ,
+         the other select signals are all high.
+
+
+
+      H) Press [RESET) to return the J.lLab to the monitor program .
+
+
+
+       I) Using only one channel of the oscilloscope, examine the ROM and RAM device select lines
+          (IC7 pins 15 and 14). Set the input channel to 1 V/div and the sweep speed to 1 J.lsldiv. Figures
+          9-10 and 9-11 show typical displays. It isdifficult (and sometimes impossible ) to sync on these
+          waveforms because the program that is running (the mon itor ) is in a very long loop. Therefore,
+          while the waveforms are periodic, the periods are very long. The trigger holdoff or delay con-
+          trol on the scope can be helpful.
+
+
+
+
+                                                                                                                              Lesson 9
+134                                                                                                          Practical Microprocessors
+                                                          Scans by ArtekMedia => 2012
+
+## Page 161
+
