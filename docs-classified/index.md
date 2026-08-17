@@ -23,6 +23,7 @@ This folder is organized so an agent can diagnose HP 5036A faults without reopen
   - `Section VII`: disassembly, troubleshooting procedure, test modes, signature tables, abbreviated troubleshooting
 - Figures: `docs-classified/service/05036-90001/figures/`
 - Verified companion: `docs-classified/service/05036-90001-verified-pages-60-73.md`
+- Agent quality note: `docs-classified/service/05036-90001-agent-quality-note.md`
 
 ## Agent Usage Rules
 
@@ -33,3 +34,4 @@ This folder is organized so an agent can diagnose HP 5036A faults without reopen
 - When OCR text is ambiguous, cite the page number from the Markdown and inspect the matching image in `docs-classified/service/05036-90001/figures/`.
 - For manual pages `7-14` through `7-27`, start with the verified companion before consulting the raw OCR block.
 - For signature-analysis questions, prefer the `Section VII` signature tables and associated test-mode procedures over free-form reasoning.
+- Use the agent quality note to choose the trust level before giving a part-level diagnosis.
