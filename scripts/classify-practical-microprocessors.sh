@@ -214,6 +214,7 @@ artek_tokens = (
 )
 
 blank_tokens = {"this", "page", "left", "blank"}
+blank_insert_noise = {"scans", "by"}
 
 def is_artek_line(line: str) -> bool:
     low = line.lower()
@@ -233,6 +234,7 @@ for i in range(1, len(parts), 2):
         for ln in manual_lines
         if re.sub(r"[^a-z]", "", ln.lower())
     }
+    normalized_manual -= blank_insert_noise
 
     is_scan_insert = (
         any("manuals@artekmedia.com" in ln.lower() for ln in nonempty)
@@ -250,10 +252,8 @@ for i in range(1, len(parts), 2):
 
     if is_scan_insert or is_blank_insert:
         rows.append((page, "drop"))
-    elif any(is_artek_line(ln) for ln in nonempty):
-        rows.append((page, "scrub-top" if page % 2 == 1 else "scrub-bottom"))
     else:
-        rows.append((page, "keep"))
+        rows.append((page, "scrub-top" if page % 2 == 1 else "scrub-bottom"))
 
 out_path.write_text("".join(f"{page}\t{action}\n" for page, action in rows))
 PY
